@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: Luxuria
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: noreply.luxuria727@gmail.com
+    password: nrvs ylas uqhv ugbh
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/luxuria?useSSL=false&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password:
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+server:
+  port: 8086
+
+api:
+  prefix: api/v1
+
+jwt:
+  expiration: 2592000 #30days = 30 * 24 * 60 * 60
+  secretKey: oECZesRgF+ovs5dtRm6SBSCwG6cPsf+1ntMDOdS5W4Q=
