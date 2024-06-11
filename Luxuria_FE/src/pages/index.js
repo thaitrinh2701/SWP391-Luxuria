@@ -1,0 +1,11 @@
+// export { Admin } from "@pages/Admin";
+// export { AboutUs } from "@pages/AboutUs";
+// export { Blog } from "@pages/Blog";
+// export { ErrorPage } from "@pages/ErrorPage";
+// export { GiaCong } from "@pages/GiaCong";
+// export { GiaVang } from "@pages/GiaVang";
+// export { Landing } from "@pages/Landing";
+// export { Login } from "@pages/Login";
+// export { Signup } from "@pages/Signup";
+// export { ResetPassword } from "@pages/ResetPassword";
+// export { MyProfile } from "@pages/MyProfile";

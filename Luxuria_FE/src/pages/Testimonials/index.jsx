@@ -1,0 +1,48 @@
+import React from "react";
+
+function Testimonials() {
+  return (
+    <section
+      id="testimonials"
+      className="py-20  dark:bg-[#1F2937] dark:text-white"
+    >
+      <div className="container mx-auto text-center mb-12">
+        <h2 className="text-4xl font-bold border-b-4 border-blue-600 inline-block pb-2">
+          Khách hàng nói gì về chúng tôi
+        </h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 container mx-auto">
+        <Testimonial
+          quote="The jewelry is absolutely stunning and the craftsmanship is superb."
+          name="Jane Doe"
+          image="data:image/jpeg;base64,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"
+        />
+        <Testimonial
+          quote="I am amazed by the unique designs and the quality of the materials used."
+          name="John Smith"
+          image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvo8kxobixgp7zU91F3iqvd-Ndjm28UExUMQ&s"
+        />
+        <Testimonial
+          quote="Excellent customer service and beautiful pieces. Highly recommend!"
+          name="Emily Johnson"
+          image="https://assets-global.website-files.com/5c6f0fe289c368004b71d711/5cb7772b6c8746a0839f0ff6_nicole-bg.jpg"
+        />
+      </div>
+    </section>
+  );
+}
+
+export default Testimonials;
+function Testimonial({ quote, name, image }) {
+  return (
+    <div className="bg-gray-100 p-8 rounded-lg text-center dark:bg-[#1F2937] dark:text-white">
+      <img
+        src={image}
+        alt={name}
+        className="w-24 h-24 rounded-full mx-auto mb-4"
+      />
+      <p className="italic mb-4">&ldquo;{quote}&rdquo;</p>
+      <p className="font-bold">{name}</p>
+    </div>
+  );
+}

@@ -1,0 +1,537 @@
+import { Input, Sidebar, Toast } from "@/components";
+import React, { useEffect, useState } from "react";
+import { Button } from "@mui/material";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { useForm } from "react-hook-form";
+import { Divider, Image } from "antd";
+import UploadPics from "@/components/Upload";
+import axios from "axios";
+import { getRoleId } from "@/services";
+import WarrantyExport from "@/components/WarrantyExport";
+
+const CustomerOrderProductDetail = () => {
+  const { orderID } = useParams(); // Sử dụng destructuring để lấy orderID
+  const [isApproved, setIsApproved] = useState(false);
+  const [processState, setProcessState] = useState("pending"); // Possible values: 'pending', 'approved', 'rejected'
+  const [cookies] = useCookies(["user", "token"]);
+  const [roleID, setRoleID] = useState(null);
+  const [fileList, setFileList] = useState([]);
+  const token = cookies.token;
+  const API_SUBMIT_PRICE_QUOTE = import.meta.env
+    .VITE_API_SUBMIT_PRICE_QUOTE_ENDPOINT;
+  const API_VIEW_ORDER_DETAIL = import.meta.env
+    .VITE_API_VIEW_ORDER_DETAIL_CUSTOMER_ENDPOINT;
+  const API_SUBMIT_MANAGER_PRICE_QUOTE = import.meta.env
+    .VITE_API_MANAGER_ACCEPT_PRICE_QUOTE_ENDPOINT;
+  const API_CUSTOMER_ACCEPT_PRICE_QUOTE = import.meta.env
+    .VITE_API_CUSTOMER_ACCEPT_PRICE_QUOTE_ENDPOINT;
+  const API_CUSTOMER_ACCEPT_DESIGN = import.meta.env
+    .VITE_API_CUSTOMER_ACCEPT_DESIGN_ENDPOINT;
+  const API_COMPLETE_PRODUCT = import.meta.env
+    .VITE_API_COMPLETE_PRODUCT_ENDPOINT;
+  const API_COMPLETE_ORDER = import.meta.env.VITE_API_COMPLETE_ORDER_ENDPOINT;
+
+  const [orderDetail, setOrderDetail] = useState(null);
+  const [isSubmitPrice, setIsSubmitPrice] = useState(false);
+  const [isAcceptPrice, setIsAcceptPrice] = useState(false);
+  const [isAcceptDesign, setIsAcceptDesign] = useState(false);
+  const [isSubmitDesign, setIsSubmitDesign] = useState(false);
+  const [isCompleteProduct, setIsCompleteProduct] = useState(false);
+  const [isCompleteOrder, setIsCompleteOrder] = useState(false);
+  const navigate = useNavigate();
+  async function fetchRoleID() {
+    const roleIDFromAPI = await getRoleId(cookies.token);
+    setRoleID(roleIDFromAPI);
+    console.log("Role ID:", roleIDFromAPI);
+  }
+
+  const completeOrder = async () => {
+    try {
+      const response = await axios.put(
+        `${API_COMPLETE_ORDER}/${orderID}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
+      setIsCompleteOrder(true);
+      Toast("create_success", "success", "Đã hoàn thành đơn hàng");
+      console.log("create_success", "Complete Order: ", response.data);
+    } catch (error) {
+      console.error("Error complete order: ", error);
+    }
+  };
+
+  const getOrderDetail = async () => {
+    try {
+      console.log("orderID:", orderID); // Kiểm tra giá trị orderID
+      if (!orderID) {
+        throw new Error("Order ID is missing");
+      }
+      const response = await axios.get(`${API_VIEW_ORDER_DETAIL}/${orderID}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setOrderDetail(response.data);
+      console.log("Order details fetched:", response.data);
+    } catch (error) {
+      console.error("Error fetching order details:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRoleID();
+  }, []);
+
+  useEffect(() => {
+    getOrderDetail();
+  }, []);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitted },
+  } = useForm();
+  const base64Data =
+    orderDetail &&
+    orderDetail.productImages &&
+    orderDetail.productImages[0]?.value // Optional chaining here
+      ? orderDetail.productImages[0].value
+      : null;
+
+  const logo = base64Data ? `data:image/jpeg;base64,${base64Data}` : "";
+  const imageUrls =
+    orderDetail && orderDetail.productImages
+      ? orderDetail.productImages.map(
+          (image) => `data:image/jpeg;base64,${image.value}`
+        )
+      : [];
+
+  const handleCustomerAcceptDesign = (approvalStatus) => {
+    customerAcceptDesign(approvalStatus);
+    navigate("/don-hang");
+    setIsAcceptDesign(approvalStatus);
+  };
+
+  const handleAcceptPriceQuote = () => {
+    acceptPriceQuote(true);
+  };
+
+  const handleDeclinePriceQuote = () => {
+    acceptPriceQuote(false);
+  };
+
+  const handleCompleteProduct = async () => {
+    try {
+      const response = await axios.put(
+        `${API_COMPLETE_PRODUCT}/${orderID}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Complete Product: ", response.data);
+      Toast("complete_product", "success", "Hoàn thành sản phẩm thành công");
+      navigate("/yeu-cau");
+      setIsCompleteProduct(true);
+    } catch (error) {
+      console.error("Error completing product: ", error);
+      Toast("complete_err", "error", "Có lỗi khi hoàn thành sản phẩm");
+    }
+  };
+
+  const handleDownloadPicture = () => {
+    imageUrls.forEach((url, index) => {
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `image_${index + 1}.jpeg`);
+      link.style.display = "none";
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+    });
+  };
+
+  const customerAcceptDesign = async (approvalStatus) => {
+    try {
+      const response = await axios.put(
+        `${API_CUSTOMER_ACCEPT_DESIGN}/${orderID}/${approvalStatus}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
+      setIsAcceptDesign(approvalStatus);
+      console.log("Accept design: ", response.data);
+    } catch (error) {
+      console.error("Error accepting design: ", error);
+    }
+  };
+
+  const handleSubmitPriceQuote = async () => {
+    try {
+      const response = await axios.put(
+        `${API_SUBMIT_PRICE_QUOTE}/${orderID}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
+      console.log("Submit Price: ", response.data);
+      setIsSubmitPrice(true);
+    } catch (error) {
+      console.error("Error submitting price quote: ", error);
+    }
+  };
+
+  const handleButtonClick = (approvalStatus) => {
+    if (roleID === 3 && orderDetail.order.state?.id === 1) {
+      handleSubmitPriceQuote();
+      isSubmitPrice(true);
+    } else if (
+      roleID === 6 &&
+      orderDetail.order.state?.id === 2 &&
+      approvalStatus
+    ) {
+      handleAcceptPriceQuote();
+    } else if (
+      roleID === 6 &&
+      orderDetail.order.state?.id === 2 &&
+      approvalStatus === false
+    ) {
+      handleDeclinePriceQuote();
+    } else if (
+      roleID === 2 &&
+      orderDetail.order.state?.id === 4 &&
+      approvalStatus
+    ) {
+      customerAcceptPriceQuote(true);
+    } else if (
+      roleID === 2 &&
+      orderDetail.order.state?.id === 4 &&
+      approvalStatus === false
+    ) {
+      customerAcceptPriceQuote(false);
+    } else if (
+      roleID === 2 &&
+      orderDetail.order.state?.id === 6 &&
+      approvalStatus
+    ) {
+      handleCustomerAcceptDesign(true);
+    } else if (
+      roleID === 2 &&
+      orderDetail.order.state?.id === 6 &&
+      approvalStatus === false
+    ) {
+      handleCustomerAcceptDesign(false);
+    } else if (roleID === 5 && orderDetail.order.state?.id === 7) {
+      handleCompleteProduct();
+    }
+  };
+
+  const acceptPriceQuote = async (approvalStatus) => {
+    try {
+      const response = await axios.put(
+        `${API_SUBMIT_MANAGER_PRICE_QUOTE}/${orderID}/${approvalStatus}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
+      console.log("Accept Price: ", response.data);
+      setIsAcceptPrice(approvalStatus);
+    } catch (error) {
+      console.error("Error accepting price quote: ", error);
+    }
+  };
+
+  const customerAcceptPriceQuote = async (approvalStatus) => {
+    try {
+      const response = await axios.put(
+        `${API_CUSTOMER_ACCEPT_PRICE_QUOTE}/${orderID}/${approvalStatus}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
+      console.log("Accept Price: ", response.data);
+      setIsAcceptPrice(approvalStatus);
+    } catch (error) {
+      console.error("Error accepting price quote: ", error);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleString("vi-VN");
+    return formattedDate;
+  };
+
+  if (!orderDetail) {
+    return <div>Loading...</div>; // Add a loading state
+  }
+
+  return (
+    <div className="flex flex-row min-h-screen dark:bg-[#111827] dark:text-white">
+      <Sidebar />
+      <div className="w-full h-full flex justify-center items-center my-auto">
+        <div className="flex flex-col lg:flex-row gap-5 w-full max-w-6xl">
+          <div className="flex flex-col bg-white dark:bg-gray-700 p-5 w-full lg:w-1/3 rounded-lg shadow-md">
+            <div className="w-full space-y-3 mt-[20%]">
+              <h1 className="text-2xl font-bold text-center">
+                Thông tin khách hàng
+              </h1>
+              <Divider className="hs-dark-mode-active: bg-gray-400" />
+              {orderDetail.order.request && (
+                <div className="space-y-3">
+                  <h3 className="font-medium mt-20">
+                    Họ và tên:
+                    <span className="font-normal ml-1 mt-24">
+                      {orderDetail.order.request.user.fullName}
+                    </span>
+                  </h3>
+                  <h3 className="font-medium mt-24">
+                    Số điện thoại:{" "}
+                    <span className="font-normal ml-1 mt-24">
+                      {orderDetail.order.request.user.phoneNumber}
+                    </span>
+                  </h3>
+                  <h3 className="font-medium mt-24">
+                    Email:{" "}
+                    <span className="font-normal ml-1 mt-24">
+                      {orderDetail.order.request.user.email}
+                    </span>
+                  </h3>
+                  <h3 className="font-medium">
+                    Mã yêu cầu:{" "}
+                    <span className="font-normal ml-1 mt-24">
+                      #{orderDetail.order.id}
+                    </span>
+                  </h3>
+                  <h3 className="font-medium mt-24">
+                    Đơn được tạo vào ngày:{" "}
+                    <span className="font-normal ml-1 mt-24">
+                      {formatDate(orderDetail.order.orderCreatedAt)}
+                    </span>
+                  </h3>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="bg-white dark:bg-gray-700 w-full lg:w-2/3 p-6 rounded-lg shadow-md">
+            <form>
+              <div className="flex flex-col sm:flex-row items-center mb-6">
+                <img
+                  src={logo}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "./logo.png";
+                  }}
+                  className="w-52 h-auto rounded-full"
+                  alt="Product"
+                />
+
+                <div className="sm:ml-6 mt-6 sm:mt-0 text-center sm:text-left">
+                  <h1 className="text-2xl font-bold">
+                    #{orderDetail.order.id}__
+                    {orderDetail.order.product &&
+                      orderDetail.order.product.name}
+                  </h1>
+                  <p
+                    className={`mt-2 text-sm ${
+                      orderDetail.order.state &&
+                      (orderDetail.order.state.id === 8 ||
+                        orderDetail.order.state.id === 9 ||
+                        orderDetail.order.state.id === 5)
+                        ? "text-green-500"
+                        : orderDetail.order.state &&
+                          orderDetail.order.state.id === 3
+                        ? "text-red-500"
+                        : "text-yellow-500"
+                    }`}
+                  >
+                    {orderDetail.order.state &&
+                      (orderDetail.order.state.id === 8 ||
+                      orderDetail.order.state.id === 9 ||
+                      orderDetail.order.state.id === 5
+                        ? "Approved"
+                        : orderDetail.order.state.id === 3
+                        ? "Rejected"
+                        : "Pending")}
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col lg:flex-row gap-6 text-gray-800 dark:text-gray-200">
+                {orderDetail.order.product && (
+                  <div className="w-full lg:w-1/2 space-y-3">
+                    <h3 className="font-medium">
+                      Loại trang sức:
+                      <span className="font-normal ml-1">
+                        {orderDetail.order.product.category.name}
+                      </span>
+                    </h3>
+                    <h3 className="font-medium">
+                      Loại đá:{" "}
+                      <span className="font-normal ml-1">
+                        {orderDetail.order.product.gem.name}
+                      </span>
+                    </h3>
+                    <h3 className="font-medium">
+                      Chất liệu:{" "}
+                      <span className="font-normal ml-1">
+                        {orderDetail.order.product.gold.name}
+                      </span>
+                    </h3>
+                    <h3 className="font-medium">
+                      Kích thước:{" "}
+                      <span className="font-normal ml-1">
+                        {orderDetail.order.product.size}
+                      </span>
+                    </h3>
+                    <div className="flex items-center">
+                      <h3 className="font-medium">Bản thiết kế:</h3>
+                      {roleID != 4 && (
+                        <div className="flex flex-row gap-2">
+                          {imageUrls.length > 0 ? (
+                            imageUrls.map((url, index) => (
+                              <img
+                                key={index}
+                                src={url}
+                                alt={`Product Image ${index + 1}`}
+                                className="w-30 h-40 rounded-full"
+                              />
+                            ))
+                          ) : (
+                            <p>No images available</p>
+                          )}
+                        </div>
+                      )}
+                      {roleID === 4 && !isSubmitDesign && (
+                        <div className="ml-3">
+                          <UploadPics
+                            fileList={fileList}
+                            setFileList={setFileList}
+                            orderID={orderID}
+                          />
+                        </div>
+                      )}
+                    </div>
+                    {roleID === 5 && (
+                      <div className="ml-[45%]">
+                        <Button onClick={handleDownloadPicture}>
+                          Tải xuống
+                        </Button>
+                      </div>
+                    )}
+                    <Divider className="bg-gray-300 hs-dark-mode-active: bg-gray-400" />
+                    <h3 className="font-medium">
+                      Giá tiền:{" "}
+                      <span className="font-normal ml-1 text-green-500">
+                        {orderDetail.order.product.totalPrice} VNĐ
+                      </span>
+                    </h3>
+                  </div>
+                )}
+              </div>
+              {isSubmitPrice === false &&
+                roleID === 3 &&
+                orderDetail.order.state?.id === 1 && (
+                  <div className="flex justify-end mt-6">
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                      style={{ padding: "4px 8px", fontSize: "0.75rem" }}
+                      onClick={handleSubmitPriceQuote}
+                    >
+                      Báo giá
+                    </Button>
+                  </div>
+                )}
+              {(isAcceptPrice === false || isAcceptDesign === false) &&
+                (roleID === 6 || roleID === 2) &&
+                (orderDetail.order.state?.id === 4 ||
+                  orderDetail.order.state?.id === 6) && (
+                  <div className="flex justify-end mt-6 gap-3">
+                    <Button
+                      variant="outlined"
+                      color="success"
+                      size="small"
+                      style={{ padding: "4px 8px", fontSize: "0.75rem" }}
+                      onClick={() => handleButtonClick(true)}
+                    >
+                      ĐỒNG Ý
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      size="small"
+                      style={{ padding: "4px 8px", fontSize: "0.75rem" }}
+                      onClick={() => handleButtonClick(false)}
+                    >
+                      TỪ CHỐI
+                    </Button>
+                  </div>
+                )}
+              {isCompleteProduct === false &&
+                roleID === 5 &&
+                orderDetail.order.state?.id === 7 && (
+                  <div className="flex justify-end mt-6 gap-3">
+                    <Button
+                      variant="outlined"
+                      color="success"
+                      size="small"
+                      style={{ padding: "4px 8px", fontSize: "0.75rem" }}
+                      onClick={() => handleButtonClick()}
+                    >
+                      HOÀN THÀNH
+                    </Button>
+                  </div>
+                )}
+            </form>
+            <div className="flex gap-2 mt-3">
+              {isCompleteOrder === false &&
+                roleID === 3 &&
+                orderDetail.order.state.id === 8 && (
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    size="small"
+                    style={{ padding: "4px 6px", fontSize: "0.75rem" }}
+                    onClick={completeOrder}
+                  >
+                    HOÀN THÀNH ĐƠN HÀNG
+                  </Button>
+                )}
+              {roleID === 3 &&
+                (orderDetail.order.state.id === 8 ||
+                  orderDetail.order.state.id === 9) && (
+                  <WarrantyExport orderDetail={orderDetail} />
+                )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CustomerOrderProductDetail;
