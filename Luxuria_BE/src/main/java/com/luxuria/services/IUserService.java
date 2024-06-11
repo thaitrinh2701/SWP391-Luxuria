@@ -1,0 +1,33 @@
+package com.luxuria.services;
+
+import com.luxuria.dtos.UserChangeProfileDTO;
+import com.luxuria.dtos.UserDTO;
+import com.luxuria.models.Request;
+import com.luxuria.models.User;
+
+import java.util.List;
+
+public interface IUserService {
+
+    User createUser(UserDTO userDTO) throws Exception;
+
+    String login(String email, String password) throws Exception;
+
+    User findUserByEmail(String email) throws Exception;
+
+    void saveUserToken(User user, String token);
+
+    void revokedAllUserTokens(User user);
+
+    User findUserByToken(String token) throws Exception;
+
+    User findUserById(Long userId) throws Exception;
+
+    void forgotPassword(String email) throws Exception;
+
+    void resetPassword(String email, String newPassword) throws Exception;
+
+    void changeProfile(User user, UserChangeProfileDTO userChangeProfileDTO) throws Exception;
+
+    void changePassword(User user, String newPassword) throws Exception;
+}
