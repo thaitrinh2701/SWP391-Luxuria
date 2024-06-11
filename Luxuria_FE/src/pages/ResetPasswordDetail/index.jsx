@@ -2,17 +2,19 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { HSStaticMethods } from "preline";
 import { Toast } from "@components";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { Input } from "@/components";
+import { CHANGE_PASSWORD_FORMAT } from "@/utils/constant";
 
 function ResetPasswordDetail() {
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
+  const navigate = useNavigate();
 
   const API_RESET_PASSWORD = import.meta.env.VITE_API_RESET_PASSWORD_ENDPOINT;
 
   useEffect(() => {
-    // You can use the email parameter as needed
     console.log("Email:", email);
   }, [email]);
 
@@ -24,33 +26,34 @@ function ResetPasswordDetail() {
 
   const {
     register,
+    trigger,
+    getValues,
     handleSubmit,
-    watch,
-    formState: { errors, isValid },
+    setError,
+    formState: { errors, isValid, isSubmitted, touchedFields },
   } = useForm({
     defaultValues: {
+      full_name: "",
+      email: "",
+      phone_number: "",
+      address: "",
       password: "",
-      confirmPassword: "",
+      confirm_password: "",
+      accept: false,
     },
   });
 
-  const password = watch("password");
-
   const onSubmit = async (data) => {
     try {
-      console.log("Sending request to: ", `${API_RESET_PASSWORD}${email}`);
-      console.log("Headers: ", {
-        newPassword: password,
-        // Authorization: `Bearer ${cookies.token}`, // Uncomment nếu cần token xác thực
-      });
       const response = await axios.put(`${API_RESET_PASSWORD}${email}`, null, {
         headers: {
-          newPassword: password,
+          newPassword: data.password,
         },
       });
       console.log("Response: ", response);
       if (response.status === 200) {
         Toast("reset_password_success", "success", "Đổi mật khẩu thành công!");
+        navigate("/login");
       } else {
         Toast("reset_password_err", "error", "Đổi mật khẩu thất bại!");
       }
@@ -86,100 +89,53 @@ function ResetPasswordDetail() {
             </div>
 
             <div className="grid gap-y-4">
-              {/* Mật khẩu */}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm mb-2 dark:text-white"
+              {CHANGE_PASSWORD_FORMAT.map((item) => (
+                <div
+                  className={`col-span-full h-24 ${
+                    item.isFullWidth ? "" : "sm:col-span-4"
+                  }`}
+                  key={item.id}
                 >
-                  Mật khẩu
-                </label>
-                <div className="relative">
-                  <input
-                    type="password"
-                    id="password"
-                    {...register("password", {
-                      required: "Mật khẩu là bắt buộc",
-                      minLength: {
-                        value: 8,
-                        message: "Yêu cầu 8 ký tự trở lên",
+                  <Input
+                    id={item.id}
+                    label={item.label}
+                    isRequired={item.isRequired}
+                    placeholder={item.placeholder}
+                    isError={errors[item.id]}
+                    msg={item.validMsg}
+                    type={item.type}
+                    isSubmitted={isSubmitted}
+                    aria-invalid={errors[item.id] ? "true" : "false"}
+                    inputMode={item.inputMode}
+                    {...register(item.id, {
+                      required: item.rules.required || false,
+                      pattern: {
+                        value: item.rules.pattern?.value || /\S/,
+                        message: item.rules.pattern?.message || "Không hợp lệ",
+                      },
+                      minLength: { value: item.rules.minLength?.value || 1 },
+                      validate: (value) => {
+                        if (item.id === "confirm_password") {
+                          return (
+                            (value === getValues("password") && value != "") ||
+                            item.rules.validate
+                          );
+                        }
+                      },
+                      onChange: async () => {
+                        if (
+                          item.id === "password" &&
+                          touchedFields[item.rules.validate]
+                        ) {
+                          await trigger(item.rules.validate); //* manually trigger validation for edge case: confirm password -> password
+                        }
                       },
                     })}
-                    className={`py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 ${
-                      errors.password ? "border-red-500" : ""
-                    }`}
-                    aria-describedby="password-error"
                   />
-                  {errors.password && (
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <svg
-                        className="w-5 h-5 text-red-500"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        aria-hidden="true"
-                      >
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                      </svg>
-                    </div>
-                  )}
                 </div>
-                {errors.password && (
-                  <p className="text-xs text-red-600 mt-2" id="password-error">
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Xác nhận mật khẩu */}
-              <div>
-                <label
-                  htmlFor="confirm-password"
-                  className="block text-sm mb-2 dark:text-white"
-                >
-                  Xác nhận mật khẩu
-                </label>
-                <div className="relative">
-                  <input
-                    type="password"
-                    id="confirm-password"
-                    {...register("confirmPassword", {
-                      required: "Xác nhận mật khẩu là bắt buộc",
-                      validate: (value) =>
-                        value === password || "Mật khẩu không khớp",
-                    })}
-                    className={`py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 ${
-                      errors.confirmPassword ? "border-red-500" : ""
-                    }`}
-                    aria-describedby="confirm-password-error"
-                  />
-                  {errors.confirmPassword && (
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <svg
-                        className="w-5 h-5 text-red-500"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        aria-hidden="true"
-                      >
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                      </svg>
-                    </div>
-                  )}
-                </div>
-                {errors.confirmPassword && (
-                  <p
-                    className="text-xs text-red-600 mt-2"
-                    id="confirm-password-error"
-                  >
-                    {errors.confirmPassword.message}
-                  </p>
-                )}
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-              >
-                Gửi
+              ))}
+              <button className="inline-flex items-center justify-center shrink-0 rounded-md border border-blue-600 bg-blue-600 py-2 px-6 text-lg font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-blue-700 dark:hover:text-white">
+                Đổi mật khẩu
               </button>
             </div>
           </form>

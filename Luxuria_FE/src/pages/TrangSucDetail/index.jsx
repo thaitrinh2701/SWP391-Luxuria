@@ -33,7 +33,8 @@ function TrangSucDetail() {
           </p>
           <p className="text-2xl font-playfair">Cửa hàng: Luxuria</p>
           {/* Bạn có thể hiển thị thông tin khác của sản phẩm ở đây */}
-          <span className="my-3 inline-block px-4 py-2 rounded border border-gray-400 bg-gray-200 text-gray-700">
+          <span className="my-3 inline-block px-24 py-12 rounded border border-gray-400 bg-gray-200 text-gray-700 hover:bg-gray-700 hover:text-gray-200 hover:transition-colors ">
+            {" "}
             XIN QUÝ KHÁCH ĐẾN CỬA HÀNG ĐỂ MUA
           </span>
           <div className="w-full mt-[4.5rem] pb-6 md:pb-12 px-4 sm:px-6 mx-auto dark:bg-gray-900 bg-gray-50">

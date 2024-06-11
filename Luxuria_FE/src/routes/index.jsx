@@ -5,6 +5,8 @@ import { USER_ROLES } from "@utils/constant";
 import ResetPasswordDetail from "@/pages/ResetPasswordDetail";
 import TrangSuc from "@/pages/TrangSuc";
 import TrangSucDetail from "@/pages/TrangSucDetail";
+import EditProfile from "@/pages/EditProfile";
+import ChangePassword from "@/pages/ChangePassword";
 
 const BlogPostDetail = lazy(() => import("@components/BlogPostDetail"));
 
@@ -182,6 +184,44 @@ export default function Routes() {
             ]}
           >
             <MyProfile />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/my-profile/sua-ho-so",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute
+            allowedRoles={[
+              USER_ROLES.CUSTOMER,
+              USER_ROLES.ADMIN,
+              USER_ROLES.SALE_STAFF,
+              USER_ROLES.PRODUCTION_STAFF,
+              USER_ROLES.DESIGN_STAFF,
+              USER_ROLES.MANAGER,
+            ]}
+          >
+            <EditProfile />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/my-profile/doi-mat-khau",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute
+            allowedRoles={[
+              USER_ROLES.CUSTOMER,
+              USER_ROLES.ADMIN,
+              USER_ROLES.SALE_STAFF,
+              USER_ROLES.PRODUCTION_STAFF,
+              USER_ROLES.DESIGN_STAFF,
+              USER_ROLES.MANAGER,
+            ]}
+          >
+            <ChangePassword />
           </ProtectedRoute>
         </Suspense>
       ),

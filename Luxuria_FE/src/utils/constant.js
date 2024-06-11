@@ -1077,3 +1077,94 @@ export const BAO_HANH_LIST = [
       `,
   },
 ];
+
+export const EDIT_PROFILE_FORMAT = [
+  {
+    id: "fullname",
+    name: "fullname",
+    label: "Họ và tên",
+    placeholder: "Vũ Đinh Trọng Thắng",
+    validMsg: "Họ và tên hợp lệ",
+    type: "text",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "",
+    options: [],
+    inputMode: "text",
+    rules: {
+      required: "Họ và tên không được để trống",
+      pattern: {
+        value: /^[a-zA-ZÀ-ỹ\s]+$/gi,
+        message: "Họ và tên không hợp lệ",
+      },
+      minLength: {
+        value: 1,
+      },
+    },
+  },
+  {
+    id: "phone",
+    name: "phone",
+    label: "Số điện thoại",
+    placeholder: "0987654321",
+    validMsg: "Số điện thoại hợp lệ",
+    type: "text",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "confirm_password",
+    options: [],
+    inputMode: "tel",
+    rules: {
+      required: "Số điện thoại không được để trống",
+      pattern: {
+        value: /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
+        message: "Số điện thoại không hợp lệ",
+      },
+      minLength: {
+        value: 1,
+      },
+    },
+  },
+];
+
+export const CHANGE_PASSWORD_FORMAT = [
+  {
+    id: "password",
+    name: "password",
+    label: "Mật khẩu",
+    placeholder: "",
+    validMsg: "Mật khẩu hợp lệ",
+    type: "password",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "confirm_password",
+    options: [],
+    inputMode: "text",
+    rules: {
+      required: "Mật khẩu không được để trống",
+      pattern: {
+        value:
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/,
+        message: "Mật khẩu không hợp lệ",
+      },
+      minLength: { value: 6, message: "Mật khẩu phải có tối thiểu 6 ký tự" },
+    },
+  },
+  {
+    id: "confirm_password",
+    name: "confirm_password",
+    label: "Nhập lại mật khẩu",
+    placeholder: "",
+    validMsg: "Mật khẩu nhập lại hợp lệ",
+    type: "password",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "",
+    options: [],
+    inputMode: "text",
+    rules: {
+      required: "Mật khẩu nhập lại không được để trống",
+      validate: "Mật khẩu nhập lại không khớp",
+    },
+  },
+];
