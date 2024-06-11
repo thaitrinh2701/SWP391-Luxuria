@@ -1,0 +1,281 @@
+import { lazy, Suspense } from "react";
+import { useRoutes } from "react-router-dom";
+import { Loader, ProtectedRoute } from "@components";
+import { USER_ROLES } from "@utils/constant";
+import ResetPasswordDetail from "@/pages/ResetPasswordDetail";
+import TrangSuc from "@/pages/TrangSuc";
+import TrangSucDetail from "@/pages/TrangSucDetail";
+
+const BlogPostDetail = lazy(() => import("@components/BlogPostDetail"));
+
+//* public components and pages
+const Landing = lazy(() => import("@pages/Landing"));
+const GiaCong = lazy(() => import("@pages/GiaCong"));
+const GiaVang = lazy(() => import("@pages/GiaVang"));
+const AboutUs = lazy(() => import("@pages/AboutUs"));
+const Blog = lazy(() => import("@pages/Blog"));
+const Signup = lazy(() => import("@pages/Signup"));
+const Login = lazy(() => import("@pages/Login"));
+//* miscellaneous
+const Unauthorized = lazy(() => import("@pages/Unauthorized"));
+const ErrorPage = lazy(() => import("@pages/ErrorPage"));
+const ResetPassword = lazy(() => import("@pages/ResetPassword"));
+const FaQ = lazy(() => import("@/pages/FAQ"));
+
+const MainPolicy = lazy(() => import("@/pages/MainPolicy"));
+const ReturnPolicy = lazy(() => import("@/pages/ReturnPolicy"));
+const PrivacyPolicy = lazy(() => import("@/pages/PrivacyPolicy"));
+
+//* protected components and pages
+const DonHang = lazy(() => import("@pages/DonHang"));
+const MyProfile = lazy(() => import("@pages/MyProfile"));
+//* protected components and pages [private]
+const Dashboard = lazy(() => import("@pages/Dashboard"));
+const YeuCau = lazy(() => import("@pages/YeuCau"));
+const OrderDetailSale = lazy(() => import("@components/OrderDetail_Sale"));
+const CustomerOrderProductDetail = lazy(() =>
+  import("@pages/CustomerOrderProductDetail")
+);
+
+export default function Routes() {
+  let routes = useRoutes([
+    {
+      path: "/",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <Landing />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/trang-suc",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <TrangSuc />
+        </Suspense>
+      ),
+    },
+    {
+      path: `/trang-suc/:id/:productID`,
+      element: (
+        <Suspense fallback={<Loader />}>
+          <TrangSucDetail />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/tin-tuc",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <Blog />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/gia-cong",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <GiaCong />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/gia-vang",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <GiaVang />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/about-us",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <AboutUs />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/signup",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <Signup />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/login",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <Login />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/post/:slug",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <BlogPostDetail />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/reset-password",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ResetPassword />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/reset-password-detail",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ResetPasswordDetail />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/faq",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <FaQ />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/policy",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <MainPolicy />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/privacy-policy",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <PrivacyPolicy />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/return-policy",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ReturnPolicy />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/my-profile",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute
+            allowedRoles={[
+              USER_ROLES.CUSTOMER,
+              USER_ROLES.ADMIN,
+              USER_ROLES.SALE_STAFF,
+              USER_ROLES.PRODUCTION_STAFF,
+              USER_ROLES.DESIGN_STAFF,
+              USER_ROLES.MANAGER,
+            ]}
+          >
+            <MyProfile />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/don-hang",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute
+            allowedRoles={[
+              USER_ROLES.CUSTOMER,
+              USER_ROLES.ADMIN,
+              USER_ROLES.SALE_STAFF,
+              USER_ROLES.MANAGER,
+            ]}
+          >
+            <DonHang />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/dashboard",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute allowedRoles={[USER_ROLES.ADMIN]}>
+            <Dashboard />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/yeu-cau",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute
+            allowedRoles={[
+              USER_ROLES.SALE_STAFF,
+              USER_ROLES.CUSTOMER,
+              USER_ROLES.MANAGER,
+              USER_ROLES.DESIGN_STAFF,
+              USER_ROLES.PRODUCTION_STAFF,
+            ]}
+          >
+            <YeuCau />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/tao-don-hang/:requestID",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute allowedRoles={[USER_ROLES.SALE_STAFF]}>
+            <OrderDetailSale />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/chi-tiet-don-hang/:orderID",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <CustomerOrderProductDetail />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/chinh-sua-don-hang/:orderID",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute allowedRoles={[USER_ROLES.SALE_STAFF]}>
+            <OrderDetailSale />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/unauthorized",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <Unauthorized />
+        </Suspense>
+      ),
+    },
+    {
+      path: "*",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ErrorPage />
+        </Suspense>
+      ),
+    },
+  ]);
+
+  return routes;
+}
