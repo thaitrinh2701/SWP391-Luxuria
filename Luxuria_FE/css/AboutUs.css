@@ -1,0 +1,31 @@
+.AboutUs img {
+  width: 100%;
+  height: auto;
+}
+.AboutUs .title {
+  color: #616161;
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+.AboutUs .text {
+  font-size: large;
+  font-family: Inter;
+  line-height: 1.6;
+  max-width: -moz-max-content;
+  max-width: max-content;
+  text-align: center;
+  background-image: url("https://cdn.pnj.io/images/image-update/2020/key_points/cuahangbanner.jpg");
+  background-repeat: no-repeat;
+  color: white;
+  font-weight: 300;
+  padding: 100px;
+}
+.AboutUs .text-2 {
+  margin-top: 20px;
+}
+.AboutUs .map {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}/*# sourceMappingURL=AboutUs.css.map */
