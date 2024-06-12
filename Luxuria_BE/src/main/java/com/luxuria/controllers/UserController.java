@@ -64,6 +64,16 @@ public class UserController {
         }
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("authorization") String authHeader) {
+        try {
+            userService.invalidateToken(authHeader);
+            return ResponseEntity.ok().body("Đăng xuất thành công");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/forgot_password")
     public ResponseEntity<String> forgotPassword(@RequestBody UserForgotPasswordDTO userForgotPasswordDTO) {
         try {

@@ -30,4 +30,6 @@ public interface IUserService {
     void changeProfile(User user, UserChangeProfileDTO userChangeProfileDTO) throws Exception;
 
     void changePassword(User user, String newPassword) throws Exception;
+
+    void invalidateToken(String authHeader) throws Exception;
 }
