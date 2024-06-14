@@ -7,11 +7,11 @@ function Features() {
       className="container mx-auto py-20 dark:bg-[#111827] dark:text-white"
     >
       <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold border-b-4 border-blue-600 inline-block pb-2">
+        <h2 className="text-4xl font-inter font-bold border-b-4 border-blue-600 inline-block pb-2">
           Các điểm nổi bật
         </h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
         <Feature
           title="Nguyên liệu chất lượng"
           description="Chỉ những vật liệu tốt nhất mới được sử dụng trong đồ trang sức của chúng tôi."
@@ -26,6 +26,11 @@ function Features() {
           title="Sự hài lòng"
           description="Chúng tôi đảm bảo 100% về sản phẩm của mình."
           image="./pleased.svg"
+        />
+        <Feature
+          title="Hỗ trợ nhiệt tình"
+          description="Đội ngũ của chúng tôi luôn sẵn sàng giúp đỡ và lắng nghe yêu cầu của bạn"
+          image="https://cdn-icons-png.freepik.com/512/10108/10108195.png"
         />
       </div>
     </section>

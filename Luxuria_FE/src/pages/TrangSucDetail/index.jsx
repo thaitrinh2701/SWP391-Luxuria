@@ -1,58 +1,125 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { BAO_HANH_LIST, RING_LIST } from "@/utils/constant";
+import { BAO_HANH_LIST } from "@/utils/constant";
 import { Divider } from "antd";
 import { Accordion } from "@/components";
 import HSAccordion from "@preline/accordion";
+import axios from "axios";
+import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
 
 function TrangSucDetail() {
-  const { productID } = useParams();
+  const { category_id } = useParams();
   const navigate = useNavigate();
-  const product = RING_LIST.find((item) => item.productID === productID);
-  if (!product) {
-    navigate("/404");
-  }
+  const [productInfor, setProductInfor] = useState(null);
+  const API_GET_PRODUCT_DETAIL = import.meta.env
+    .VITE_API_PRODUCT_DETAIL_ENDPOINT;
+
+  const getDetailProduct = async () => {
+    try {
+      const response = await axios.get(
+        `${API_GET_PRODUCT_DETAIL}/${category_id}`
+      );
+      if (response.data) {
+        setProductInfor(response.data);
+        console.log(response.data);
+      } else {
+        navigate("/404");
+      }
+    } catch (error) {
+      console.log("Có lỗi khi lấy dữ liệu từ API: ", error);
+      navigate("/404");
+    }
+  };
+
+  useEffect(() => {
+    if (category_id) {
+      getDetailProduct();
+      console.log("Product infor:", productInfor?.product?.name);
+    } else {
+      navigate("/404");
+    }
+  }, [category_id]);
+
   useEffect(() => {
     setTimeout(() => {
       HSAccordion.autoInit();
     }, 100);
   }, []);
 
+  if (!productInfor) {
+    return null; // Ensure the function exits here to prevent rendering errors.
+  }
+
+  const images = productInfor[0]?.productDataList?.map((item) => ({
+    original: `data:image/jpeg;base64,${item.value}`,
+    thumbnail: `data:image/jpeg;base64,${item.value}`,
+  }));
+
   return (
-    <div className="py-20 flex justify-center">
-      <div className="w-1/2">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold mb-2 font-playfair">
-            {product.name}
+    <div className="container mx-auto py-20 grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="p-5 text-xl">
+        <h1 className="text-5xl font-bold mb-2 font-playfair">
+          {productInfor[0]?.product?.name}
+        </h1>
+        <p className="text-2xl font-playfair">
+          Mã sản phẩm: {productInfor[0]?.product?.id}
+        </p>
+        <p className="text-2xl font-playfair">
+          Loại trang sức: {productInfor[0]?.product?.category?.name}
+        </p>
+        <Divider className="my-10" />
+
+        <span className="tracking-wide my-1 max-w-xl text-center inline-block px-20 py-5 rounded border border-gray-400 bg-gray-200 text-gray-700 font-bold text-xl hover:bg-gray-700 hover:text-gray-200 hover:transition-colors duration-700">
+          XIN QUÝ KHÁCH ĐẾN CỬA HÀNG ĐỂ MUA
+        </span>
+
+        <ul className="text-xl font-playfair list-disc pl-5">
+          <li className="my-8 text-2xl">
+            Vật liệu: {productInfor[0]?.product?.gold?.name}
+          </li>
+          <li className="my-8 text-2xl">
+            Loại đá: {productInfor[0]?.product?.gem?.name}
+          </li>
+          <li className="my-8 text-2xl">Cửa hàng: Luxuria</li>
+        </ul>
+
+        <div className="p-10 max-w-xl border border-gray-300 mt-5">
+          <h1 className="font-medium mb-3 text-center text-2xl underline">
+            Ưu đãi
           </h1>
-          <p className="text-2xl font-playfair">Vật liệu: {product.material}</p>
-          <p className="text-2xl font-playfair">Loại đá: {product.gems}</p>
-          <Divider />
-          <p className="text-2xl font-playfair">
-            Mã sản phẩm: {product.productID}
-          </p>
-          <p className="text-2xl font-playfair">Cửa hàng: Luxuria</p>
-          {/* Bạn có thể hiển thị thông tin khác của sản phẩm ở đây */}
-          <span className="my-3 inline-block px-24 py-12 rounded border border-gray-400 bg-gray-200 text-gray-700 hover:bg-gray-700 hover:text-gray-200 hover:transition-colors ">
-            {" "}
-            XIN QUÝ KHÁCH ĐẾN CỬA HÀNG ĐỂ MUA
-          </span>
-          <div className="w-full mt-[4.5rem] pb-6 md:pb-12 px-4 sm:px-6 mx-auto dark:bg-gray-900 bg-gray-50">
-            <div className="hs-accordion-group max-w-4xl mx-auto space-y-3 mb-24 sm:mb-0 cursor-default select-none">
-              {BAO_HANH_LIST.map((item) => (
-                <Accordion
-                  key={item.id}
-                  id={item.id}
-                  title={item.title}
-                  message={item.message}
-                />
-              ))}
-            </div>
+          <ul className="mt-8 text-xl">
+            <b>Bảo trì & làm mới </b> miễn phí trong 6 tháng đầu! Tất cả sản
+            phẩm được bảo trì, làm mới và đánh bóng miễn phí trong 6 tháng đầu.
+          </ul>
+          <ul className="mt-8 text-xl">
+            <b>Khắc chữ miễn phí với một số mặt hàng!</b> Vàng kiểu Ý 750 và tất
+            cả sản phẩm mua ở chi nhánh Luxuria được khắc chữ miễn phí.
+          </ul>
+        </div>
+
+        <div className="max-w-[84%] mt-5">
+          <div className="hs-accordion-group space-y-3">
+            {BAO_HANH_LIST.map((item) => (
+              <Accordion
+                key={item.id}
+                id={item.id}
+                title={item.title}
+                message={item.message}
+              />
+            ))}
           </div>
         </div>
       </div>
-      <div className="w-1/2 flex justify-center">
-        <img src={product.image} alt={product.name} className="w-full h-full" />
+      <div className="flex justify-center items-start flex-wrap">
+        <ImageGallery
+          items={images}
+          showThumbnails={true}
+          thumbnailPosition="right"
+          showFullscreenButton={false}
+          showPlayButton={false}
+          showBullets={false}
+        />
       </div>
     </div>
   );

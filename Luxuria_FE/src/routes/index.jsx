@@ -50,7 +50,7 @@ export default function Routes() {
       ),
     },
     {
-      path: "/trang-suc",
+      path: "/trang-suc/:categoryId",
       element: (
         <Suspense fallback={<Loader />}>
           <TrangSuc />
@@ -58,7 +58,7 @@ export default function Routes() {
       ),
     },
     {
-      path: `/trang-suc/:id/:productID`,
+      path: `/trang-suc/:category_id/:id`,
       element: (
         <Suspense fallback={<Loader />}>
           <TrangSucDetail />

@@ -10,13 +10,9 @@ function TeamSection() {
       <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
         {/* Title */}
         <div className="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
-          <h2 className="text-4xl font-bold border-b-4 border-blue-600 inline-block pb-2">
-            OUR TEAM
+          <h2 className="text-4xl font-inter font-bold border-b-4 border-blue-600 inline-block pb-2">
+            Đội ngũ của chúng tôi
           </h2>
-          <h4 className="mt-2 font-light">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit duis sed
-            dapibus leonec.
-          </h4>
         </div>
         {/* End Title */}
         {/* Grid */}

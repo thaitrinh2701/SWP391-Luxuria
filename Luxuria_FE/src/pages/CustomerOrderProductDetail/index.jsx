@@ -12,8 +12,6 @@ import WarrantyExport from "@/components/WarrantyExport";
 
 const CustomerOrderProductDetail = () => {
   const { orderID } = useParams(); // Sử dụng destructuring để lấy orderID
-  const [isApproved, setIsApproved] = useState(false);
-  const [processState, setProcessState] = useState("pending"); // Possible values: 'pending', 'approved', 'rejected'
   const [cookies] = useCookies(["user", "token"]);
   const [roleID, setRoleID] = useState(null);
   const [fileList, setFileList] = useState([]);

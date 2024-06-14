@@ -64,7 +64,7 @@ function Blog() {
 
   return (
     <div className="container mx-auto mt-5 px-4 py-10">
-      <Breadcrumb title="Blog" />
+      <Breadcrumb />
       <div className="flex flex-wrap -mx-4">
         {currentPosts.map((post) => (
           <div key={post.id} className="w-full sm:w-1/2 lg:w-1/3 px-4 mb-4">
@@ -96,9 +96,12 @@ export function HomeBlog({ posts }) {
   const homePosts = posts.slice(0, 3);
 
   return (
-    <section className="bg-white mx-auto py-10 dark:bg-[#111827] dark:text-white">
+    <section className="bg-white mx-auto py-10 dark:bg-[#111827] dark:text-white ">
       <div className="container mx-auto text-center">
-        <h2 className="text-4xl font-bold border-b-4 border-blue-600 inline-block pb-2">
+        <h2
+          className="text-4xl font-inter 
+        font-bold border-b-4 border-blue-600 inline-block pb-2"
+        >
           Tin tức
         </h2>
       </div>
@@ -119,10 +122,10 @@ export function HomeBlog({ posts }) {
       </div>
       <div className=" text-center">
         <Link
-          className="py-3 px-4 inline-flex items-center gap-x-1 text-sm font-medium rounded-full border border-gray-200 bg-white text-blue-600 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-blue-500 dark:hover:bg-neutral-800"
+          className="py-5 px-10 inline-flex items-center gap-x-1 text-sm font-medium text-xl border border-gray-200 bg-white shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-blue-500 dark:hover:bg-neutral-800"
           to="/tin-tuc"
         >
-          Read more
+          Xem thêm
           <svg
             className="flex-shrink-0 size-4"
             xmlns="http://www.w3.org/2000/svg"

@@ -2,8 +2,8 @@ import "./AboutUs.scss";
 
 function AboutUs() {
   return (
-    <div className="AboutUs">
-      <h1 className="title text-[#434343] text-4xl mb-5">Về chúng tôi</h1>
+    <div className="AboutUs mt-10">
+      <h1 className="title text-blue-500 text-4xl mb-5">Về chúng tôi</h1>
       <p className="text">
         Lời đầu tiên, cho phép Luxuria được gửi tới quý khách, quý thân nhân và
         bạn bè lời chúc sức khỏe, thành đạt và hạnh phúc. Sau một thời gian hoạt
