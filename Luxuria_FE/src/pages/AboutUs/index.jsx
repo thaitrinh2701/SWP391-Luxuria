@@ -3,8 +3,12 @@ import "./AboutUs.scss";
 function AboutUs() {
   return (
     <div className="AboutUs mt-10">
-      <h1 className="title text-blue-500 text-4xl mb-5">Về chúng tôi</h1>
-      <p className="text">
+      <div className="text-center my-12">
+        <h2 className="text-4xl font-inter font-bold border-b-4 border-blue-600 inline-block pb-2">
+          THÔNG TIN VỀ CHÚNG TÔI
+        </h2>
+      </div>
+      <p className="text font-inter">
         Lời đầu tiên, cho phép Luxuria được gửi tới quý khách, quý thân nhân và
         bạn bè lời chúc sức khỏe, thành đạt và hạnh phúc. Sau một thời gian hoạt
         động, website đã có những bước tiến đáng kể cả về chất lượng và hình
@@ -13,7 +17,7 @@ function AboutUs() {
         theo sở thích, Luxuria đã dần chinh phục khách hàng với những dịch vụ
         thiết kế sáng tạo uy tín và chất lượng. Tự tin với khả năng đáp ứng mọi
         yêu cầu thiết kế của khách hàng, Luxuria chính thức đem lại dịch vụ mài
-        đá quý, bán đá quý, trang sức chuyên nghiệp từ đầu năm 2017. Sự ủng hộ
+        đá quý, bán đá quý, trang sức chuyên nghiệp từ đầu năm 2024. Sự ủng hộ
         và tin tưởng của khách hàng sẽ trở thành nguồn cảm hứng lớn lao cho
         Luxuria trong quá trình phác họa những ý tưởng thiết kế được trở thành
         hiện thực. Xin cám ơn sự tin tưởng và ủng hộ của quý khách trong thời

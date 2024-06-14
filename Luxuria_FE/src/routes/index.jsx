@@ -4,7 +4,7 @@ import { Loader, ProtectedRoute } from "@components";
 import { USER_ROLES } from "@utils/constant";
 import ResetPasswordDetail from "@/pages/ResetPasswordDetail";
 import TrangSuc from "@/pages/TrangSuc";
-import TrangSucDetail from "@/pages/TrangSucDetail";
+import TrangSucDetail, { TrangSucDetailForHome } from "@/pages/TrangSucDetail";
 import EditProfile from "@/pages/EditProfile";
 import ChangePassword from "@/pages/ChangePassword";
 
@@ -54,6 +54,14 @@ export default function Routes() {
       element: (
         <Suspense fallback={<Loader />}>
           <TrangSuc />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/trang-suc/ring/:productID",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <TrangSucDetailForHome />
         </Suspense>
       ),
     },

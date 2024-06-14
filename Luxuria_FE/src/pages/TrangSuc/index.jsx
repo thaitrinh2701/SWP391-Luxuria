@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { ProductCard } from "@/components/ProductCard";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { convertConstraintName } from "@/services/getHelper";
+import { ProductCard } from "@/components/ProductCard";
 
 const TrangSuc = () => {
   const { categoryId } = useParams(); // Lấy categoryId từ URL
   const [listProducts, setListProducts] = useState([]);
+  const [categoryName, setCategoryName] = useState("");
   const API_GET_ALL_PRODUCT = import.meta.env
     .VITE_API_GET_ALL_PRODUCTS_ENDPOINT;
 
@@ -38,6 +40,18 @@ const TrangSuc = () => {
   };
 
   useEffect(() => {
+    const updateConstraintName = async () => {
+      const categoryName = listProducts[0]?.product?.category?.name;
+      if (categoryName) {
+        const convertedName = await convertConstraintName(categoryName);
+        setCategoryName(convertedName);
+      }
+    };
+
+    updateConstraintName();
+  }, [listProducts]);
+
+  useEffect(() => {
     getProductsFromAPI(categoryId);
   }, [categoryId]);
 
@@ -45,7 +59,7 @@ const TrangSuc = () => {
     <section className="">
       <div className="flex min-h-screen">
         <div className="text-center font-bold text-3xl mt-20 mx-auto">
-          <h1 className="mb-4">Nhẫn</h1>
+          {listProducts.length > 0 && <h1 className="mb-4">{categoryName}</h1>}
           {listProducts.length > 0 ? (
             <div className="flex gap-8">
               {listProducts.map((item) => (

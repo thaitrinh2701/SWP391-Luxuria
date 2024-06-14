@@ -1180,7 +1180,7 @@ export const GALLERY = [
     alt: "Jewelry 2",
   },
   {
-    src: "https://jdmis.edu.sg/cache/mod_roksprocket/85dfa29b62acd4714e0d160359de8a91_400_400.png",
+    src: "https://media.istockphoto.com/id/155013169/photo/jewelry-on-window-display.jpg?s=612x612&w=0&k=20&c=HJOD1gPfNRlDfewJH89BmtvwKU2soa0I1YBxzqaNO8M=",
     alt: "Jewelry 3",
   },
   {

@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 // import required modules
-import { Pagination } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 
 function Products() {
   return (
@@ -21,7 +21,11 @@ function Products() {
         <Swiper
           slidesPerView={1}
           spaceBetween={10}
-          loop={false}
+          loop={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
           breakpoints={{
             640: {
               slidesPerView: 2,
@@ -36,7 +40,7 @@ function Products() {
               spaceBetween: 50,
             },
           }}
-          modules={[Pagination]}
+          modules={[Autoplay, Pagination]}
           className="mySwiper w-ful"
         >
           {/* Adding SwiperSlide elements */}

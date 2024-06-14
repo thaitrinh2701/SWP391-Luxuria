@@ -24,7 +24,7 @@ function Features() {
         />
         <Feature
           title="Sự hài lòng"
-          description="Chúng tôi đảm bảo 100% về sản phẩm của mình."
+          description="Chúng tôi đảm bảo 100% về sản phẩm của mình mang đến sự hài lòng cho tất cả khách hàng."
           image="./pleased.svg"
         />
         <Feature
