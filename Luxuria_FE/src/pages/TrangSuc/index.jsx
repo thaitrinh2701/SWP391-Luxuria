@@ -47,7 +47,6 @@ const TrangSuc = () => {
         setCategoryName(convertedName);
       }
     };
-
     updateConstraintName();
   }, [listProducts]);
 

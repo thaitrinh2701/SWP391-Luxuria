@@ -106,7 +106,6 @@ const CustomerOrderProductDetail = () => {
         setGemsName(convertedGemsName);
       }
     };
-
     updateConstraintName();
   }, [orderDetail]);
 

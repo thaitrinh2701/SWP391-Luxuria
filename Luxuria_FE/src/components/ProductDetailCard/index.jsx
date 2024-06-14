@@ -156,7 +156,6 @@ const ProductDetailCard = ({
         setCategoryName(convertedName);
       }
     };
-
     updateConstraintName();
   }, [category]);
 

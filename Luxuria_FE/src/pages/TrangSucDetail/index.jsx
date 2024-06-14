@@ -58,7 +58,6 @@ function TrangSucDetail() {
           setGemsName(convertedGemsName);
         }
       };
-
       updateConstraintName();
     }
   }, [productInfor]);
