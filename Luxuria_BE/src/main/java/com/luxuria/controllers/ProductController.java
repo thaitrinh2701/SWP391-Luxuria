@@ -34,16 +34,17 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<?> viewAllProducts() {
         try {
-            List<Product> products = productService.getAllProducts();
-            List<ProductResponse> productResponses = new ArrayList<>();
-            for (Product product: products) {
-                List<ProductData> productDataList = productDataService.getProductDataByProductId(product.getId());
-                ProductResponse productResponse = ProductResponse.builder()
-                        .product(product)
-                        .productDataList(productDataList)
-                        .build();
-                productResponses.add(productResponse);
-            }
+            List<ProductResponse> productResponses = productService.getAllOriginalProducts();
+            return ResponseEntity.ok().body(productResponses);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/category/{category_id}")
+    public ResponseEntity<?> viewOriginalProductsByCategory(@PathVariable("category_id") Long categoryId) {
+        try {
+            List<ProductResponse> productResponses = productService.viewOriginalProductsByCategory(categoryId);
             return ResponseEntity.ok().body(productResponses);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
