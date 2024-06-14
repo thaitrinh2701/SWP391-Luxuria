@@ -6,17 +6,12 @@ import com.luxuria.exceptions.DataNotFoundException;
 import com.luxuria.exceptions.InvalidParamException;
 import com.luxuria.models.*;
 import com.luxuria.repositories.*;
+import com.luxuria.responses.ProductResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @Service
@@ -28,10 +23,12 @@ public class ProductService implements IProductService {
     private final GoldRepository goldRepository;
     private final GemRepository gemRepository;
     private final ProductDataRepository productDataRepository;
+    private final ProductDataService productDataService;
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAllOriginalProducts() throws Exception {
+        List<Product> products = productRepository.findAllOriginalProducts();
+        return getProductResponseFromProductList(products);
     }
 
     @Override
@@ -121,21 +118,6 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product updateProduct(ProductDTO productDTO) throws Exception {
-        Category category = categoryRepository.findById(productDTO.getCategoryId())
-                .orElseThrow(() -> new DataNotFoundException("category: Danh mục không tồn tại"));
-
-        Gold gold = goldRepository.findById(productDTO.getGoldId())
-                .orElseThrow(() -> new DataNotFoundException("gold: Loại vàng không tồn tại"));
-
-        Gem gem = gemRepository.findById(productDTO.getGemId())
-                .orElseThrow(() -> new DataNotFoundException("gem: Loại đá không tồn tại"));
-
-
-        return null;
-    }
-
-    @Override
     public Product updatePrice(Long productId, ProductDTO productDTO) throws Exception {
         Product product = getProductById(productId);
         product.setGoldPrice(productDTO.getGoldPrice());
@@ -145,9 +127,31 @@ public class ProductService implements IProductService {
         return productRepository.save(product);
     }
 
+    @Override
+    public List<ProductResponse> viewOriginalProductsByCategory(Long categoryId) throws Exception {
+        if (categoryRepository.existsById(categoryId)) {
+            List<Product> products = productRepository.findAllOriginalProductsByCategory(categoryId);
+            return getProductResponseFromProductList(products);
+        }
+        throw new DataNotFoundException("category: Danh mục không tồn tại");
+    }
+
     private String encodeBase64(MultipartFile file) throws IOException {
         byte[] imageBytes = file.getBytes();
         return  Base64.getEncoder().encodeToString(imageBytes);
+    }
+
+    private List<ProductResponse> getProductResponseFromProductList(List<Product> products) throws Exception {
+        List<ProductResponse> productResponses = new ArrayList<>();
+        for (Product product: products) {
+            List<ProductData> productDataList = productDataService.getProductDataByProductId(product.getId());
+            ProductResponse productResponse = ProductResponse.builder()
+                    .product(product)
+                    .productDataList(productDataList)
+                    .build();
+            productResponses.add(productResponse);
+        }
+        return productResponses;
     }
 
     //    private String storeFile(MultipartFile file) throws IOException {

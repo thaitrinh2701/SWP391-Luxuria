@@ -168,4 +168,10 @@ public class UserService implements IUserService {
         user.setPassword(encodedPassword);
         userRepository.save(user);
     }
+
+    @Override
+    public void invalidateToken(String authHeader) throws Exception {
+        User user = findUserByToken(authHeader);
+        revokedAllUserTokens(user);
+    }
 }
