@@ -90,7 +90,7 @@ public class WebSecurityConfig {
                                         String.format("%s/orders/submit_design/**", apiPrefix)).hasRole(Role.DESIGN_STAFF)
                                 .requestMatchers(GET,
                                         String.format("%s/product_data/**", apiPrefix))
-                                .hasAnyRole(Role.SALES_STAFF, Role.DESIGN_STAFF, Role.PRODUCTION_STAFF, Role.MANAGER, Role.ADMIN)
+                                .hasAnyRole(Role.CUSTOMER, Role.SALES_STAFF, Role.DESIGN_STAFF, Role.PRODUCTION_STAFF, Role.MANAGER, Role.ADMIN)
                                 .requestMatchers(PUT,
                                         String.format("%s/orders/approve_design/**", apiPrefix)).hasRole(Role.CUSTOMER)
                                 .requestMatchers(PUT,

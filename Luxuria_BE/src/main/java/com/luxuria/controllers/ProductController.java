@@ -1,27 +1,17 @@
 package com.luxuria.controllers;
 
-import com.luxuria.dtos.ProductDataDTO;
 import com.luxuria.models.Product;
 import com.luxuria.models.ProductData;
 import com.luxuria.responses.ProductResponse;
 import com.luxuria.services.IProductDataService;
 import com.luxuria.services.IProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("${api.prefix}/products")
@@ -35,6 +25,7 @@ public class ProductController {
     public ResponseEntity<?> viewAllProducts() {
         try {
             List<ProductResponse> productResponses = productService.getAllOriginalProducts();
+            productResponses.sort(Collections.reverseOrder());
             return ResponseEntity.ok().body(productResponses);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -45,6 +36,7 @@ public class ProductController {
     public ResponseEntity<?> viewOriginalProductsByCategory(@PathVariable("category_id") Long categoryId) {
         try {
             List<ProductResponse> productResponses = productService.viewOriginalProductsByCategory(categoryId);
+            productResponses.sort(Collections.reverseOrder());
             return ResponseEntity.ok().body(productResponses);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

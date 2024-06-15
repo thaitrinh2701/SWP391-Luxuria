@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class Request {
+public class Request implements Comparable<Request> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,5 +39,10 @@ public class Request {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+    }
+
+    @Override
+    public int compareTo(Request o) {
+        return this.createdAt.compareTo(o.createdAt);
     }
 }
