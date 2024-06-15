@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-public class Product {
+public class Product implements Comparable<Product> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,4 +53,9 @@ public class Product {
 
     @Column(name = "is_original", nullable = false)
     private boolean isOriginal;
+
+    @Override
+    public int compareTo(Product o) {
+        return this.id.compareTo(o.getId());
+    }
 }

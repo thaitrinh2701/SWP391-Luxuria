@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -30,6 +32,7 @@ public class RequestController {
     public ResponseEntity<?> viewMyRequests(@RequestHeader("Authorization") String authHeader) {
         try {
             List<Request> request = requestService.getMyRequests(authHeader);
+            request.sort(Collections.reverseOrder());
             return ResponseEntity.ok().body(request);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -39,6 +42,9 @@ public class RequestController {
     @GetMapping("/view_all")
     public ResponseEntity<List<Request>> getAllRequests() {
         List<Request> requestList = requestService.getAllRequests();
+//        Comparator<Request> comparator = (r1, r2) -> r2.getCreatedAt().compareTo(r1.getCreatedAt());
+//        requestList.sort(comparator);
+        requestList.sort(Collections.reverseOrder());
         return ResponseEntity.ok().body(requestList);
     }
 

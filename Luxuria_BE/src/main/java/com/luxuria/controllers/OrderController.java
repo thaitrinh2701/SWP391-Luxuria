@@ -15,6 +15,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,7 @@ public class OrderController {
     @GetMapping("/view_all_orders")
     public ResponseEntity<?> viewAllOrders() {
         List<Order> orderList = orderService.getAllOrders();
+        orderList.sort(Collections.reverseOrder());
         return ResponseEntity.ok().body(orderList);
     }
 
@@ -35,6 +37,7 @@ public class OrderController {
     public ResponseEntity<?> viewMyOrders(@RequestHeader("Authorization") String authHeader) {
         try {
             List<Order> order = orderService.getMyOrders(authHeader);
+            order.sort(Collections.reverseOrder());
             return ResponseEntity.ok().body(order);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

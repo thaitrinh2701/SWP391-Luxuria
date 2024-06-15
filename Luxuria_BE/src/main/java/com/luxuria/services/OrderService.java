@@ -113,14 +113,7 @@ public class OrderService implements IOrderService {
     public List<Order> getOrdersByUserId(Long userId) throws Exception {
         userRepository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException("user: User không tồn tại"));
-
-        List<Request> requestList = requestService.getApprovedRequestsByUserId(userId);
-
-        List<Order> orderList = new ArrayList<>();
-        for (Request request : requestList) {
-            orderList.add(orderRepository.findByRequestId(request.getId()));
-        }
-        return orderList;
+        return orderRepository.findAllByUserId(userId);
     }
 
     @Override

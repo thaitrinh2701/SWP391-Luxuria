@@ -12,8 +12,13 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class ProductResponse {
+public class ProductResponse implements Comparable<ProductResponse> {
 
     private Product product;
     private List<ProductData> productDataList;
+
+    @Override
+    public int compareTo(ProductResponse o) {
+        return this.product.getId().compareTo(o.product.getId());
+    }
 }

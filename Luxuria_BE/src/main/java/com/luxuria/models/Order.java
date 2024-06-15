@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
-public class Order {
+public class Order implements Comparable<Order> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,5 +46,10 @@ public class Order {
     @PrePersist
     protected void onCreate() {
         orderCreatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public int compareTo(Order o) {
+        return this.orderCreatedAt.compareTo(o.orderCreatedAt);
     }
 }
