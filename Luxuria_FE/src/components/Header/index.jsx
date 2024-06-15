@@ -36,7 +36,7 @@ export function Header() {
     setTimeout(() => {
       HSStaticMethods.autoInit();
     }, 100);
-  }, []);
+  });
 
   useEffect(() => {
     const handleScroll = () => {

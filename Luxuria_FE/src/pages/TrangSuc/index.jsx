@@ -34,6 +34,7 @@ const TrangSuc = () => {
 
       // Set filtered products to state
       setListProducts(filteredProducts);
+      console.log(filteredProducts);
     } catch (error) {
       console.log("Error fetching products:", error);
     }
@@ -66,6 +67,7 @@ const TrangSuc = () => {
                   key={item.product.id}
                   name={item.product.name}
                   image={item.image}
+                  data={item}
                   link={`/trang-suc/${item.product.category.id}/${item.product.id}`}
                 />
               ))}

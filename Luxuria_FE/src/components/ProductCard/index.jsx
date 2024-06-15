@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -102,23 +102,30 @@ function Products() {
 
 export default Products;
 
-export function ProductCard({ name, image, link }) {
+export function ProductCard({ name, image, link, data }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(link, { state: { data } });
+  };
+
   return (
-    <div className="w-full sm:w-1/2 lg:w-full xl:full p-2">
-      <Link to={link} className="block h-full">
-        <div className="bg-white text-center rounded-lg overflow-hidden shadow-md transition-transform duration-300 ease-in-out transform hover:scale-105 dark:bg-[#1F2937] dark:text-white h-full">
-          <img
-            src={image}
-            alt={name} // Changed from "Product" to `name`
-            className="w-full h-48 sm:h-96 object-cover object-center"
-          />
-          <div className="p-4 sm:p-6">
-            <h3 className="text-lg sm:text-xl font-semibold mb-2 font-playfair">
-              {name}
-            </h3>
-          </div>
+    <div
+      className="w-full sm:w-1/2 lg:w-full xl:full p-2"
+      onClick={handleClick}
+    >
+      <div className="block h-full bg-white text-center rounded-lg overflow-hidden shadow-md transition-transform duration-300 ease-in-out transform hover:scale-105 dark:bg-[#1F2937] dark:text-white h-full">
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-48 sm:h-96 object-cover object-center"
+        />
+        <div className="p-4 sm:p-6">
+          <h3 className="text-lg sm:text-xl font-semibold mb-2 font-playfair">
+            {name}
+          </h3>
         </div>
-      </Link>
+      </div>
     </div>
   );
 }

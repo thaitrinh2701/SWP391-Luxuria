@@ -14,10 +14,7 @@ import { convertConstraintName } from "@/services/getHelper";
 const CustomerOrderProductDetail = () => {
   const { orderID } = useParams(); // Sử dụng destructuring để lấy orderID
   const [cookies] = useCookies(["user", "token"]);
-  const [categoryName, setCategoryName] = useState("");
-  const [gemsName, setGemsName] = useState("");
-  const [roleID, setRoleID] = useState(null);
-  const [fileList, setFileList] = useState([]);
+
   const token = cookies.token;
   const API_SUBMIT_PRICE_QUOTE = import.meta.env
     .VITE_API_SUBMIT_PRICE_QUOTE_ENDPOINT;
@@ -33,6 +30,11 @@ const CustomerOrderProductDetail = () => {
     .VITE_API_COMPLETE_PRODUCT_ENDPOINT;
   const API_COMPLETE_ORDER = import.meta.env.VITE_API_COMPLETE_ORDER_ENDPOINT;
 
+  const [categoryName, setCategoryName] = useState("");
+  const [gemsName, setGemsName] = useState("");
+  const [goldName, setGoldName] = useState("");
+  const [roleID, setRoleID] = useState(null);
+  const [fileList, setFileList] = useState([]);
   const [orderDetail, setOrderDetail] = useState(null);
   const [isSubmitPrice, setIsSubmitPrice] = useState(false);
   const [isAcceptPrice, setIsAcceptPrice] = useState(false);
@@ -60,7 +62,7 @@ const CustomerOrderProductDetail = () => {
       );
       setIsCompleteOrder(true);
       Toast("create_success", "success", "Đã hoàn thành đơn hàng");
-      console.log("create_success", "Complete Order: ", response.data);
+      console.log("Complete Order: ", response.data);
     } catch (error) {
       console.error("Error complete order: ", error);
     }
@@ -97,6 +99,7 @@ const CustomerOrderProductDetail = () => {
     const updateConstraintName = async () => {
       const categoryName = orderDetail.order.product.category.name;
       const gemsName = orderDetail.order.product.gem.name;
+      const goldName = orderDetail.order.product.gold.name;
       if (categoryName) {
         const convertedName = await convertConstraintName(categoryName);
         setCategoryName(convertedName);
@@ -104,6 +107,10 @@ const CustomerOrderProductDetail = () => {
       if (gemsName) {
         const convertedGemsName = await convertConstraintName(gemsName);
         setGemsName(convertedGemsName);
+      }
+      if (goldName) {
+        const convertedGemsName = await convertConstraintName(goldName);
+        setGoldName(convertedGemsName);
       }
     };
     updateConstraintName();
@@ -132,7 +139,6 @@ const CustomerOrderProductDetail = () => {
   const handleCustomerAcceptDesign = (approvalStatus) => {
     customerAcceptDesign(approvalStatus);
     navigate("/don-hang");
-    setIsAcceptDesign(approvalStatus);
   };
 
   const handleAcceptPriceQuote = () => {
@@ -155,7 +161,7 @@ const CustomerOrderProductDetail = () => {
         }
       );
       console.log("Complete Product: ", response.data);
-      Toast("complete_product", "success", "Hoàn thành sản phẩm thành công");
+      Toast("complete_product", "success", "Đã hoàn thành sản phẩm!");
       navigate("/yeu-cau");
       setIsCompleteProduct(true);
     } catch (error) {
@@ -362,10 +368,9 @@ const CustomerOrderProductDetail = () => {
                     e.target.onerror = null;
                     e.target.src = "./logo.png";
                   }}
-                  className="w-52 h-auto rounded-full"
-                  alt="Product"
+                  className="w-52 h-52"
+                  alt="Product Image"
                 />
-
                 <div className="sm:ml-6 mt-6 sm:mt-0 text-center sm:text-left">
                   <h1 className="text-2xl font-bold">
                     #{orderDetail.order.id}__
@@ -409,7 +414,7 @@ const CustomerOrderProductDetail = () => {
                     </h3>
                     <h3 className="font-medium">
                       Chất liệu:{" "}
-                      <span className="font-normal ml-1">{gemsName}</span>
+                      <span className="font-normal ml-1">{goldName}</span>
                     </h3>
                     <h3 className="font-medium">
                       Kích thước:{" "}
@@ -427,11 +432,11 @@ const CustomerOrderProductDetail = () => {
                                 key={index}
                                 src={url}
                                 alt={`Product Image ${index + 1}`}
-                                className="w-30 h-40 rounded-full"
+                                className="w-30 h-40 object-cover ml-3"
                               />
                             ))
                           ) : (
-                            <p>No images available</p>
+                            <p className="ml-3"> Chưa có bản thiết kế </p>
                           )}
                         </div>
                       )}
@@ -454,7 +459,27 @@ const CustomerOrderProductDetail = () => {
                     )}
                     <Divider className="bg-gray-300 hs-dark-mode-active: bg-gray-400" />
                     <h3 className="font-medium">
-                      Giá tiền:{" "}
+                      Giá vàng:
+                      <span className="font-normal ml-1">
+                        {orderDetail.order.product.goldPrice} VNĐ
+                      </span>
+                    </h3>
+                    <h3 className="font-medium">
+                      Giá đá:
+                      <span className="font-normal ml-1">
+                        {orderDetail.order.product.gemPrice} VNĐ
+                      </span>
+                    </h3>
+
+                    <h3 className="font-medium">
+                      Tiền công:
+                      <span className="font-normal ml-1">
+                        {orderDetail.order.product.manufacturingFee} VNĐ
+                      </span>
+                    </h3>
+
+                    <h3 className="font-medium">
+                      Tổng giá tiền:
                       <span className="font-normal ml-1 text-green-500">
                         {orderDetail.order.product.totalPrice} VNĐ
                       </span>

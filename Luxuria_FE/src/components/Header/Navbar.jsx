@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-function NavbarItem({ title, path, isTransparent, children }) {
+function NavbarItem({ title, path, isTransparent, icon, children }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -40,13 +42,14 @@ function NavbarItem({ title, path, isTransparent, children }) {
     >
       <NavLink
         to={path}
-        className="md:text-xs xl:text-base transition-colors duration-200 transform font-medium sm:mx-1.5 relative w-fit sm:block after:block after:content-[''] after:absolute after:h-[3px] after:w-full after:transition after:duration-300 after:origin-left cursor-pointer text-lg" // Thêm lớp text-lg ở đây
+        className="md:text-xs xl:text-base transition-colors duration-200 transform font-medium sm:mx-1.5 relative w-fit sm:block after:block after:content-[''] after:absolute after:h-[3px] after:w-full after:transition after:duration-300 after:origin-left cursor-pointer text-lg flex items-center" // Thêm lớp flex items-center để căn chỉnh biểu tượng với văn bản
       >
         {title}
+        {icon && <FontAwesomeIcon icon={icon} className="ml-2" />}{" "}
       </NavLink>
 
       {children && isOpen && (
-        <div className="absolute left-0 mt-1 bg-white  shadow-lg rounded-md py-2 w-40 z-10 transition ease-in-out duration-300 dark:bg-[#1F2937]">
+        <div className="absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-40 z-10 transition ease-in-out duration-300 dark:bg-[#1F2937]">
           {children}
         </div>
       )}
@@ -59,6 +62,7 @@ function Navbar({ isTransparent }) {
     { title: "Trang chủ", path: "/" },
     {
       title: "Trang sức",
+      icon: faChevronDown,
       children: [
         { title: "Nhẫn", path: "/trang-suc/1" },
         { title: "Bông tai", path: "/trang-suc/2" },
@@ -86,13 +90,14 @@ function Navbar({ isTransparent }) {
             title={item.title}
             path={item.path}
             isTransparent={isTransparent}
+            icon={item.icon}
           >
             {item.children &&
               item.children.map((child) => (
                 <NavLink
                   key={child.title}
                   to={child.path}
-                  className="block px-4 py-2 text-gray-700 hover:bg-blue-100 dark:bg-[#1F2937] dark:text-white dark:hover:bg-[#374151] dark:hover:text-white hover:text-gray-900 transition ease-in-out duration-200 text-sm"
+                  className="block rounded px-4 py-2 text-gray-700 hover:bg-blue-100 dark:bg-[#1F2937] dark:text-white dark:hover:bg-[#374151] dark:hover:text-white hover:text-gray-900 transition ease-in-out duration-200 text-sm"
                 >
                   {child.title}
                 </NavLink>

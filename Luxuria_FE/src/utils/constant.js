@@ -940,7 +940,7 @@ export const SALESTAFF_CALCULATION = [
   },
   {
     id: "gem_price",
-    name: "gems_price",
+    name: "gem_price",
     label: "Tiền đá",
     placeholder: "",
     validMsg: "Hợp lệ",
