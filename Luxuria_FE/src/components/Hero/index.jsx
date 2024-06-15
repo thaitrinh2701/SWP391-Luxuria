@@ -20,7 +20,7 @@ function Hero() {
               loop={false}
               showCursor={true}
               cursorChar="|"
-              className="text-9xl font-bold mb-4 font-playfair text-luxuria"
+              className="text-9xl font-bold mb-4 font-playfair min-[393px]:text-6xl md:text-7xl lg:text-8xl xl:text-9xl"
               onComplete={(self) => {
                 self.cursor.remove();
               }}
@@ -31,17 +31,18 @@ function Hero() {
             <span className="text-blue-500">
               <ReactTyped
                 strings={[
-                  "love and passion.",
-                  "precision and care.",
-                  "elegance and artistry.",
-                  "timeless beauty and charm.",
-                  "blend of tradition and innovation.",
-                  "a commitment to quality and excellence.",
+                  "love and passion",
+                  "precision and care",
+                  "elegance and artistry",
+                  "timeless beauty and charm",
+                  "blend of tradition and innovation",
+                  "a commitment to quality and excellence",
                 ]}
                 typeSpeed={50}
                 loop
                 backSpeed={20}
                 showCursor={true}
+                className="font-bold "
               />
             </span>
           </p>

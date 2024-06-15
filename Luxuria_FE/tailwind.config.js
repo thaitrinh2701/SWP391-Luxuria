@@ -14,6 +14,8 @@ export default {
       },
       fontFamily: {
         playfair: ["Playfair Display", "serif"],
+        merriweather: ["Merriweather", "serif"],
+        inter: ["Inter", "sans-serif"],
       },
     },
   },

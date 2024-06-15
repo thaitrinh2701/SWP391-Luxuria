@@ -1,4 +1,5 @@
 import { getRoleId } from "@/services";
+import { convertConstraintName } from "@/services/getHelper";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -23,6 +24,7 @@ const ProductDetailCard = ({
   const [isAcceptPrice, setIsAcceptPrice] = useState(false);
   const [isAcceptDesign, setIsAcceptDesign] = useState(false);
   const [isCompleteOrder, setIsCompleteOrder] = useState(false);
+  const [categoryName, setCategoryName] = useState("");
   const [roleID, setRoleID] = useState(null);
   const [cookies] = useCookies(["user", "token"]);
 
@@ -143,8 +145,19 @@ const ProductDetailCard = ({
       setProcessState("approved");
       console.log("True hay là false ?: ", isCustomerApproved);
     }
-    fetchRoleID(); // Fetch roleID when component mounts
-  }, [isCustomerApproved]); // Only re-run the effect if isCustomerApproved changes
+    fetchRoleID();
+  }, [isCustomerApproved]);
+
+  useEffect(() => {
+    const updateConstraintName = async () => {
+      const categoryName = category;
+      if (categoryName) {
+        const convertedName = await convertConstraintName(categoryName);
+        setCategoryName(convertedName);
+      }
+    };
+    updateConstraintName();
+  }, [category]);
 
   return (
     <div className="transition-transform transform hover:scale-105 w-full h-auto">
@@ -175,7 +188,7 @@ const ProductDetailCard = ({
                 </p>
                 <p className="text-sm text-gray-600 dark:text-neutral-400">
                   <span className="text-lg font-bold">
-                    Loại trang sức: {category}
+                    Loại trang sức: {categoryName}
                   </span>
                 </p>
               </div>

@@ -84,6 +84,18 @@ function Login() {
             case USER_ROLES.ADMIN:
               navigate("/dashboard", { replace: true });
               break;
+            case USER_ROLES.SALE_STAFF:
+              navigate("/my-profile", { replace: true });
+              break;
+            case USER_ROLES.MANAGER:
+              navigate("/yeu-cau", { replace: true });
+              break;
+            case USER_ROLES.DESIGN_STAFF:
+              navigate("/my-profile", { replace: true });
+              break;
+            case USER_ROLES.PRODUCTION_STAFF:
+              navigate("/my-profile", { replace: true });
+              break;
             default:
               navigate(from, { replace: true });
               break;

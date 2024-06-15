@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Sidebar, Input, Toast } from "@components";
 import { Divider } from "antd";
 import { Button } from "@mui/material";
-import { ORDER_DETAIL_FORMAT } from "@utils/constant";
+import { ORDER_DETAIL_FORMAT, SALESTAFF_CALCULATION } from "@utils/constant";
 
 const OrderDetailSale = () => {
   const {
@@ -291,23 +291,24 @@ const OrderDetailSale = () => {
 
               <div className="border border-l-gray-300 rounded" />
               <div className="w-full lg:w-1/2">
-                <h3 className="font-medium">
-                  Giá vàng:<span className="text-red-500 ml-1">*</span>
-                </h3>
-                <Input {...register("gold_price", { required: true })} />
-                <h3 className="font-medium">
-                  Trọng lượng sản phẩm:
-                  <span className="text-red-500 ml-1">*</span>
-                </h3>
-                <Input {...register("gold_weight", { required: true })} />
-                <h3 className="font-medium">
-                  Tiền công:<span className="text-red-500 ml-1">*</span>
-                </h3>
-                <Input {...register("manufacturing_fee", { required: true })} />
-                <h3 className="font-medium">
-                  Tiền đá:<span className="text-red-500 ml-1">*</span>
-                </h3>
-                <Input {...register("gem_price", { required: true })} />
+                {SALESTAFF_CALCULATION.map((item) => (
+                  <div key={item.id}>
+                    <h3 className="font-medium">
+                      {item.label}:
+                      {item.isRequired && (
+                        <span className="text-red-500 ml-1">*</span>
+                      )}
+                    </h3>
+                    <Input {...register(item.name, item.rules)} />
+                    <div>
+                      {errors[item.id] && (
+                        <span className="text-red-600">
+                          {errors[item.id].message}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
                 <h3 className="font-medium mt-[25%]">
                   Giá vốn sản phẩm: <span>{productCost} VNĐ</span>
                 </h3>

@@ -1,43 +1,77 @@
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
-function NavbarItem({ title, path, isTransparent }) {
-  const location = useLocation();
-  const isHomePage = location.pathname === "/";
+function NavbarItem({ title, path, isTransparent, children }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    setIsOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsOpen(false);
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
-    <NavLink
-      className={({ isActive }) =>
-        `md:text-xs xl:text-base transition-colors duration-200 transform font-medium sm:mx-1.5 relative w-fit sm:block after:block after:content-[''] after:absolute after:h-[3px] after:w-full after:transition after:duration-300 after:origin-left ${
-          isActive ||
-          (path === "/tin-tuc" && location.pathname.split("/")[1] === "post") ||
-          (path === "/my-profile" &&
-            location.pathname.split("/")[1] === "my-profile") ||
-          (isHomePage &&
-            (location.pathname.split("/")[1] === "faq" ||
-              location.pathname.split("/")[1] === "dashboard" ||
-              location.pathname.split("/")[1] === "policy" ||
-              location.pathname.split("/")[1] === "privacy-policy" ||
-              location.pathname.split("/")[1] === "return-policy"))
-            ? "text-blue-600 dark:text-white after:scale-x-100"
-            : isTransparent && isHomePage
-            ? "text-white"
-            : "text-gray-900 dark:text-gray-200 dark:hover:text-gray-50 hover:text-blue-600 after:scale-x-0 after:hover:scale-x-100"
-        }`
-      }
-      to={path}
+    <div
+      className="relative"
+      ref={dropdownRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      <span>{title}</span>
-    </NavLink>
+      <NavLink
+        to={path}
+        className="md:text-xs xl:text-base transition-colors duration-200 transform font-medium sm:mx-1.5 relative w-fit sm:block after:block after:content-[''] after:absolute after:h-[3px] after:w-full after:transition after:duration-300 after:origin-left cursor-pointer text-lg" // Thêm lớp text-lg ở đây
+      >
+        {title}
+      </NavLink>
+
+      {children && isOpen && (
+        <div className="absolute left-0 mt-1 bg-white  shadow-lg rounded-md py-2 w-40 z-10 transition ease-in-out duration-300 dark:bg-[#1F2937]">
+          {children}
+        </div>
+      )}
+    </div>
   );
 }
 
 function Navbar({ isTransparent }) {
   const defaultNavbar = [
     { title: "Trang chủ", path: "/" },
-    { title: "Trang sức", path: "/trang-suc" },
+    {
+      title: "Trang sức",
+      children: [
+        { title: "Nhẫn", path: "/trang-suc/1" },
+        { title: "Bông tai", path: "/trang-suc/2" },
+        { title: "Vòng", path: "/trang-suc/3" },
+        { title: "Vòng tay", path: "/trang-suc/4" },
+        { title: "Vòng cổ", path: "/trang-suc/5" },
+        { title: "Mề đay", path: "/trang-suc/6" },
+      ],
+    },
     { title: "Tin tức", path: "/tin-tuc" },
     { title: "Gia công", path: "/gia-cong" },
     { title: "Giá vàng", path: "/gia-vang" },
+    { title: "Về chúng tôi", path: "/about-us" },
   ];
 
   return (
@@ -52,7 +86,18 @@ function Navbar({ isTransparent }) {
             title={item.title}
             path={item.path}
             isTransparent={isTransparent}
-          />
+          >
+            {item.children &&
+              item.children.map((child) => (
+                <NavLink
+                  key={child.title}
+                  to={child.path}
+                  className="block px-4 py-2 text-gray-700 hover:bg-blue-100 dark:bg-[#1F2937] dark:text-white dark:hover:bg-[#374151] dark:hover:text-white hover:text-gray-900 transition ease-in-out duration-200 text-sm"
+                >
+                  {child.title}
+                </NavLink>
+              ))}
+          </NavbarItem>
         ))}
       </div>
     </div>

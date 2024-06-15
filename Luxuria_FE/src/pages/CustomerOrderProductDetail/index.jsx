@@ -9,12 +9,13 @@ import UploadPics from "@/components/Upload";
 import axios from "axios";
 import { getRoleId } from "@/services";
 import WarrantyExport from "@/components/WarrantyExport";
+import { convertConstraintName } from "@/services/getHelper";
 
 const CustomerOrderProductDetail = () => {
   const { orderID } = useParams(); // Sử dụng destructuring để lấy orderID
-  const [isApproved, setIsApproved] = useState(false);
-  const [processState, setProcessState] = useState("pending"); // Possible values: 'pending', 'approved', 'rejected'
   const [cookies] = useCookies(["user", "token"]);
+  const [categoryName, setCategoryName] = useState("");
+  const [gemsName, setGemsName] = useState("");
   const [roleID, setRoleID] = useState(null);
   const [fileList, setFileList] = useState([]);
   const token = cookies.token;
@@ -91,6 +92,22 @@ const CustomerOrderProductDetail = () => {
   useEffect(() => {
     getOrderDetail();
   }, []);
+
+  useEffect(() => {
+    const updateConstraintName = async () => {
+      const categoryName = orderDetail.order.product.category.name;
+      const gemsName = orderDetail.order.product.gem.name;
+      if (categoryName) {
+        const convertedName = await convertConstraintName(categoryName);
+        setCategoryName(convertedName);
+      }
+      if (gemsName) {
+        const convertedGemsName = await convertConstraintName(gemsName);
+        setGemsName(convertedGemsName);
+      }
+    };
+    updateConstraintName();
+  }, [orderDetail]);
 
   const {
     register,
@@ -384,21 +401,15 @@ const CustomerOrderProductDetail = () => {
                   <div className="w-full lg:w-1/2 space-y-3">
                     <h3 className="font-medium">
                       Loại trang sức:
-                      <span className="font-normal ml-1">
-                        {orderDetail.order.product.category.name}
-                      </span>
+                      <span className="font-normal ml-1">{categoryName}</span>
                     </h3>
                     <h3 className="font-medium">
                       Loại đá:{" "}
-                      <span className="font-normal ml-1">
-                        {orderDetail.order.product.gem.name}
-                      </span>
+                      <span className="font-normal ml-1">{gemsName}</span>
                     </h3>
                     <h3 className="font-medium">
                       Chất liệu:{" "}
-                      <span className="font-normal ml-1">
-                        {orderDetail.order.product.gold.name}
-                      </span>
+                      <span className="font-normal ml-1">{gemsName}</span>
                     </h3>
                     <h3 className="font-medium">
                       Kích thước:{" "}

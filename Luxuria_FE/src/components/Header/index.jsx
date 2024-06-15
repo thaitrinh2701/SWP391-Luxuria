@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { HSTooltip } from "preline";
+import { HSStaticMethods, HSTooltip } from "preline";
 import {
   Bars3Icon,
   UserCircleIcon,
@@ -34,13 +34,14 @@ export function Header() {
 
   useEffect(() => {
     setTimeout(() => {
-      HSTooltip.autoInit();
+      HSStaticMethods.autoInit();
     }, 100);
+  }, []);
 
-    const video = document.querySelector("video"); // Lấy thẻ video
-    const videoHeight = video ? video.clientHeight : window.innerHeight; // Lấy chiều cao của video hoặc chiều cao của viewport nếu không tìm thấy video
-
+  useEffect(() => {
     const handleScroll = () => {
+      const video = document.querySelector("video");
+      const videoHeight = video ? video.clientHeight : window.innerHeight;
       const scrollPosition = window.scrollY;
       const isInHeroSection = scrollPosition < videoHeight;
       setIsTransparent(isInHeroSection);
@@ -49,6 +50,7 @@ export function Header() {
 
     if (location.pathname === "/") {
       window.addEventListener("scroll", handleScroll);
+      handleScroll(); // Check the scroll position when the component mounts
     } else {
       setIsVisible(true);
     }
@@ -58,15 +60,10 @@ export function Header() {
     };
   }, [location.pathname]);
 
-  const isInHome = location.pathname === "/"; // Kiểm tra xem có ở trang home không
-
-  console.log(data.isLogin);
-  console.log(cookies.user?.isLogin);
-
   return (
     <header
-      className={`fixed top-0 z-10 w-full transition-all duration-500 transform ${
-        isInHome
+      className={`fixed top-0 z-20 w-full transition-all duration-500 transform ${
+        location.pathname === "/"
           ? isVisible
             ? "translate-y-0"
             : "-translate-y-full"
@@ -106,7 +103,7 @@ export function Header() {
               <button
                 id="hs-dropdown-custom-icon-trigger"
                 type="button"
-                className="hs-dropdown-toggle flex justify-center items-center size-9 text-sm font-semibold rounded-lg bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                className="hs-dropdown-toggle flex justify-center items-center size-9 text-sm font-semibold z-30 rounded-lg bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
               >
                 <UserCircleIcon
                   className="flex-none size-5 text-gray-700 dark:text-gray-500"
@@ -158,7 +155,6 @@ export function Header() {
               </NavLink>
             </>
           )}
-
           <div className="md:hidden">
             <button
               type="button"

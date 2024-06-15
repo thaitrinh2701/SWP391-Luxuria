@@ -15,6 +15,38 @@ export async function getRoleId(token) {
   }
 }
 
+export async function convertConstraintName(constraintName) {
+  switch (constraintName) {
+    case "ring":
+      return "Nhẫn";
+    case "necklace":
+      return "Vòng cổ";
+    case "bracelet":
+      return "Vòng tay";
+    case "earrings":
+      return "Bông tai";
+    case "pendant":
+      return "Mặt dây chuyền";
+    case "bangles":
+      return "Dây chuyền";
+    case "none":
+      return "Không có";
+    case "diamond":
+      return "Kim cương";
+    case "colored gemstones":
+      return "Đá quý màu";
+    case "jade":
+      return "Ngọc";
+    case "pearl":
+      return "Ngọc trai";
+    case "artificial pearl":
+      return "Ngọc trai nhân tạo";
+
+    case "other":
+      return "Khác";
+  }
+}
+
 export async function getGoldPrice() {
   const API = import.meta.env.VITE_API_GOLDRATE_ENDPOINT;
   try {

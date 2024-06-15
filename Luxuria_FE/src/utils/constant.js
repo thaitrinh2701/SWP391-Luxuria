@@ -120,27 +120,27 @@ export const SIGNUP_FORMAT = [
       },
     },
   },
-  {
-    id: "address",
-    name: "address",
-    label: "Địa chỉ",
-    placeholder: "Số 7, Bách Khoa, Hai Bà Trưng, Hà Nội",
-    validMsg: "Địa chỉ hợp lệ",
-    type: "text",
-    isFullWidth: true,
-    isRequired: true,
-    onChangeTriggerValue: "confirm_password",
-    options: [],
-    inputMode: "text",
-    rules: {
-      required: "Địa chỉ không được để trống",
-      pattern: {
-        value: /\S/,
-        message: "Địa chỉ không hợp lệ",
-      },
-      minLength: { value: 1 },
-    },
-  },
+  // {
+  //   id: "address",
+  //   name: "address",
+  //   label: "Địa chỉ",
+  //   placeholder: "Số 7, Bách Khoa, Hai Bà Trưng, Hà Nội",
+  //   validMsg: "Địa chỉ hợp lệ",
+  //   type: "text",
+  //   isFullWidth: true,
+  //   isRequired: true,
+  //   onChangeTriggerValue: "confirm_password",
+  //   options: [],
+  //   inputMode: "text",
+  //   rules: {
+  //     required: "Địa chỉ không được để trống",
+  //     pattern: {
+  //       value: /\S/,
+  //       message: "Địa chỉ không hợp lệ",
+  //     },
+  //     minLength: { value: 1 },
+  //   },
+  // },
   {
     id: "password",
     name: "password",
@@ -341,13 +341,17 @@ export const ORDER_DETAIL_FORMAT = [
     label: "Kích thước",
     placeholder: "VD: 11.2, 12.3, 13.4",
     validMsg: "Hợp lệ",
-    type: "text",
+    type: "decimal",
     isFullWidth: false,
     isRequired: true,
     onChangeTriggerValue: "",
 
     rules: {
       required: "Không được để trống",
+      pattern: {
+        value: /^[0-9]+(\.[0-9]+)?$/,
+        message: "Không hợp lệ",
+      },
     },
   },
   {
@@ -887,13 +891,10 @@ export const SALESTAFF_CALCULATION = [
     options: [],
     inputMode: "number",
     rules: {
-      required: "Số điện thoại không được để trống",
+      required: "Không được để trống",
       pattern: {
-        value: /^\d{10,11}$/,
-        message: "Số điện thoại không hợp lệ",
-      },
-      minLength: {
-        value: 1,
+        value: /^[0-9]+(\.[0-9]+)?$/,
+        message: "Không hợp lệ",
       },
     },
   },
@@ -910,13 +911,10 @@ export const SALESTAFF_CALCULATION = [
     options: [],
     inputMode: "number",
     rules: {
-      required: "Số điện thoại không được để trống",
+      required: "Không được để trống",
       pattern: {
-        value: /^\d{10,11}$/,
-        message: "Số điện thoại không hợp lệ",
-      },
-      minLength: {
-        value: 1,
+        value: /^[0-9]+(\.[0-9]+)?$/,
+        message: "Không hợp lệ",
       },
     },
   },
@@ -933,13 +931,10 @@ export const SALESTAFF_CALCULATION = [
     options: [],
     inputMode: "number",
     rules: {
-      required: "Số điện thoại không được để trống",
+      required: "Không được để trống",
       pattern: {
-        value: /^\d{10,11}$/,
-        message: "Số điện thoại không hợp lệ",
-      },
-      minLength: {
-        value: 1,
+        value: /^[0-9]+(\.[0-9]+)?$/,
+        message: "Không hợp lệ",
       },
     },
   },
@@ -956,13 +951,10 @@ export const SALESTAFF_CALCULATION = [
     options: [],
     inputMode: "number",
     rules: {
-      required: "Số điện thoại không được để trống",
+      required: "Không được để trống",
       pattern: {
-        value: /^\d{10,11}$/,
-        message: "Số điện thoại không hợp lệ",
-      },
-      minLength: {
-        value: 1,
+        value: /^[0-9]+(\.[0-9]+)?$/,
+        message: "Không hợp lệ",
       },
     },
   },
@@ -991,7 +983,7 @@ export const FAQ_LISTS = [
     id: 3,
     title: "Tôi có thể yêu cầu về cách đóng gói hay không?",
     message:
-      "Bạn hoàn toàn có thể yêu cầu về cách chúng tôi đóng gói/vận chuyển. Mọi chi phí phát sinh sẽ do khách hàng chi trả 100% (xin lũi vì đã nghèo 🥲).",
+      "Bạn hoàn toàn có thể yêu cầu về cách chúng tôi đóng gói/vận chuyển. Mọi chi phí phát sinh sẽ do khách hàng chi trả 100%",
   },
   {
     id: 4,
@@ -1006,6 +998,7 @@ export const RING_LIST = [
     id: "ring",
     productID: "NJ190720090",
     material: "Vàng kiểu Ý 750",
+    gemId: "0",
     gems: "Không đính",
     name: "Nhẫn cưới vàng bản móc máy Vàng kiểu Ý 750",
     image:
@@ -1015,6 +1008,7 @@ export const RING_LIST = [
     id: "ring",
     productID: "NA190308002",
     material: "Vàng 18K",
+    gemId: "0",
     gems: "Không đính",
     name: "Nhẫn cưới vàng bản xi cát Bảo Tín K&K Vàng 18K",
     image:
@@ -1024,6 +1018,7 @@ export const RING_LIST = [
     id: "ring",
     productID: "NA190308005",
     material: "Vàng 18K",
+    gemId: "0",
     gems: "Không đính",
     name: "Nhẫn cưới vàng bản lông voi Bảo Tín K&K Vàng 18K",
     image:
@@ -1033,6 +1028,7 @@ export const RING_LIST = [
     id: "ring",
     productID: "NA190830003",
     material: "Vàng 18K",
+    gemId: "1",
     gems: "Kim cương",
     name: "Nhẫn cưới vàng hoa văn Bảo Tín K&K Vàng 18K đính Kim cương",
     image:
@@ -1042,6 +1038,7 @@ export const RING_LIST = [
     id: "ring",
     productID: "NA190830004",
     material: "Vàng kiểu ý 750",
+    gemId: "1",
     gems: "Kim cương",
     name: "Nhẫn trắng xoàn tấm Bảo Tín K&K Vàng kiểu Ý 750 đính Kim cương",
     image:
@@ -1051,6 +1048,7 @@ export const RING_LIST = [
     id: "ring",
     productID: "NA150821111",
     material: "Vàng 18K",
+    gemId: "0",
     gems: "Không đính",
     name: "Nhẫn cưới vàng bản lông voi Bảo Tín K&K Vàng 18K",
     image:
@@ -1061,20 +1059,23 @@ export const RING_LIST = [
 export const BAO_HANH_LIST = [
   {
     id: 0,
-    title: "Mua hàng và thanh toán",
-    message:
-      "Mua hàng online hiện chưa được hỗ trợ. Quý khách hãy đến các cửa hàng của Luxuria để chọn mua sản phẩm. Hình thức thanh toán: Bảo Tín K&K chấp nhận tiền mặt, chuyển khoản, thẻ ATM nội địa, thẻ Visa và Mastercard",
+    title: "MUA HÀNG & THANH TOÁN",
+    message: [
+      "Giá sản phẩm có thể thay đổi tùy thuộc thời giá",
+      "Mua hàng online hiện chưa được hỗ trợ. Quý khách hãy đến các cửa hàng của Luxuria để chọn mua sản phẩm.",
+      "Hình thức thanh toán: Luxuria chấp nhận tiền mặt, chuyển khoản, thẻ ATM nội địa, thẻ Visa và Mastercard",
+    ],
   },
   {
     id: 1,
-    title: "Bảo quản",
-    message: `Quý khách hãy cẩn thận bảo quản để trang sức luôn bắt mắt và giữ được giá trị lâu dài. Hạn chế mang trang sức khi vận động mạnh, đi ngủ, tắm biển, xịt nước hoa...
- Dùng hộp nữ trang chuyên dụng để bảo quản trang sức.
- Dùng bàn chải hoặc vải mềm để làm sạch trang sức đã ngâm trong nước ấm.
- Định kì bảo trì & làm mới sản phẩm tại cửa hàng.
-
-
-      `,
+    title: "BẢO QUẢN",
+    message: [
+      "Quý khách hãy cẩn thận bảo quản để trang sức luôn bắt mắt và giữ được giá trị lâu dài.",
+      "Hạn chế mang trang sức khi vận động mạnh, đi ngủ, tắm biển, xịt nước hoa...",
+      "Dùng hộp nữ trang chuyên dụng để bảo quản trang sức.",
+      "Dùng bàn chải hoặc vải mềm để làm sạch trang sức đã ngâm trong nước ấm.",
+      "Định kì bảo trì & làm mới sản phẩm tại cửa hàng.",
+    ],
   },
 ];
 
@@ -1166,5 +1167,40 @@ export const CHANGE_PASSWORD_FORMAT = [
       required: "Mật khẩu nhập lại không được để trống",
       validate: "Mật khẩu nhập lại không khớp",
     },
+  },
+];
+
+export const GALLERY = [
+  {
+    src: "https://www.abbottlyon.com/cdn/shop/articles/Cleaning_Storing.webp?v=1711559657",
+    alt: "Jewelry 1",
+  },
+  {
+    src: "https://ae01.alicdn.com/kf/H03dc1794212646638354dd5a9784ed15w/Magic-spell-ring-2021-new-feng-shui-amulet-wealth-lucky-adjustable-ring-Buddhist-jewelry-gifts-for.jpg",
+    alt: "Jewelry 2",
+  },
+  {
+    src: "https://media.istockphoto.com/id/155013169/photo/jewelry-on-window-display.jpg?s=612x612&w=0&k=20&c=HJOD1gPfNRlDfewJH89BmtvwKU2soa0I1YBxzqaNO8M=",
+    alt: "Jewelry 3",
+  },
+  {
+    src: "https://sumanthkumar.com/wp-content/uploads/2022/07/Prakruthi11736.jpg",
+    alt: "Jewelry 4",
+  },
+  {
+    src: "https://jewelrydesigns.com/wp-content/uploads/PC-Gifts-Holiday-Gifts-dt-scaled.jpg",
+    alt: "Jewelry 5",
+  },
+  {
+    src: "https://mountstudio.com.sg/wp-content/uploads/Jewellery-Product-Marketing-Photography.jpg",
+    alt: "Jewelry 6",
+  },
+  {
+    src: "https://images.squarespace-cdn.com/content/v1/65a01343d4e0b521531eda0a/1704989566347-7DCEFGC8FYRIY3N7LF4H/London+jewellery+photographer+rings+in+sand.jpg",
+    alt: "Jewelry 6",
+  },
+  {
+    src: "https://i.pinimg.com/originals/df/16/97/df169764643cf94805d75bf97bfa61f3.jpg",
+    alt: "Jewelry 6",
   },
 ];
