@@ -3,8 +3,6 @@ import { useRoutes } from "react-router-dom";
 import { Loader, ProtectedRoute } from "@components";
 import { USER_ROLES } from "@utils/constant";
 import ResetPasswordDetail from "@/pages/ResetPasswordDetail";
-import TrangSuc from "@/pages/TrangSuc";
-import TrangSucDetail, { TrangSucDetailForHome } from "@/pages/TrangSucDetail";
 import EditProfile from "@/pages/EditProfile";
 import ChangePassword from "@/pages/ChangePassword";
 
@@ -18,6 +16,9 @@ const AboutUs = lazy(() => import("@pages/AboutUs"));
 const Blog = lazy(() => import("@pages/Blog"));
 const Signup = lazy(() => import("@pages/Signup"));
 const Login = lazy(() => import("@pages/Login"));
+const TrangSuc = lazy(() => import("@pages/TrangSuc"));
+const TrangSucDetail = lazy(() => import("@pages/TrangSucDetail"));
+const TrangSucDetailForHome = lazy(() => import("@pages/TrangSucDetail"));
 //* miscellaneous
 const Unauthorized = lazy(() => import("@pages/Unauthorized"));
 const ErrorPage = lazy(() => import("@pages/ErrorPage"));

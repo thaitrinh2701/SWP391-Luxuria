@@ -3,9 +3,10 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { convertConstraintName } from "@/services/getHelper";
 import { ProductCard } from "@/components/ProductCard";
+import { Loader } from "@/components";
 
 const TrangSuc = () => {
-  const { categoryId } = useParams(); // Lấy categoryId từ URL
+  const { categoryId } = useParams();
   const [listProducts, setListProducts] = useState([]);
   const [categoryName, setCategoryName] = useState("");
   const API_GET_ALL_PRODUCT = import.meta.env
@@ -41,6 +42,10 @@ const TrangSuc = () => {
   };
 
   useEffect(() => {
+    getProductsFromAPI(categoryId);
+  }, [categoryId]);
+
+  useEffect(() => {
     const updateConstraintName = async () => {
       const categoryName = listProducts[0]?.product?.category?.name;
       if (categoryName) {
@@ -51,30 +56,30 @@ const TrangSuc = () => {
     updateConstraintName();
   }, [listProducts]);
 
-  useEffect(() => {
-    getProductsFromAPI(categoryId);
-  }, [categoryId]);
-
   return (
     <section className="container mx-auto p-4">
       <div className="flex min-h-screen">
         <div className="text-center font-bold text-3xl mt-20 mx-auto">
-          {listProducts.length > 0 && <h1 className="mb-4">{categoryName}</h1>}
-          {listProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {listProducts.map((item) => (
-                <ProductCard
-                  key={item.product.id}
-                  name={item.product.name}
-                  image={item.image}
-                  data={item}
-                  link={`/trang-suc/${item.product.category.id}/${item.product.id}`}
-                />
-              ))}
-            </div>
-          ) : (
-            <p>Không có sản phẩm nào phù hợp.</p>
-          )}
+          <>
+            {listProducts.length > 0 && (
+              <h1 className="mb-4">{categoryName}</h1>
+            )}
+            {listProducts.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {listProducts.map((item) => (
+                  <ProductCard
+                    key={item.product.id}
+                    name={item.product.name}
+                    image={item.image}
+                    data={item}
+                    link={`/trang-suc/${item.product.category.id}/${item.product.id}`}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p>Không có sản phẩm nào phù hợp.</p>
+            )}
+          </>
         </div>
       </div>
     </section>
