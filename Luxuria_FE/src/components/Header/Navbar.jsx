@@ -69,7 +69,7 @@ function Navbar({ isTransparent }) {
         { title: "Vòng", path: "/trang-suc/3" },
         { title: "Vòng tay", path: "/trang-suc/4" },
         { title: "Vòng cổ", path: "/trang-suc/5" },
-        { title: "Mề đay", path: "/trang-suc/6" },
+        { title: "Mặt dây chuyền", path: "/trang-suc/6" },
       ],
     },
     { title: "Tin tức", path: "/tin-tuc" },

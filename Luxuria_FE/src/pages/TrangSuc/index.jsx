@@ -56,12 +56,12 @@ const TrangSuc = () => {
   }, [categoryId]);
 
   return (
-    <section className="">
+    <section className="container mx-auto p-4">
       <div className="flex min-h-screen">
         <div className="text-center font-bold text-3xl mt-20 mx-auto">
           {listProducts.length > 0 && <h1 className="mb-4">{categoryName}</h1>}
           {listProducts.length > 0 ? (
-            <div className="flex gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {listProducts.map((item) => (
                 <ProductCard
                   key={item.product.id}

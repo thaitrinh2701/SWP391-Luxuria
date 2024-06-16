@@ -53,43 +53,42 @@ function Products() {
           </SwiperSlide>
           <SwiperSlide>
             <ProductCard
-              name="Nhẫn cưới vàng bản xi cát Bảo Tín K&K Vàng 18K"
+              name="Nhẫn cưới vàng bản xi cát Vàng 18K"
               image="https://www.baotinkk.com/cdn/shop/products/NA190308005_16-09-08_543acc70-3ba8-4f6b-916f-759072f62f80_900x.jpg?v=1606913104"
               link={`/trang-suc/ring/NA190308002`}
             />
           </SwiperSlide>
           <SwiperSlide>
             <ProductCard
-              name="Nhẫn cưới vàng bản xi cát Bảo Tín K&K Vàng 18K"
+              name="Nhẫn cưới vàng bản xi cát Vàng 18K"
               image="https://www.baotinkk.com/cdn/shop/products/NA190308005_16-09-08_2fdd6f4e-131c-45c4-bc2c-97a30727042f_900x.jpg?v=1606913101"
               link={`/trang-suc/ring/NA190308002`}
             />
           </SwiperSlide>
-          {/* Uncomment and add more slides as needed */}
           <SwiperSlide>
             <ProductCard
-              name="Nhẫn cưới vàng bản lông voi Bảo Tín K&K Vàng 18K"
+              name="Nhẫn cưới vàng bản lông voi Vàng 18K"
               image="https://www.baotinkk.com/cdn/shop/products/NA190830004_NA190830003_bd6c0777-d4f8-41dc-a92f-dc58cfa87d93_900x.jpg?v=1606914746"
               link={`/trang-suc/ring/NA150821111`}
             />
           </SwiperSlide>
           <SwiperSlide>
             <ProductCard
-              name="Bông tai trắng kiểu Bảo Tín K&K Vàng kiểu Ý 750"
+              name="Bông tai trắng kiểu Vàng kiểu Ý 750"
               image="https://www.baotinkk.com/cdn/shop/products/MJ190716043_-_16-44-08_0c5fa678-4e22-4f6b-982b-5b7a716bd815_900x.jpg?v=1602314026"
               link={`/trang-suc/ring/NA150821111`}
             />
           </SwiperSlide>
           <SwiperSlide>
             <ProductCard
-              name="Nhẫn cưới vàng bản lông voi Bảo Tín K&K Vàng 18K"
+              name="Nhẫn cưới vàng bản lông voi Vàng 18K"
               image="https://www.baotinkk.com/cdn/shop/products/NA190830004_NA190830003_bd6c0777-d4f8-41dc-a92f-dc58cfa87d93_900x.jpg?v=1606914746"
               link={`/trang-suc/ring/NA150821111`}
             />
           </SwiperSlide>
           <SwiperSlide>
             <ProductCard
-              name="Nhẫn cưới vàng bản lông voi Bảo Tín K&K Vàng 18K"
+              name="Nhẫn cưới vàng bản lông voi Vàng 18K"
               image="https://www.baotinkk.com/cdn/shop/products/NA190830004_NA190830003_bd6c0777-d4f8-41dc-a92f-dc58cfa87d93_900x.jpg?v=1606914746"
               link={`/trang-suc/ring/NA150821111`}
             />
