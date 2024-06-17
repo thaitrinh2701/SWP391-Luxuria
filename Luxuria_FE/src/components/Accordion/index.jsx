@@ -34,7 +34,7 @@ export function Accordion({ id, title, message }) {
             </p>
             <ul className="list-disc pl-5 text-gray-800 dark:text-gray-200 text-sm md:text-base p-2">
               {message.slice(1).map((msg, id) => (
-                <li key={id} className="mb-2 text-xl">
+                <li key={id} className="mb-2 ml-3 text-xl">
                   {msg}
                 </li>
               ))}
