@@ -1,13 +1,17 @@
 package com.luxuria.controllers;
 
+import com.luxuria.dtos.ProductDTO;
 import com.luxuria.models.Product;
 import com.luxuria.models.ProductData;
 import com.luxuria.responses.ProductResponse;
 import com.luxuria.services.IProductDataService;
 import com.luxuria.services.IProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,6 +57,69 @@ public class ProductController {
                     .productDataList(productDataList)
                     .build();
             return ResponseEntity.ok().body(productResponse);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value ="/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createOriginalProduct(
+            @Valid @RequestBody ProductDTO productDTO,
+            @ModelAttribute("files") List<MultipartFile> files,
+            BindingResult result) {
+        try {
+            if (result.hasErrors()) {
+                List<String> errorMessages = result.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .toList();
+                return ResponseEntity.badRequest().body(errorMessages);
+            }
+            Product product = productService.createProduct(productDTO);
+            productService.uploadFiles(product, files);
+            return ResponseEntity.ok().body("Thêm sản phẩm thành công");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/update/{product_id}")
+    public ResponseEntity<?> updateOriginalProduct(
+            @PathVariable("product_id") Long productId,
+            @Valid @RequestBody ProductDTO productDTO,
+            BindingResult result) {
+        try {
+            if (result.hasErrors()) {
+                List<String> errorMessages = result.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .toList();
+                return ResponseEntity.badRequest().body(errorMessages);
+            }
+            productService.updateOriginalProduct(productId, productDTO);
+            return ResponseEntity.ok().body("Cập nhật sản phẩm thành công");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete/{product_id}")
+    public ResponseEntity<String> deleteOriginalProduct(@PathVariable("product_id") Long productId) {
+        try {
+            productService.deleteProduct(productId);
+            return ResponseEntity.ok().body("Xóa sản phẩm thành công");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping(value = "/update_images/{product_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateOriginalProductData(
+            @PathVariable("product_id") Long productId,
+            @ModelAttribute("files") List<MultipartFile> files) {
+        try {
+            productService.updateOriginalProductData(productId, files);
+            return ResponseEntity.ok().body("Cập nhật ảnh sản phẩm thành công");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

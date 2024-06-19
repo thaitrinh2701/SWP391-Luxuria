@@ -3,11 +3,10 @@ package com.luxuria.controllers;
 import com.luxuria.models.ProductData;
 import com.luxuria.services.IProductDataService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -43,6 +42,17 @@ public class ProductDataController {
         try {
             byte[] image = productDataService.getImage(productDataId);
             return ResponseEntity.ok().body(image);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/add_data/{product_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> addProductImages(@PathVariable("product_id") Long productId,
+                                             @ModelAttribute("files") List<MultipartFile> files) {
+        try {
+            productDataService.addProductImages(productId, files);
+            return ResponseEntity.ok().body("Thêm ảnh thành công");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

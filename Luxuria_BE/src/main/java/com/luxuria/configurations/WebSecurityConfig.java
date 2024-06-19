@@ -50,7 +50,9 @@ public class WebSecurityConfig {
                                         String.format("%s/users/reset_password**", apiPrefix),
                                         String.format("%s/roles/token", apiPrefix),
                                         String.format("%s/products", apiPrefix),
-                                        String.format("%s/products/**", apiPrefix)
+                                        String.format("%s/products/{product_id}", apiPrefix),
+                                        String.format("%s/product_data", apiPrefix),
+                                        String.format("%s/product_data/**", apiPrefix)
                                 ).permitAll()
                                 .requestMatchers(PUT,
                                         String.format("%s/users/change_profile", apiPrefix))
@@ -69,9 +71,9 @@ public class WebSecurityConfig {
                                 .requestMatchers(PUT,
                                         String.format("%s/requests/approve_request/**", apiPrefix)).hasRole(Role.SALES_STAFF)
                                 .requestMatchers(POST,
-                                        String.format("%s/orders/create_order/**", apiPrefix)).hasRole(Role.SALES_STAFF)
+                                        String.format("%s/orders/create_order/{request_id}", apiPrefix)).hasRole(Role.SALES_STAFF)
                                 .requestMatchers(POST,
-                                        String.format("%s/orders/edit_order/**", apiPrefix)).hasRole(Role.SALES_STAFF)
+                                        String.format("%s/orders/edit_order/{order_id}", apiPrefix)).hasRole(Role.SALES_STAFF)
                                 .requestMatchers(GET,
                                         String.format("%s/orders/my_orders", apiPrefix)).hasRole(Role.CUSTOMER)
                                 .requestMatchers(GET,
@@ -81,24 +83,32 @@ public class WebSecurityConfig {
                                         String.format("%s/orders/view_all_orders", apiPrefix))
                                 .hasAnyRole(Role.SALES_STAFF, Role.DESIGN_STAFF, Role.PRODUCTION_STAFF, Role.MANAGER, Role.ADMIN)
                                 .requestMatchers(PUT,
-                                        String.format("%s/orders/submit_price_quote/**", apiPrefix)).hasRole(Role.SALES_STAFF)
+                                        String.format("%s/orders/submit_price_quote/{order_id}", apiPrefix)).hasRole(Role.SALES_STAFF)
                                 .requestMatchers(PUT,
                                         String.format("%s/orders/manager_price_quote/**", apiPrefix)).hasRole(Role.MANAGER)
                                 .requestMatchers(PUT,
                                         String.format("%s/orders/customer_price_quote/**", apiPrefix)).hasRole(Role.CUSTOMER)
                                 .requestMatchers(POST,
-                                        String.format("%s/orders/submit_design/**", apiPrefix)).hasRole(Role.DESIGN_STAFF)
+                                        String.format("%s/orders/submit_design/{order_id}", apiPrefix)).hasRole(Role.DESIGN_STAFF)
                                 .requestMatchers(GET,
                                         String.format("%s/product_data/**", apiPrefix))
                                 .hasAnyRole(Role.CUSTOMER, Role.SALES_STAFF, Role.DESIGN_STAFF, Role.PRODUCTION_STAFF, Role.MANAGER, Role.ADMIN)
                                 .requestMatchers(PUT,
                                         String.format("%s/orders/approve_design/**", apiPrefix)).hasRole(Role.CUSTOMER)
                                 .requestMatchers(PUT,
-                                        String.format("%s/orders/complete_product/**", apiPrefix)).hasRole(Role.PRODUCTION_STAFF)
+                                        String.format("%s/orders/complete_product/{order_id}", apiPrefix)).hasRole(Role.PRODUCTION_STAFF)
                                 .requestMatchers(POST,
                                         String.format("%s/warranties/create_warranty", apiPrefix)).hasRole(Role.SALES_STAFF)
                                 .requestMatchers(PUT,
-                                        String.format("%s/orders/complete_order/**", apiPrefix)).hasRole(Role.SALES_STAFF)
+                                        String.format("%s/orders/complete_order/{order_id}", apiPrefix)).hasRole(Role.SALES_STAFF)
+                                .requestMatchers(POST,
+                                        String.format("%s/products/create", apiPrefix)).hasRole(Role.ADMIN)
+                                .requestMatchers(PUT,
+                                        String.format("%s/products/update/{product_id}", apiPrefix)).hasRole(Role.ADMIN)
+                                .requestMatchers(PUT,
+                                        String.format("%s/products/update_images/{product_id}", apiPrefix)).hasRole(Role.ADMIN)
+                                .requestMatchers(DELETE,
+                                        String.format("%s/products/delete/{product_id}", apiPrefix)).hasRole(Role.ADMIN)
                                 .anyRequest().authenticated())
                 .logout((logout) -> {
                     logout.logoutUrl("api/v1/users/logout")

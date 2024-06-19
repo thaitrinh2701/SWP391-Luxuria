@@ -23,4 +23,10 @@ public interface IProductService {
     Product updatePrice(Long productId, ProductDTO productDTO) throws Exception;
 
     List<ProductResponse> viewOriginalProductsByCategory(Long categoryId) throws Exception;
+
+    void updateOriginalProduct(Long productId, ProductDTO productDTO) throws Exception;
+
+    void updateOriginalProductData(Long productId, List<MultipartFile> files) throws Exception;
+
+    void deleteProduct(Long productId) throws Exception;
 }

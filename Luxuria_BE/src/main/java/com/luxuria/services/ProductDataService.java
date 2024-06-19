@@ -1,12 +1,17 @@
 package com.luxuria.services;
 
+import com.luxuria.dtos.ProductDataDTO;
 import com.luxuria.exceptions.DataNotFoundException;
+import com.luxuria.models.Product;
 import com.luxuria.models.ProductData;
 import com.luxuria.repositories.ProductDataRepository;
 import com.luxuria.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -35,5 +40,22 @@ public class ProductDataService implements IProductDataService {
     @Override
     public List<ProductData> getAllProductData() {
         return productDataRepository.findAll();
+    }
+
+    @Override
+    public void addProductImages(Long productId, List<MultipartFile> files) throws Exception {
+        Product product = productRepository.findById(productId).orElseThrow();
+        for (MultipartFile file : files) {
+            String base64Image = encodeBase64(file);
+            ProductData productImage = ProductData.builder()
+                    .product(product)
+                    .value(base64Image)
+                    .build();
+            productDataRepository.save(productImage);
+        }
+    }
+    private String encodeBase64(MultipartFile file) throws IOException {
+        byte[] imageBytes = file.getBytes();
+        return  Base64.getEncoder().encodeToString(imageBytes);
     }
 }

@@ -17,6 +17,5 @@ public class UserChangeProfileDTO {
     private String fullName;
 
     @JsonProperty("phone_number")
-    @NotBlank(message = "Phone number is required!")
     private String phoneNumber;
 }

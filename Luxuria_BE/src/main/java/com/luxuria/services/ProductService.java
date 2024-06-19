@@ -88,18 +88,18 @@ public class ProductService implements IProductService {
     public List<ProductData> uploadFiles(Product product, List<MultipartFile> files) throws Exception {
         files = (files == null) ? new ArrayList<>() : files;
         if (files.size() > ProductData.MAXIMUM_IMAGES_PER_PRODUCT) {
-            throw new InvalidParamException("Số lượng ảnh tối đa có thể tải lên là "
+            throw new InvalidParamException("product_data: Số lượng ảnh tối đa có thể tải lên là "
                     + ProductData.MAXIMUM_IMAGES_PER_PRODUCT);
         }
         for (MultipartFile file : files) {
             if (file.getSize() == 0) continue;
 
             if (file.getSize() > 25 * 1024 * 1024) {
-                throw new InvalidParamException("Kích thước ảnh tối đa là 25MB");
+                throw new InvalidParamException("product_data: Kích thước ảnh tối đa là 25MB");
             }
             String contentType = file.getContentType();
             if (contentType == null || !contentType.startsWith("image/")) {
-                throw new InvalidParamException("Định dạng file phải là ảnh");
+                throw new InvalidParamException("product_data: Định dạng file phải là ảnh");
             }
         }
 
@@ -134,6 +134,46 @@ public class ProductService implements IProductService {
             return getProductResponseFromProductList(products);
         }
         throw new DataNotFoundException("category: Danh mục không tồn tại");
+    }
+
+    @Override
+    public void updateOriginalProduct(Long productId, ProductDTO productDTO) throws Exception {
+        Product product = getProductById(productId);
+        Category category = categoryRepository.findById(productDTO.getCategoryId())
+                .orElseThrow(() -> new DataNotFoundException("category: Danh mục không tồn tại"));
+
+        Gold gold = goldRepository.findById(productDTO.getGoldId())
+                .orElseThrow(() -> new DataNotFoundException("gold: Loại vàng không tồn tại"));
+
+        Gem gem = gemRepository.findById(productDTO.getGemId())
+                .orElseThrow(() -> new DataNotFoundException("gem: Loại đá không tồn tại"));
+
+        product.setName(productDTO.getName());
+        product.setCategory(category);
+        product.setSize(productDTO.getSize());
+        product.setGold(gold);
+        product.setGoldWeight(productDTO.getGoldWeight());
+        product.setGoldPrice(productDTO.getGoldPrice());
+        product.setGem(gem);
+        product.setGemPrice(productDTO.getGemPrice());
+        product.setManufacturingFee(productDTO.getManufacturingFee());
+        product.setTotalPrice(productDTO.getTotalPrice());
+        product.setDescription(productDTO.getDescription());
+        product.setOriginal(product.isOriginal());
+        productRepository.save(product);
+    }
+
+    @Override
+    public void updateOriginalProductData(Long productId, List<MultipartFile> files) throws Exception {
+        Product product = getProductById(productId);
+        productDataRepository.deleteAllByProductId(productId);
+        uploadFiles(product, files);
+    }
+
+    @Override
+    public void deleteProduct(Long productId) throws Exception {
+        productDataRepository.deleteAllByProductId(productId);
+        productRepository.deleteById(productId);
     }
 
     private String encodeBase64(MultipartFile file) throws IOException {
