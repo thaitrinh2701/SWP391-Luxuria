@@ -940,7 +940,7 @@ export const SALESTAFF_CALCULATION = [
   },
   {
     id: "gem_price",
-    name: "gems_price",
+    name: "gem_price",
     label: "Tiền đá",
     placeholder: "",
     validMsg: "Hợp lệ",
@@ -1010,7 +1010,7 @@ export const RING_LIST = [
     material: "Vàng 18K",
     gemId: "0",
     gems: "Không đính",
-    name: "Nhẫn cưới vàng bản xi cát Bảo Tín K&K Vàng 18K",
+    name: "Nhẫn cưới vàng bản xi cát Vàng 18K",
     image:
       "https://www.baotinkk.com/cdn/shop/products/NA190308005_16-09-08_543acc70-3ba8-4f6b-916f-759072f62f80_900x.jpg?v=1606913104",
   },
@@ -1020,7 +1020,7 @@ export const RING_LIST = [
     material: "Vàng 18K",
     gemId: "0",
     gems: "Không đính",
-    name: "Nhẫn cưới vàng bản lông voi Bảo Tín K&K Vàng 18K",
+    name: "Nhẫn cưới vàng bản lông voi Vàng 18K",
     image:
       "https://www.baotinkk.com/cdn/shop/products/NA190830004_-_NA190830003_15-50-22_900x.jpg?v=1606912799",
   },
@@ -1030,7 +1030,7 @@ export const RING_LIST = [
     material: "Vàng 18K",
     gemId: "1",
     gems: "Kim cương",
-    name: "Nhẫn cưới vàng hoa văn Bảo Tín K&K Vàng 18K đính Kim cương",
+    name: "Nhẫn cưới vàng hoa văn Vàng 18K đính Kim cương",
     image:
       "https://www.baotinkk.com/cdn/shop/products/NA150821110_16-10-08_05feba73-e032-4b25-b9a9-56b0ffc77238_900x.jpg?v=1606912794",
   },
@@ -1040,7 +1040,7 @@ export const RING_LIST = [
     material: "Vàng kiểu ý 750",
     gemId: "1",
     gems: "Kim cương",
-    name: "Nhẫn trắng xoàn tấm Bảo Tín K&K Vàng kiểu Ý 750 đính Kim cương",
+    name: "Nhẫn trắng xoàn tấm Vàng kiểu Ý 750 đính Kim cương",
     image:
       "https://www.baotinkk.com/cdn/shop/products/XJ190719033_16-25-02_a0b80d54-1eb7-49e3-88df-d85cec2ff1d7_900x.jpg?v=1606912784",
   },
@@ -1050,7 +1050,7 @@ export const RING_LIST = [
     material: "Vàng 18K",
     gemId: "0",
     gems: "Không đính",
-    name: "Nhẫn cưới vàng bản lông voi Bảo Tín K&K Vàng 18K",
+    name: "Nhẫn cưới vàng bản lông voi Vàng 18K",
     image:
       "https://www.baotinkk.com/cdn/shop/products/NA190830004_NA190830003_bd6c0777-d4f8-41dc-a92f-dc58cfa87d93_900x.jpg?v=1606914746",
   },

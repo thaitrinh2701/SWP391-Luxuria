@@ -41,7 +41,14 @@ export async function convertConstraintName(constraintName) {
       return "Ngọc trai";
     case "artificial pearl":
       return "Ngọc trai nhân tạo";
-
+    case "24k gold":
+      return "Vàng 24K";
+    case "18k gold":
+      return "Vàng 18K";
+    case "14k gold":
+      return "Vàng 14K";
+    case "16k gold":
+      return "Vàng 16K";
     case "other":
       return "Khác";
   }

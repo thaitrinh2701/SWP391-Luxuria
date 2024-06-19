@@ -155,6 +155,7 @@ const OrderDetailSale = () => {
       Toast("processing", "info", "Đang xử lý đơn...");
       if (response.status === 200) {
         Toast("create_success", "success", "Tạo đơn hàng thành công!");
+        navigate("/yeu-cau");
       } else {
         Toast("create_err", "error", "Tạo đơn hàng thất bại!");
       }

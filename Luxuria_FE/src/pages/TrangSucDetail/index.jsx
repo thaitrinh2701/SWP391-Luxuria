@@ -1,72 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { BAO_HANH_LIST, RING_LIST } from "@/utils/constant";
 import { Divider } from "antd";
 import { Accordion } from "@/components";
 import HSAccordion from "@preline/accordion";
-import axios from "axios";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { convertConstraintName } from "@/services/getHelper";
 
 function TrangSucDetail() {
-  const { category_id } = useParams();
+  const { state } = useLocation();
+  const data = state?.data;
   const navigate = useNavigate();
-  const [productInfor, setProductInfor] = useState(null);
   const [thumbnailPosition, setThumbnailPosition] = useState("right");
   const [categoryName, setCategoryName] = useState("");
   const [gemsName, setGemsName] = useState("");
-  const API_GET_PRODUCT_DETAIL = import.meta.env
-    .VITE_API_PRODUCT_DETAIL_ENDPOINT;
+  const [goldName, setGoldName] = useState("");
 
-  const getDetailProduct = async () => {
-    try {
-      const response = await axios.get(
-        `${API_GET_PRODUCT_DETAIL}/${category_id}`
-      );
-      if (response.data) {
-        setProductInfor(response.data);
-        console.log(response.data);
-      } else {
-        navigate("/404");
+  useEffect(() => {
+    if (!data) {
+      navigate("/404");
+    }
+  }, [data, navigate]);
+
+  useEffect(() => {
+    const updateConstraintName = async () => {
+      const categoryName = data?.product?.category?.name;
+      const gemsName = data?.product?.gem?.name;
+      const goldName = data?.product?.gold?.name;
+      if (categoryName) {
+        const convertedName = await convertConstraintName(categoryName);
+        setCategoryName(convertedName);
       }
-    } catch (error) {
-      console.log("Có lỗi khi lấy dữ liệu từ API: ", error);
-      navigate("/404");
-    }
-  };
-
-  useEffect(() => {
-    if (category_id) {
-      getDetailProduct();
-    } else {
-      navigate("/404");
-    }
-  }, [category_id]);
-
-  useEffect(() => {
-    if (productInfor && productInfor.length > 0) {
-      const updateConstraintName = async () => {
-        const categoryName = productInfor[0]?.product?.category?.name;
-        const gemsName = productInfor[0]?.product?.gem?.name;
-        if (categoryName) {
-          const convertedName = await convertConstraintName(categoryName);
-          setCategoryName(convertedName);
-        }
-        if (gemsName) {
-          const convertedGemsName = await convertConstraintName(gemsName);
-          setGemsName(convertedGemsName);
-        }
-      };
-      updateConstraintName();
-    }
-  }, [productInfor]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      HSAccordion.autoInit();
-    }, 100);
-  }, []);
+      if (gemsName) {
+        const convertedGemsName = await convertConstraintName(gemsName);
+        setGemsName(convertedGemsName);
+      }
+      if (goldName) {
+        const convertedGemsName = await convertConstraintName(goldName);
+        setGoldName(convertedGemsName);
+      }
+    };
+    updateConstraintName();
+  }, [data]);
 
   useEffect(() => {
     const updateThumbnailPosition = () => {
@@ -81,11 +57,11 @@ function TrangSucDetail() {
     return () => window.removeEventListener("resize", updateThumbnailPosition);
   }, []);
 
-  if (!productInfor) {
+  if (!data) {
     return null; // Ensure the function exits here to prevent rendering errors.
   }
 
-  const images = productInfor[0]?.productDataList?.map((item) => ({
+  const images = data.productDataList?.map((item) => ({
     original: `data:image/jpeg;base64,${item.value}`,
     thumbnail: `data:image/jpeg;base64,${item.value}`,
   }));
@@ -94,10 +70,10 @@ function TrangSucDetail() {
     <div className="container mx-auto py-20 grid grid-cols-1 md:grid-cols-2 gap-10">
       <div className="p-5 text-xl">
         <h1 className="text-5xl font-bold mb-2 font-playfair">
-          {productInfor[0]?.product?.name}
+          {data?.product?.name}
         </h1>
         <p className="text-2xl font-playfair">
-          Mã sản phẩm: {productInfor[0]?.product?.id}
+          Mã sản phẩm: {data?.product?.id}
         </p>
         <p className="text-2xl font-playfair">Loại trang sức: {categoryName}</p>
         <Divider className="my-10" />
@@ -107,9 +83,7 @@ function TrangSucDetail() {
         </span>
 
         <ul className="text-xl font-playfair list-disc pl-5">
-          <li className="my-8 text-2xl">
-            Vật liệu: {productInfor[0]?.product?.gold?.name}
-          </li>
+          <li className="my-8 text-2xl">Vật liệu: {goldName}</li>
           <li className="my-8 text-2xl">Loại đá: {gemsName}</li>
           <li className="my-8 text-2xl">Cửa hàng: Luxuria</li>
         </ul>

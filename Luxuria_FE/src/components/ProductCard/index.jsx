@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -53,43 +53,42 @@ function Products() {
           </SwiperSlide>
           <SwiperSlide>
             <ProductCard
-              name="Nhẫn cưới vàng bản xi cát Bảo Tín K&K Vàng 18K"
+              name="Nhẫn cưới vàng bản xi cát Vàng 18K"
               image="https://www.baotinkk.com/cdn/shop/products/NA190308005_16-09-08_543acc70-3ba8-4f6b-916f-759072f62f80_900x.jpg?v=1606913104"
               link={`/trang-suc/ring/NA190308002`}
             />
           </SwiperSlide>
           <SwiperSlide>
             <ProductCard
-              name="Nhẫn cưới vàng bản xi cát Bảo Tín K&K Vàng 18K"
+              name="Nhẫn cưới vàng bản xi cát Vàng 18K"
               image="https://www.baotinkk.com/cdn/shop/products/NA190308005_16-09-08_2fdd6f4e-131c-45c4-bc2c-97a30727042f_900x.jpg?v=1606913101"
               link={`/trang-suc/ring/NA190308002`}
             />
           </SwiperSlide>
-          {/* Uncomment and add more slides as needed */}
           <SwiperSlide>
             <ProductCard
-              name="Nhẫn cưới vàng bản lông voi Bảo Tín K&K Vàng 18K"
+              name="Nhẫn cưới vàng bản lông voi Vàng 18K"
               image="https://www.baotinkk.com/cdn/shop/products/NA190830004_NA190830003_bd6c0777-d4f8-41dc-a92f-dc58cfa87d93_900x.jpg?v=1606914746"
               link={`/trang-suc/ring/NA150821111`}
             />
           </SwiperSlide>
           <SwiperSlide>
             <ProductCard
-              name="Bông tai trắng kiểu Bảo Tín K&K Vàng kiểu Ý 750"
+              name="Bông tai trắng kiểu Vàng kiểu Ý 750"
               image="https://www.baotinkk.com/cdn/shop/products/MJ190716043_-_16-44-08_0c5fa678-4e22-4f6b-982b-5b7a716bd815_900x.jpg?v=1602314026"
               link={`/trang-suc/ring/NA150821111`}
             />
           </SwiperSlide>
           <SwiperSlide>
             <ProductCard
-              name="Nhẫn cưới vàng bản lông voi Bảo Tín K&K Vàng 18K"
+              name="Nhẫn cưới vàng bản lông voi Vàng 18K"
               image="https://www.baotinkk.com/cdn/shop/products/NA190830004_NA190830003_bd6c0777-d4f8-41dc-a92f-dc58cfa87d93_900x.jpg?v=1606914746"
               link={`/trang-suc/ring/NA150821111`}
             />
           </SwiperSlide>
           <SwiperSlide>
             <ProductCard
-              name="Nhẫn cưới vàng bản lông voi Bảo Tín K&K Vàng 18K"
+              name="Nhẫn cưới vàng bản lông voi Vàng 18K"
               image="https://www.baotinkk.com/cdn/shop/products/NA190830004_NA190830003_bd6c0777-d4f8-41dc-a92f-dc58cfa87d93_900x.jpg?v=1606914746"
               link={`/trang-suc/ring/NA150821111`}
             />
@@ -102,23 +101,30 @@ function Products() {
 
 export default Products;
 
-export function ProductCard({ name, image, link }) {
+export function ProductCard({ name, image, link, data }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(link, { state: { data } });
+  };
+
   return (
-    <div className="w-full sm:w-1/2 lg:w-full xl:full p-2">
-      <Link to={link} className="block h-full">
-        <div className="bg-white text-center rounded-lg overflow-hidden shadow-md transition-transform duration-300 ease-in-out transform hover:scale-105 dark:bg-[#1F2937] dark:text-white h-full">
-          <img
-            src={image}
-            alt={name} // Changed from "Product" to `name`
-            className="w-full h-48 sm:h-96 object-cover object-center"
-          />
-          <div className="p-4 sm:p-6">
-            <h3 className="text-lg sm:text-xl font-semibold mb-2 font-playfair">
-              {name}
-            </h3>
-          </div>
+    <div
+      className="w-full sm:w-1/2 lg:w-full xl:full p-2"
+      onClick={handleClick}
+    >
+      <div className="block h-full bg-white text-center rounded-lg overflow-hidden shadow-md transition-transform duration-300 ease-in-out transform hover:scale-105 dark:bg-[#1F2937] dark:text-white h-full">
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-48 sm:h-96 object-cover object-center"
+        />
+        <div className="p-4 sm:p-6">
+          <h3 className="text-lg sm:text-xl font-semibold mb-2 font-playfair">
+            {name}
+          </h3>
         </div>
-      </Link>
+      </div>
     </div>
   );
 }

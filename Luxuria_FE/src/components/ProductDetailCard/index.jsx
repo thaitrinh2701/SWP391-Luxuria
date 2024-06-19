@@ -41,11 +41,8 @@ const ProductDetailCard = ({
     .VITE_API_MANAGER_ACCEPT_PRICE_QUOTE_ENDPOINT;
   const API_CUSTOMER_ACCEPT_PRICE_QUOTE = import.meta.env
     .VITE_API_CUSTOMER_ACCEPT_PRICE_QUOTE_ENDPOINT;
-  const API_CUSTOMER_ACCEPT_DESIGN = import.meta.env
-    .VITE_API_CUSTOMER_ACCEPT_DESIGN_ENDPOINT;
   const API_COMPLETE_ORDER = import.meta.env.VITE_API_COMPLETE_ORDER_ENDPOINT;
 
-  const handleAcceptDesign = () => {};
   const handleApproval = () => {
     customerAcceptPriceQuote(true);
     setIsApproved(true);
@@ -116,6 +113,7 @@ const ProductDetailCard = ({
       );
       console.log("Accept Price: ", response.data);
       setIsAcceptPrice(approvalStatus);
+      window.location.reload();
     } catch (error) {
       console.error("Error accepting price quote: ", error);
     }
