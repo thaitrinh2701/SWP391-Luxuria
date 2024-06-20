@@ -165,6 +165,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    @Transactional
     public void updateOriginalProductData(Long productId, List<MultipartFile> files) throws Exception {
         Product product = getProductById(productId);
         productDataRepository.deleteAllByProductId(productId);
