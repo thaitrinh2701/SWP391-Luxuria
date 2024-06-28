@@ -249,10 +249,10 @@ export const ORDER_DETAIL_FORMAT = [
     inputMode: "text",
     rules: {
       required: "Không được để trống",
-      pattern: {
-        value: /^[a-zA-ZÀ-ỹ\s]+$/gi,
-        message: "Không hợp lệ",
-      },
+      // pattern: {
+      //   value: /^[a-zA-ZÀ-ỹ\s]+$/gi,
+      //   message: "Không hợp lệ",
+      // },
       minLength: {
         value: 1,
       },
@@ -1137,7 +1137,7 @@ export const EDIT_PROFILE_FORMAT = [
       },
       maxLength: {
         value: 50,
-      }
+      },
     },
   },
   {

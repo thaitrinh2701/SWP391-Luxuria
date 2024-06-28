@@ -10,7 +10,6 @@ export { Loader } from "@components/Loader";
 export { Logo } from "@components/Logo";
 export { ErrorImg } from "@components/ErrorImg";
 export { EmptyState } from "@components/EmptyState";
-export { LoginWGoogle } from "@components/LoginWGoogle";
 export { Modal } from "@components/Modal";
 export { Input, Checkbox, Select } from "@components/Input";
 export { Table } from "@components/Table";

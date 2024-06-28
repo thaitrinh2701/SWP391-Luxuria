@@ -35,12 +35,7 @@ const RequestDetailCard = ({ requestID, createdAt, salesStaffApproved }) => {
 
   const checkStatus = () => {
     if (salesStaffApproved) {
-      return (
-        <>
-          Đã được duyệt
-          <p>Vui lòng chờ tạo đơn hàng</p>
-        </>
-      );
+      return <>Vui lòng chờ tạo đơn hàng</>;
     }
     return (
       <div>
@@ -52,33 +47,35 @@ const RequestDetailCard = ({ requestID, createdAt, salesStaffApproved }) => {
   return (
     <div>
       {!isCancelRequest && (
-        <div className="flex flex-row max-w-screen rounded-lg overflow-hidden shadow-lg transform transition-transform hover:scale-102 my-8 py-9 bg-gray-100 dark:bg-neutral-800 dark:text-white ">
-          <div className="flex flex-col w-full h-auto p-4 ">
-            <div className="flex space-x-60">
-              <div>
-                <div className="flex flex-col justify-center mt-5">
-                  <div className="font-bold text-xl mb-2 ml-8">
-                    MÃ YÊU CẦU: #{requestID}
-                  </div>
+        <div className="flex flex-row max-w-screen rounded-lg overflow-hidden shadow-lg transform transition-transform hover:scale-102 my-8 py-9 bg-gray-100 dark:bg-neutral-800 dark:text-white">
+          <div className="flex flex-col w-full h-auto p-4">
+            <div className="flex justify-between items-center">
+              <div className="flex-1 text-center">
+                <div className="font-bold text-xl mb-2">
+                  MÃ YÊU CẦU: #{requestID}
                 </div>
               </div>
-              <div className="text-center">
+
+              <div className="flex-1 text-center">
                 <p className="font-bold text-xl mb-5">Thời gian tạo yêu cầu</p>
-                {formatDate(createdAt)}
+                <p>{formatDate(createdAt)}</p>
               </div>
 
-              <div className="text-center">
-                <p className="font-bold  text-xl mb-5">Trạng thái</p>
+              <div className="flex-1 text-center">
+                <p className="font-bold text-xl mb-5">Trạng thái</p>
                 <p>{checkStatus()}</p>
               </div>
-              <Button
-                variant="outlined"
-                color="error"
-                size="small"
-                onClick={cancelRequest}
-              >
-                HỦY YÊU CẦU
-              </Button>
+
+              <div className="flex-1 text-center">
+                <Button
+                  variant="outlined"
+                  color="error"
+                  size="small"
+                  onClick={cancelRequest}
+                >
+                  HỦY YÊU CẦU
+                </Button>
+              </div>
             </div>
           </div>
         </div>
