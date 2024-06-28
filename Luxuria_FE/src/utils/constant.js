@@ -318,6 +318,7 @@ export const ORDER_DETAIL_FORMAT = [
     isRequired: true,
     onChangeTriggerValue: "",
     options: [
+      { value: "0", label: "Không đính" },
       { value: "1", label: "Kim cương" },
       { value: "2", label: "Đá màu" },
       { value: "3", label: "Ngọc Bích" },
@@ -877,14 +878,15 @@ export const GIAVANG_TABLE_HEADERS = [
 export const DASHBOARD_CONFIG = {
   MAX_PRODUCT: 10,
 };
+
 export const SALESTAFF_CALCULATION = [
   {
     id: "gold_price",
     name: "gold_price",
-    label: "Giá vàng",
+    label: "Giá vàng (VNĐ) / cây vàng",
     placeholder: "",
     validMsg: "Hợp lệ",
-    type: "text",
+    type: "number",
     isFullWidth: false,
     isRequired: true,
     onChangeTriggerValue: "",
@@ -895,13 +897,21 @@ export const SALESTAFF_CALCULATION = [
       pattern: {
         value: /^[0-9]+(\.[0-9]+)?$/,
         message: "Không hợp lệ",
+      },
+      min: {
+        value: 1,
+        message: `Giá trị không được nhỏ hơn 1 VNĐ`,
+      },
+      max: {
+        value: 100000000,
+        message: `Giá trị không được vượt quá 100,000,000 VNĐ`,
       },
     },
   },
   {
     id: "gold_weight",
     name: "gold_weight",
-    label: "Trọng lượng sản phẩm",
+    label: "Trọng lượng vàng (chỉ vàng)",
     placeholder: "",
     validMsg: "Hợp lệ",
     type: "text",
@@ -915,13 +925,21 @@ export const SALESTAFF_CALCULATION = [
       pattern: {
         value: /^[0-9]+(\.[0-9]+)?$/,
         message: "Không hợp lệ",
+      },
+      min: {
+        value: 1,
+        message: `Giá trị không được nhỏ hơn 1kg`,
+      },
+      max: {
+        value: 10,
+        message: `Giá trị không được vượt quá 10kg`,
       },
     },
   },
   {
     id: "manufacturing_fee",
     name: "manufacturing_fee",
-    label: "Tiền công",
+    label: "Tiền công (VNĐ)",
     placeholder: "",
     validMsg: "Hợp lệ",
     type: "text",
@@ -936,12 +954,20 @@ export const SALESTAFF_CALCULATION = [
         value: /^[0-9]+(\.[0-9]+)?$/,
         message: "Không hợp lệ",
       },
+      min: {
+        value: 1,
+        message: `Giá trị không được nhỏ hơn 1 VNĐ`,
+      },
+      max: {
+        value: 100000000,
+        message: `Giá trị không được vượt quá 100,000,000 VNĐ`,
+      },
     },
   },
   {
     id: "gem_price",
     name: "gem_price",
-    label: "Tiền đá",
+    label: "Tiền đá (VNĐ)",
     placeholder: "",
     validMsg: "Hợp lệ",
     type: "text",
@@ -955,6 +981,14 @@ export const SALESTAFF_CALCULATION = [
       pattern: {
         value: /^[0-9]+(\.[0-9]+)?$/,
         message: "Không hợp lệ",
+      },
+      min: {
+        value: 1,
+        message: `Giá trị không được nhỏ hơn 1 VNĐ`,
+      },
+      max: {
+        value: 100000000,
+        message: `Giá trị không được vượt quá 100,000,000 VNĐ`,
       },
     },
   },
@@ -1101,6 +1135,9 @@ export const EDIT_PROFILE_FORMAT = [
       minLength: {
         value: 1,
       },
+      maxLength: {
+        value: 50,
+      }
     },
   },
   {

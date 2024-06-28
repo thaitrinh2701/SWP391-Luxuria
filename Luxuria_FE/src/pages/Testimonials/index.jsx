@@ -2,10 +2,7 @@ import React from "react";
 
 function Testimonials() {
   return (
-    <section
-      id="testimonials"
-      className="py-20  dark:bg-[#1F2937] dark:text-white"
-    >
+    <section id="testimonials" className="py-20 dark:text-white">
       <div className="container mx-auto text-center mb-12">
         <h2 className="text-4xl font-inter font-bold border-b-4 border-blue-600 inline-block pb-2">
           Khách hàng nói gì về chúng tôi

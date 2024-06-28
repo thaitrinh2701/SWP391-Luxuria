@@ -11,7 +11,7 @@ import { Pagination, Autoplay } from "swiper/modules";
 
 function Products() {
   return (
-    <section className="py-20 px-4 dark:bg-[#1F2937]">
+    <section className="py-20 px-4 bg-gray-100 dark:bg-[#1F2937]">
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold font-inter border-b-4 border-blue-600 inline-block pb-2 dark:text-white">
           Sản phẩm nổi bật

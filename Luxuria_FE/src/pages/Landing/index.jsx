@@ -84,8 +84,8 @@ function Landing() {
     <div>
       <Hero />
       <Features />
-      <Gallery />
       <Products />
+      <Gallery />
       <HomeBlog posts={posts} />;
       <Testimonials />
       <TeamSection />

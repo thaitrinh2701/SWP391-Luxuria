@@ -6,6 +6,9 @@ import ResetPasswordDetail from "@/pages/ResetPasswordDetail";
 import EditProfile from "@/pages/EditProfile";
 import ChangePassword from "@/pages/ChangePassword";
 import { TrangSucDetailForHome } from "@pages/TrangSucDetail";
+import ProductManagement from "@/pages/Dashboard/ProductManagement";
+import CreateProduct from "@/pages/Dashboard/ProductManagement/CreateProduct";
+import UpdateProduct from "@/pages/Dashboard/ProductManagement/UpdateProduct";
 
 const BlogPostDetail = lazy(() => import("@components/BlogPostDetail"));
 
@@ -258,6 +261,36 @@ export default function Routes() {
         <Suspense fallback={<Loader />}>
           <ProtectedRoute allowedRoles={[USER_ROLES.ADMIN]}>
             <Dashboard />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/quan-ly-san-pham",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute allowedRoles={[USER_ROLES.ADMIN]}>
+            <ProductManagement />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/cap-nhat-san-pham/:id",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute allowedRoles={[USER_ROLES.ADMIN]}>
+            <UpdateProduct />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/tao-san-pham",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute allowedRoles={[USER_ROLES.ADMIN]}>
+            <CreateProduct />
           </ProtectedRoute>
         </Suspense>
       ),
