@@ -7,6 +7,7 @@ import com.luxuria.exceptions.InvalidParamException;
 import com.luxuria.models.*;
 import com.luxuria.repositories.*;
 import com.luxuria.responses.ProductResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -164,6 +165,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    @Transactional
     public void updateOriginalProductData(Long productId, List<MultipartFile> files) throws Exception {
         Product product = getProductById(productId);
         productDataRepository.deleteAllByProductId(productId);
@@ -171,6 +173,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProduct(Long productId) throws Exception {
         productDataRepository.deleteAllByProductId(productId);
         productRepository.deleteById(productId);

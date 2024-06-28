@@ -62,21 +62,32 @@ public class ProductController {
         }
     }
 
-    @PostMapping(value ="/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    @PostMapping(value ="/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<?> createOriginalProduct(
+//            @Valid @ModelAttribute("productDTO") ProductDTO productDTO,
+//            @ModelAttribute("files") List<MultipartFile> files,
+//            BindingResult result) {
+//        try {
+//            if (result.hasErrors()) {
+//                List<String> errorMessages = result.getFieldErrors()
+//                        .stream()
+//                        .map(FieldError::getDefaultMessage)
+//                        .toList();
+//                return ResponseEntity.badRequest().body(errorMessages);
+//            }
+//            Product product = productService.createProduct(productDTO);
+//            productService.uploadFiles(product, files);
+//            return ResponseEntity.ok().body("Thêm sản phẩm thành công");
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
+
+    @PostMapping("/create")
     public ResponseEntity<?> createOriginalProduct(
-            @Valid @RequestBody ProductDTO productDTO,
-            @ModelAttribute("files") List<MultipartFile> files,
-            BindingResult result) {
+            @RequestBody ProductDTO productDTO) {
         try {
-            if (result.hasErrors()) {
-                List<String> errorMessages = result.getFieldErrors()
-                        .stream()
-                        .map(FieldError::getDefaultMessage)
-                        .toList();
-                return ResponseEntity.badRequest().body(errorMessages);
-            }
             Product product = productService.createProduct(productDTO);
-            productService.uploadFiles(product, files);
             return ResponseEntity.ok().body("Thêm sản phẩm thành công");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
