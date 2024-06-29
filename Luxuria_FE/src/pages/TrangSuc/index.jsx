@@ -60,7 +60,7 @@ const TrangSuc = () => {
   }, [listProducts]);
 
   return (
-    <section className="container mx-auto p-4">
+    <section className="container mx-auto p-4 mb-8">
       <div className="flex min-h-screen">
         <div className="text-center font-bold text-3xl mt-20 mx-auto">
           {isLoading ? (

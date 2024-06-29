@@ -113,7 +113,7 @@ export function ProductCard({ name, image, link, data }) {
       className="w-full sm:w-1/2 lg:w-full xl:full p-2"
       onClick={handleClick}
     >
-      <div className="block h-full bg-white text-center rounded-lg overflow-hidden shadow-md transition-transform duration-300 ease-in-out transform hover:scale-105 dark:bg-[#1F2937] dark:text-white h-full">
+      <div className="block h-full bg-white text-center rounded-lg overflow-hidden shadow-md transition-transform duration-300 ease-in-out transform hover:scale-105 dark:bg-[#1F2937] dark:text-white">
         <img
           src={image}
           alt={name}
