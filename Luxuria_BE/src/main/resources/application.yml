@@ -13,10 +13,10 @@ spring:
           starttls:
             enable: true
   datasource:
-    url: jdbc:mysql://viaduct.proxy.rlwy.net:48787/railway?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://monorail.proxy.rlwy.net:37287/railway?useSSL=false&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: fZjhEQdZAbpeVOupLvDmHQLWMSvTBXLh
+    password: xJamBHvbmqBWPqeOnrGnczzHRXVlgHwr
   jpa:
     show-sql: false
     hibernate:
