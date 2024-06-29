@@ -55,7 +55,9 @@ export async function convertConstraintName(constraintName) {
 }
 
 export async function getGoldPrice() {
-  const API = import.meta.env.VITE_API_GOLDRATE_ENDPOINT;
+  const from_date = "06/01/2024";
+  const to_date = "06/30/2024";
+  const API = `/api/CMCWPCoreAPI/api/public-service/get-gold-info-chart?from_date=${from_date}&to_date=${to_date}`;
   try {
     let result = await axios.get(API);
     return result.data?.item || [];
