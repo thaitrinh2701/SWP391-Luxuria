@@ -33,8 +33,6 @@ const CustomerOrderProductDetail = () => {
     .VITE_API_COMPLETE_PRODUCT_ENDPOINT;
   const API_COMPLETE_ORDER = import.meta.env.VITE_API_COMPLETE_ORDER_ENDPOINT;
 
-  const activeColor = (index) =>
-    currentStep === index ? "bg-blue-500" : "bg-gray-300";
   const [categoryName, setCategoryName] = useState("");
   const [gemsName, setGemsName] = useState("");
   const [goldName, setGoldName] = useState("");
