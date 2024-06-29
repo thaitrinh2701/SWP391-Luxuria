@@ -51,6 +51,7 @@ public class WebSecurityConfig {
                                         String.format("%s/roles/token", apiPrefix),
                                         String.format("%s/products", apiPrefix),
                                         String.format("%s/products/{product_id}", apiPrefix),
+                                        String.format("%s/products/category/{category_id}", apiPrefix),
                                         String.format("%s/product_data", apiPrefix),
                                         String.format("%s/product_data/**", apiPrefix)
                                 ).permitAll()
