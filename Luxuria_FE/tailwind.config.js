@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      height: {
+        '8/9': '95%',
+      },
       scale: {
         102: "1.02",
       },

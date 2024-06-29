@@ -96,7 +96,7 @@ export function HomeBlog({ posts }) {
   const homePosts = posts.slice(0, 3);
 
   return (
-    <section className="bg-white mx-auto py-10 dark:bg-[#111827] dark:text-white ">
+    <section className="bg-white mx-auto py-10 dark:bg-[#1F2937] dark:text-white ">
       <div className="container mx-auto text-center">
         <h2
           className="text-4xl font-inter 

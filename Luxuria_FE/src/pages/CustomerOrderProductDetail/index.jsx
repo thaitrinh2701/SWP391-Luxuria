@@ -10,6 +10,9 @@ import axios from "axios";
 import { getRoleId } from "@/services";
 import WarrantyExport from "@/components/WarrantyExport";
 import { convertConstraintName } from "@/services/getHelper";
+import Stepper from "@/components/Stepper";
+import MyStepper from "@/components/Stepper";
+import toast from "react-hot-toast";
 
 const CustomerOrderProductDetail = () => {
   const { orderID } = useParams(); // Sử dụng destructuring để lấy orderID
@@ -216,6 +219,7 @@ const CustomerOrderProductDetail = () => {
       );
       console.log("Submit Price: ", response.data);
       setIsSubmitPrice(true);
+      toast("submit_price_success", "success", "Đã gửi báo giá thành công!");
     } catch (error) {
       console.error("Error submitting price quote: ", error);
     }
@@ -315,7 +319,7 @@ const CustomerOrderProductDetail = () => {
   return (
     <div className="flex flex-row min-h-screen dark:bg-[#111827] dark:text-white">
       <Sidebar />
-      <div className="w-full h-full flex justify-center items-center my-auto">
+      <div className="w-full h-full flex justify-center items-center my-16">
         <div className="flex flex-col lg:flex-row gap-5 w-full max-w-6xl">
           <div className="flex flex-col bg-white dark:bg-gray-700 p-5 w-full lg:w-1/3 rounded-lg shadow-md">
             <div className="w-full space-y-3 mt-[20%]">
@@ -360,13 +364,14 @@ const CustomerOrderProductDetail = () => {
             </div>
           </div>
           <div className="bg-white dark:bg-gray-700 w-full lg:w-2/3 p-6 rounded-lg shadow-md">
+            <MyStepper />
             <form>
               <div className="flex flex-col sm:flex-row items-center mb-6">
                 <img
                   src={logo}
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "./logo.png";
+                    e.target.src = "../logo.png";
                   }}
                   className="w-52 h-52"
                   alt="Product Image"

@@ -63,7 +63,7 @@ const EditProfile = () => {
           Toast("send_err", "error", "Bạn không có quyền truy cập!");
           console.error("Server Response:", error.response.data);
         } else {
-          Toast("send_err", "error", "Lỗi kết nối tới máy chủ!");
+          Toast("send_err", "error", "Lỗi gửi tới máy chủ!");
         }
       } else {
         Toast("connect_err", "error", "Lỗi kết nối tới máy chủ!");
@@ -108,6 +108,7 @@ const EditProfile = () => {
                       message: item.rules.pattern?.message || "Không hợp lệ",
                     },
                     minLength: { value: item.rules.minLength?.value || 1 },
+                    maxLength: { value: item.rules.maxLength?.value || 50 },
                   })}
                 />
               </div>

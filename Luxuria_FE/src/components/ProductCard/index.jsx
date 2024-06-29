@@ -11,7 +11,7 @@ import { Pagination, Autoplay } from "swiper/modules";
 
 function Products() {
   return (
-    <section className="py-20 px-4 dark:bg-[#1F2937]">
+    <section className="py-20 px-4 bg-gray-100 dark:bg-[#1F2937]">
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold font-inter border-b-4 border-blue-600 inline-block pb-2 dark:text-white">
           Sản phẩm nổi bật
@@ -113,7 +113,7 @@ export function ProductCard({ name, image, link, data }) {
       className="w-full sm:w-1/2 lg:w-full xl:full p-2"
       onClick={handleClick}
     >
-      <div className="block h-full bg-white text-center rounded-lg overflow-hidden shadow-md transition-transform duration-300 ease-in-out transform hover:scale-105 dark:bg-[#1F2937] dark:text-white h-full">
+      <div className="block h-full bg-white text-center rounded-lg overflow-hidden shadow-md transition-transform duration-300 ease-in-out transform hover:scale-105 dark:bg-[#1F2937] dark:text-white">
         <img
           src={image}
           alt={name}

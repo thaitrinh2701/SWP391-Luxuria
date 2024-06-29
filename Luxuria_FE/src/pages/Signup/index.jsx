@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { Input, Checkbox, Toast, LoginWGoogle } from "@components";
+import { Input, Checkbox, Toast } from "@components";
 import { SIGNUP_FORMAT } from "@utils/constant";
 import { postSignup } from "@services";
 import { HSTooltip, HSStaticMethods } from "preline";
@@ -85,8 +85,6 @@ function Signup() {
             </p>
           </div>
           <div className="my-5">
-            <LoginWGoogle />
-
             <div className="py-3 flex items-center text-xs text-gray-500 dark:text-gray-300 uppercase before:flex-1 before:border-t before:border-gray-300 before:me-6 after:flex-1 after:border-t after:border-gray-300 after:ms-6 dark:before:border-gray-600 dark:after:border-gray-600">
               Hoặc
             </div>

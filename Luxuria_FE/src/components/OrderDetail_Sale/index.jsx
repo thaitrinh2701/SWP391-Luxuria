@@ -180,14 +180,26 @@ const OrderDetailSale = () => {
 
   const handleCalculation = () => {
     const data = getValues();
-    const giaVangThoiDiem = parseFloat(data.gold_price) || 0;
-    const trongLuongSanPham = parseFloat(data.gold_weight) || 0;
-    const tienCong = parseFloat(data.manufacturing_fee) || 0;
-    const tienDa = parseFloat(data.gem_price) || 0;
+    const MAX_VALUE = 100000000;
+    const MIN_VALUE = 0;
+    if (
+      (data.gold_price > MIN_VALUE && data.gold_price < MAX_VALUE) ||
+      (data.gold_weight > MIN_VALUE && data.gold_weight < MAX_VALUE) ||
+      (data.manufacturing_fee > MIN_VALUE &&
+        data.manufacturing_fee < MAX_VALUE) ||
+      (data.gem_price > MIN_VALUE && data.gem_price < MAX_VALUE)
+    ) {
+      const giaVangThoiDiem = parseFloat(data.gold_price) || 0;
+      const trongLuongSanPham = parseFloat(data.gold_weight) || 0;
+      const tienCong = parseFloat(data.manufacturing_fee) || 0;
+      const tienDa = parseFloat(data.gem_price) || 0;
 
-    const giaVonSanPham =
-      giaVangThoiDiem * trongLuongSanPham + tienCong + tienDa;
-    setProductCost(giaVonSanPham);
+      const giaVonSanPham =
+        giaVangThoiDiem * trongLuongSanPham + tienCong + tienDa;
+      setProductCost(giaVonSanPham);
+    } else {
+      Toast("calculation_err", "error", "Vui lòng nhập giá trị hợp lệ!");
+    }
   };
 
   return (
@@ -302,9 +314,9 @@ const OrderDetailSale = () => {
                     </h3>
                     <Input {...register(item.name, item.rules)} />
                     <div>
-                      {errors[item.id] && (
+                      {errors[item.name] && (
                         <span className="text-red-600">
-                          {errors[item.id].message}
+                          {errors[item.name]?.message}
                         </span>
                       )}
                     </div>

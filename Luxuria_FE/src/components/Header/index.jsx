@@ -11,9 +11,11 @@ import { Logo } from "@components";
 import { MainContext } from "@hooks";
 import DarkModeBtn from "./DarkModeBtn";
 import Navbar from "./Navbar";
+import { getRoleId } from "@/services";
 
 export function Header() {
-  const [cookies, setCookie, removeCookie] = useCookies(["token, user"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
+  const [roleID, setRoleID] = useState(null);
   const { data, setData } = useContext(MainContext);
   const navigate = useNavigate();
   const [isTransparent, setIsTransparent] = useState(true);
@@ -28,9 +30,22 @@ export function Header() {
       removeCookie("user");
       removeCookie("token");
     }
+    setRoleID(null); // Reset roleID when user logs out
     setData({ isLogin: false });
     navigate("/", { replace: true });
   };
+
+  async function fetchRoleID() {
+    const roleIDFromAPI = await getRoleId(cookies.token);
+    setRoleID(roleIDFromAPI);
+    console.log(roleIDFromAPI);
+  }
+
+  useEffect(() => {
+    if (data.isLogin) {
+      fetchRoleID();
+    }
+  }, [data.isLogin]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -124,12 +139,29 @@ export function Header() {
                 >
                   Hồ sơ của tôi
                 </Link>
-                <Link
-                  className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                  to="/don-hang"
-                >
-                  Đơn hàng của tôi
-                </Link>
+                {roleID === 1 ? (
+                  <Link
+                    className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
+                    to="/dashboard"
+                  >
+                    Dashboard
+                  </Link>
+                ) : roleID === 4 || roleID === 5 || roleID === 6 ? (
+                  <Link
+                    className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
+                    to="/yeu-cau"
+                  >
+                    Quản lý đơn hàng
+                  </Link>
+                ) : (
+                  <Link
+                    className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
+                    to="/don-hang"
+                  >
+                    Đơn hàng của tôi
+                  </Link>
+                )}
+
                 <button
                   className="flex items-center w-full gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
                   type="button"

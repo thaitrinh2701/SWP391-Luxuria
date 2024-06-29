@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Image, Upload } from "antd";
 import { Button } from "@mui/material";
@@ -6,6 +6,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { Toast } from "../Toast";
 import { useNavigate } from "react-router-dom";
+import { getRoleId } from "@/services";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -15,13 +16,20 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-const UploadPics = ({ orderID }) => {
+const UploadPics = ({ onChange, orderID }) => {
   const [cookies] = useCookies(["user", "token"]);
+  const [roleID, setRoleID] = useState(null);
   const navigate = useNavigate();
   const API_SUBMIT_DESIGN = import.meta.env.VITE_API_DESIGN_SUBMIT_ENDPOINT;
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState([]);
+
+  async function fetchRoleID() {
+    const roleIDFromAPI = await getRoleId(cookies.token);
+    setRoleID(roleIDFromAPI);
+    console.log(roleIDFromAPI);
+  }
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -31,7 +39,15 @@ const UploadPics = ({ orderID }) => {
     setPreviewOpen(true);
   };
 
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+  const handleChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+    // Communicate changes to parent component
+    onChange(newFileList);
+  };
+
+  useEffect(() => {
+    fetchRoleID();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -95,21 +111,24 @@ const UploadPics = ({ orderID }) => {
       >
         {fileList.length >= 4 ? null : uploadButton}
       </Upload>
-      <div className="flex justify-center">
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          style={{
-            padding: "4px 8px",
-            fontSize: "0.75rem",
-            marginTop: "10px",
-          }}
-          onClick={handleSubmit}
-        >
-          Gửi ảnh
-        </Button>
-      </div>
+      {roleID != 1 && (
+        <div className="flex justify-center">
+          <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            style={{
+              padding: "4px 8px",
+              fontSize: "0.75rem",
+              marginTop: "10px",
+            }}
+            onClick={handleSubmit}
+          >
+            Gửi ảnh
+          </Button>
+        </div>
+      )}
+
       {previewImage && (
         <Image
           wrapperStyle={{

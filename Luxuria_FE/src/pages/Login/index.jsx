@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { Input, Checkbox, Toast, LoginWGoogle } from "@components";
+import { Input, Checkbox, Toast } from "@components";
 import { MainContext } from "@hooks";
 import { LOGIN_FORMAT, USER_ROLES } from "@utils/constant";
 import { postLogin } from "@services";
@@ -19,7 +19,6 @@ function Login() {
   const location = useLocation();
   const from = location.state?.form?.pathname || "/";
   const { setData } = useContext(MainContext);
-  // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(["user", "token"]);
 
   const {
@@ -134,7 +133,6 @@ function Login() {
             </p>
           </div>
           <div className="my-5">
-            <LoginWGoogle />
             <div className="py-3 flex items-center text-xs text-gray-500 dark:text-gray-300 uppercase before:flex-1 before:border-t before:border-gray-300 before:me-6 after:flex-1 after:border-t after:border-gray-300 after:ms-6 dark:before:border-gray-600 dark:after:border-gray-600">
               Hoặc
             </div>

@@ -4,7 +4,7 @@ function TeamSection() {
   return (
     <section
       id="team"
-      className="bg-white py-20 dark:bg-[#111827] dark:text-white"
+      className="bg-white py-20 dark:bg-[#1F2937] dark:text-white"
     >
       {/* Team */}
       <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
