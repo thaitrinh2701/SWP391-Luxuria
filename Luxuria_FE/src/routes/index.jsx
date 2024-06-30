@@ -247,7 +247,6 @@ export default function Routes() {
               USER_ROLES.CUSTOMER,
               USER_ROLES.ADMIN,
               USER_ROLES.SALE_STAFF,
-              USER_ROLES.MANAGER,
             ]}
           >
             <DonHang />

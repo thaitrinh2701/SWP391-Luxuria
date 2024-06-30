@@ -1,40 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCookies } from "react-cookie";
 import {
   ChevronDoubleRightIcon,
   UserCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { faCartShopping, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { getRoleId } from "@/services";
+import { useRole } from "@/hooks/roleProvider";
 
 export function Sidebar() {
-  const [cookies] = useCookies(["user", "token"]);
+  const roleID = useRole();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const [roleID, setRoleID] = useState(null);
-
-  async function fetchRoleID() {
-    const roleIDFromAPI = await getRoleId(cookies.token);
-    setRoleID(roleIDFromAPI);
-    console.log(roleIDFromAPI);
-  }
 
   useEffect(() => {
-    fetchRoleID();
-  }, []);
+    if (isOpen) {
+      setIsOpen(false);
+    }
+  }, [location]);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleLinkClick = () => {
-    // Only close the sidebar if it is open (for smaller screens)
-    if (isOpen) {
-      toggleSidebar();
-    }
   };
 
   return (
@@ -46,10 +33,14 @@ export function Sidebar() {
         onClick={toggleSidebar}
       >
         <span className="sr-only">Toggle Navigation</span>
-        {isOpen ? <div></div> : <ChevronDoubleRightIcon className="w-6 h-6" />}
+        {isOpen ? (
+          <XMarkIcon className="w-6 h-6" />
+        ) : (
+          <ChevronDoubleRightIcon className="w-6 h-6" />
+        )}
       </button>
       <div
-        className={`fixed inset-0 z-40 flex flex-col lg:static lg:flex-col lg:w-72 lg:min-h-screen bg-white dark:bg-[#1F2937] border-r border-gray-200 dark:border-[#1F2937] sidebar-transition ${
+        className={`fixed inset-0 z-40 flex flex-col lg:static lg:flex-col lg:w-72 lg:min-h-screen bg-white dark:bg-[#1F2937] border-r border-gray-200 dark:border-[#1F2937] transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
@@ -79,7 +70,7 @@ export function Sidebar() {
               Luxuria
             </Link>
           </div>
-          <nav className="space-y-1.5">
+          <div className="space-y-1.5">
             <ul className="space-y-1.5">
               <li>
                 <NavLink
@@ -91,7 +82,6 @@ export function Sidebar() {
                     }`
                   }
                   to="/my-profile"
-                  onClick={handleLinkClick}
                 >
                   <UserCircleIcon className="w-5 h-5" />
                   Thông tin của tôi
@@ -108,7 +98,6 @@ export function Sidebar() {
                       }`
                     }
                     to="/don-hang"
-                    onClick={handleLinkClick}
                   >
                     <FontAwesomeIcon
                       icon={faCartShopping}
@@ -133,7 +122,6 @@ export function Sidebar() {
                       }`
                     }
                     to="/yeu-cau"
-                    onClick={handleLinkClick}
                   >
                     <FontAwesomeIcon icon={faPlus} className="w-5 h-5" />
                     Yêu cầu
@@ -141,7 +129,7 @@ export function Sidebar() {
                 </li>
               )}
             </ul>
-          </nav>
+          </div>
         </div>
         <div className="px-6 pb-6">
           <a

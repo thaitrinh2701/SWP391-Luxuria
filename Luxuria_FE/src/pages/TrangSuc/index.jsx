@@ -15,7 +15,7 @@ const TrangSuc = () => {
 
   const getProductsFromAPI = async (categoryId) => {
     try {
-      const response = await axios.get(API_GET_ALL_PRODUCT);
+      const response = await axios.get(`${API_GET_ALL_PRODUCT}/${categoryId}`);
 
       const productsWithImages = response.data.map((item) => {
         const productDataList = item.productDataList;
@@ -26,16 +26,14 @@ const TrangSuc = () => {
         }
         return { ...item, image };
       });
-
-      let filteredProducts = productsWithImages;
-      if (categoryId) {
-        filteredProducts = productsWithImages.filter(
-          (product) => product.product.category.id === parseInt(categoryId)
-        );
-      }
-
-      setListProducts(filteredProducts);
-      console.log(filteredProducts);
+      // let filteredProducts = productsWithImages;
+      // if (categoryId) {
+      //   filteredProducts = productsWithImages.filter(
+      //     (product) => product.product.category.id === parseInt(categoryId)
+      //   );
+      // }
+      setListProducts(productsWithImages);
+      console.log("Data from api ", productsWithImages);
     } catch (error) {
       console.log("Error fetching products:", error);
     } finally {

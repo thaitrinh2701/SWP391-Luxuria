@@ -25,7 +25,7 @@ export function Tabs() {
     .VITE_API_VIEW_ALL_ORDER_ALL_STAFF_ENDPOINT;
 
   const getAllOrders = async () => {
-    if (roleID === null) return; // Wait until roleID is set
+    if (roleID === null) return;
 
     const API_ENDPOINT =
       roleID === USER_ROLES.CUSTOMER
@@ -56,7 +56,7 @@ export function Tabs() {
     if (roleID !== null) {
       getAllOrders();
     }
-  }, [roleID]); // Run getAllOrders when roleID changes
+  }, [roleID]);
 
   return (
     <div>
