@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 import preline from "preline/plugin";
 export default {
-  darkMode: "class", // remove for auto change mode based on system settings
+  darkMode: "class",
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",

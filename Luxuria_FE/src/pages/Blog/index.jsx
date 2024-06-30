@@ -69,7 +69,6 @@ function Blog() {
         {currentPosts.map((post) => (
           <div key={post.id} className="w-full sm:w-1/2 lg:w-1/3 px-4 mb-4">
             {" "}
-            {/* Giảm từ mb-8 xuống mb-4 */}
             <BlogCard
               title={post.title}
               author={post.author}
