@@ -68,7 +68,7 @@ function TrangSucDetail() {
 
   return (
     <div className="container mx-auto py-20 grid grid-cols-1 md:grid-cols-2 gap-10">
-      <div className="p-5 text-xl">
+      <div className="p-5 text-xl dark:text-white">
         <h1 className="text-5xl font-bold mb-2 font-playfair">
           {data?.product?.name}
         </h1>
@@ -78,7 +78,7 @@ function TrangSucDetail() {
         <p className="text-2xl font-playfair">Loại trang sức: {categoryName}</p>
         <Divider className="my-10" />
 
-        <span className="tracking-wide my-1 max-w-xl text-center inline-block px-20 py-5 rounded border border-gray-400 bg-gray-200 text-gray-700 font-bold text-xl hover:bg-gray-700 hover:text-gray-200 hover:transition-colors duration-700">
+        <span className="tracking-wide my-1 max-w-xl text-center inline-block px-20 py-5 rounded-xl border border-gray-400 bg-gray-200 text-gray-700 font-bold text-xl hover:bg-gray-700 hover:text-gray-200 hover:transition-colors duration-700">
           XIN QUÝ KHÁCH ĐẾN CỬA HÀNG ĐỂ MUA
         </span>
 

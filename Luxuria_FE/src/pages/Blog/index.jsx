@@ -122,7 +122,7 @@ export function HomeBlog({ posts }) {
       </div>
       <div className=" text-center">
         <Link
-          className="py-5 px-10 inline-flex items-center gap-x-1 text-sm font-medium text-xl border border-gray-200 bg-white shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-blue-500 dark:hover:bg-neutral-800"
+          className="py-5 px-10 inline-flex items-center gap-x-1 text-sm font-medium text-xl border border-gray-200 bg-white shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
           to="/tin-tuc"
         >
           Xem thêm

@@ -60,7 +60,7 @@ const TrangSuc = () => {
   return (
     <section className="container mx-auto p-4 mb-8">
       <div className="flex min-h-screen">
-        <div className="text-center font-bold text-3xl mt-20 mx-auto">
+        <div className="text-center font-bold text-3xl mt-20 mx-auto dark:text-white">
           {isLoading ? (
             <div className="flex items-center justify-center h-full">
               <Loader />

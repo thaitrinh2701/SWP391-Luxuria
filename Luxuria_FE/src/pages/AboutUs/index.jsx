@@ -4,7 +4,7 @@ function AboutUs() {
   return (
     <div className="AboutUs mt-10">
       <div className="text-center my-12">
-        <h2 className="text-4xl font-inter font-bold border-b-4 border-blue-600 inline-block pb-2">
+        <h2 className="text-4xl font-inter font-bold border-b-4 border-blue-600 inline-block pb-2 dark:text-white">
           THÔNG TIN VỀ CHÚNG TÔI
         </h2>
       </div>
