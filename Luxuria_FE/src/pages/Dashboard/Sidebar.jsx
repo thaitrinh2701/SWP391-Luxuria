@@ -66,14 +66,13 @@ function Sidebar() {
   w-[260px]
   hidden
   fixed inset-y-0 start-0 z-[60]
-  bg-white border-e border-gray-200
   lg:block lg:translate-x-0 lg:end-auto lg:bottom-0
-  dark:bg-neutral-800 dark:border-neutral-700
+  dark:bg-gray-800
  "
       >
         <div className="px-8 pt-4">
           <Link
-            className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
+            className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80 dark:text-white"
             to="/dashboard"
             aria-label="Luxuria"
           >
@@ -88,7 +87,7 @@ function Sidebar() {
           <ul className="space-y-1.5">
             <li>
               <Link
-                className="flex items-center gap-x-3.5 py-2 px-2.5 bg-gray-100 text-sm text-neutral-700 rounded-lg hover:bg-gray-100 dark:bg-neutral-700 dark:text-white"
+                className="flex items-center gap-x-3.5 py-2 px-2.5 bg-gray-200 text-sm text-gray-900 rounded-lg hover:bg-gray-100 dark:bg-[#374151] dark:text-white"
                 to="/dashboard"
               >
                 <svg
@@ -112,7 +111,7 @@ function Sidebar() {
 
             <li>
               <Link
-                className="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-neutral-700 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300"
+                className="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-[#374151] dark:text-neutral-400 dark:hover:text-neutral-300"
                 to="/quan-ly-san-pham"
               >
                 <svg
