@@ -165,7 +165,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    @Transactional
+//    @Transactional : want to use but not ready yet
     public void updateOriginalProductData(Long productId, List<MultipartFile> files) throws Exception {
         Product product = getProductById(productId);
         productDataRepository.deleteAllByProductId(productId);
@@ -173,7 +173,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    @Transactional
+//    @Transactional : want to use but not ready yet
     public void deleteProduct(Long productId) throws Exception {
         productDataRepository.deleteAllByProductId(productId);
         productRepository.deleteById(productId);
