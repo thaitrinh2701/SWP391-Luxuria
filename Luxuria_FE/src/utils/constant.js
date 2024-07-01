@@ -883,7 +883,7 @@ export const SALESTAFF_CALCULATION = [
   {
     id: "gold_price",
     name: "gold_price",
-    label: "Giá vàng (VNĐ) / cây vàng",
+    label: "Giá vàng (VNĐ) / chỉ vàng",
     placeholder: "",
     validMsg: "Hợp lệ",
     type: "number",
@@ -927,12 +927,8 @@ export const SALESTAFF_CALCULATION = [
         message: "Không hợp lệ",
       },
       min: {
-        value: 1,
-        message: `Giá trị không được nhỏ hơn 1kg`,
-      },
-      max: {
-        value: 10,
-        message: `Giá trị không được vượt quá 10kg`,
+        value: 0,
+        message: `Giá trị không được nhỏ hơn 0`,
       },
     },
   },

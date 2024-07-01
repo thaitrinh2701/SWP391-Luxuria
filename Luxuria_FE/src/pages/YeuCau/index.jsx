@@ -81,19 +81,19 @@ function YeuCau() {
       //Lọc order theo từng role ID
       if (roleID === USER_ROLES.MANAGER) {
         const managerFilteredOrders = filteredOrders.filter(
-          (order) => order.state.id === 2
+          (order) => order.process.id === 1
         );
         setOrderList(managerFilteredOrders);
         console.log("Manager orders:", managerFilteredOrders);
       } else if (roleID === USER_ROLES.DESIGN_STAFF) {
         const designStaffFilteredOrders = filteredOrders.filter(
-          (order) => order.state.id === 5
+          (order) => order.process.id === 3 || order.process.id === 4
         );
         setOrderList(designStaffFilteredOrders);
         console.log("Design staff orders:", designStaffFilteredOrders);
       } else if (roleID === USER_ROLES.PRODUCTION_STAFF) {
         const productionStaffFilteredOrders = filteredOrders.filter(
-          (order) => order.state.id === 7
+          (order) => order.process.id === 5
         );
         setOrderList(productionStaffFilteredOrders);
         console.log("Production staff orders:", productionStaffFilteredOrders);

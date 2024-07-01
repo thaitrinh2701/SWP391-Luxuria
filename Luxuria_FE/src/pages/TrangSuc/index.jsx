@@ -11,7 +11,7 @@ const TrangSuc = () => {
   const [categoryName, setCategoryName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const API_GET_ALL_PRODUCT = import.meta.env
-    .VITE_API_GET_ALL_PRODUCTS_ENDPOINT;
+    .VITE_API_GET_ALL_PRODUCTS_BY_CATEGORY_ENDPOINT;
 
   const getProductsFromAPI = async (categoryId) => {
     try {

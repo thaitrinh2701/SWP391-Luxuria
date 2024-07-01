@@ -24,7 +24,7 @@ function ProductManagement() {
       Toast("dashboard_info", "success", "Lấy thông tin thành công");
       setData(response.data);
     } catch (error) {
-      console.log("Error fetching products:", error);
+      console.error("Error fetching products:", error);
     }
   };
 
