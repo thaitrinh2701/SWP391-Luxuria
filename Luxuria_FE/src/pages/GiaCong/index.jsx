@@ -144,21 +144,6 @@ function GiaCong() {
                 })}
               />
             ))}
-
-            {/* <Checkbox
-              id="accept"
-              isRequired={true}
-              isError={errors.accept}
-              msg={errors.accept?.message}
-              {...register("accept", {
-                required:
-                  "Vui lòng đồng ý với điều khoản sử dụng và chính sách bảo mật",
-              })}
-            >
-              <span className="text-lg">
-                Tôi đã kiểm tra kĩ lại lần nữa, thông tin tôi gửi là đúng
-              </span>
-            </Checkbox> */}
             <button
               type="submit"
               className="bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-600 "

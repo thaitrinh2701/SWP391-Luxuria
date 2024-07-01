@@ -4,7 +4,7 @@ import { Logo } from "@components";
 
 export function Footer() {
   return (
-    <footer className="w-full bg-white dark:bg-gray-800">
+    <footer className="w-full bg-white dark:bg-gray-800 z-[60]">
       <div className="mx-auto max-w-screen-2xl">
         <div className="flex flex-row items-center justify-between px-8 py-2.5">
           <Logo

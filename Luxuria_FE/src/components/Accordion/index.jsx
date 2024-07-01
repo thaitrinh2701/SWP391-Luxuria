@@ -3,13 +3,13 @@ import { ChevronUpIcon } from "@heroicons/react/24/outline";
 export function Accordion({ id, title, message }) {
   return (
     <div
-      className={`hs-accordion hs-accordion-active:bg-white mr-4 bg-gray-100 rounded-md p-4 dark:hs-accordion-active:bg-gray-800 outline-none ${
+      className={`hs-accordion hs-accordion-active:bg-white mr-4 bg-gray-100 rounded-md p-4 dark:hs-accordion-active:bg-gray-800 outline-none dark:bg-gray-800 ${
         id === 0 ? "active" : ""
       }`}
       id={`hs-basic-with-title-and-arrow-stretched-heading-${id}`}
     >
       <button
-        className="hs-accordion-toggle group pb-3 inline-flex items-center justify-between gap-x-3 w-full md:text-lg font-semibold text-start text-gray-800 rounded-lg transition hover:text-blue-600 dark:text-gray-200 dark:hover:text-gray-200 hs-accordion-active:text-blue-500 outline-none"
+        className="hs-accordion-toggle group pb-3 inline-flex items-center justify-between gap-x-3 w-full md:text-lg font-semibold text-start text-gray-800 rounded-lg transition hover:text-blue-600 dark:text-gray-200 dark:hover:text-gray-200 hs-accordion-active:text-blue-500 outline-none dark:bg-gray-800"
         aria-controls={`hs-basic-with-title-and-arrow-stretched-collapse-${id}`}
       >
         <span className="flex-1 text-center">{title}</span>
