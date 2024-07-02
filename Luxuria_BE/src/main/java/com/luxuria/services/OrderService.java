@@ -7,6 +7,7 @@ import com.luxuria.exceptions.PermissionDeniedException;
 import com.luxuria.models.*;
 import com.luxuria.models.Process;
 import com.luxuria.repositories.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +35,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
     public Order submitDesign(Order order, List<MultipartFile> files) throws Exception {
         checkProcess(order, 3L);
         productDataRepository.deleteAllByProductId((order.getProduct().getId()));
