@@ -15,6 +15,19 @@ export async function getRoleId(token) {
   }
 }
 
+/** 
+ * minimumFractionDigits: Thiết lập số chữ số thập phân tối thiểu để hiển thị. Nếu số tiền có ít chữ số thập phân hơn giá trị này, nó sẽ được điền thêm bằng số 0.
+   maximumFractionDigits: Thiết lập số chữ số thập phân tối đa để hiển thị. Nếu số tiền có nhiều chữ số thập phân hơn giá trị này, nó sẽ được làm tròn.
+*/
+export const formatMoney = (amount) => {
+  return new Intl.NumberFormat("vn-VN", {
+    style: "currency",
+    currency: "VND",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+};
+
 export async function convertConstraintName(constraintName) {
   switch (constraintName) {
     case "ring":

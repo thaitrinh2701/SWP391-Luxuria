@@ -25,7 +25,7 @@ export function Sidebar() {
   };
 
   return (
-    <div className="flex h-full min-h-screen">
+    <div className="flex h-full">
       <button
         type="button"
         className="lg:hidden text-gray-500 hover:text-gray-600 p-2 fixed top-16 left-2 z-50"

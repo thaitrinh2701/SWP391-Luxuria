@@ -106,11 +106,11 @@ function Login() {
 
   return (
     <section className="lg:grid lg:h-full lg:grid-cols-12 mt-[4.5rem]">
-      <aside className="relative block h-16 lg:order-first lg:col-span-5 xl:col-span-7 lg:h-full">
+      <aside className="relative block h-16 lg:order-first lg:col-span-5 xl:col-span-7 lg:h-full min-[320px]:mb-[50%] :">
         <img
           alt="cover"
-          src="https://images.unsplash.com/photo-1509822929063-6b6cfc9b42f2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"
-          className="absolute inset-0 h-full w-full object-cover object-center bg-center bg-no-repeat"
+          src="https://static.vecteezy.com/system/resources/previews/022/899/918/non_2x/jewelry-ring-with-diamonds-and-precious-stones-ai-generated-free-photo.jpg"
+          className="absolute inset-0 w-full object-cover object-center bg-center bg-no-repeat"
         />
       </aside>
 

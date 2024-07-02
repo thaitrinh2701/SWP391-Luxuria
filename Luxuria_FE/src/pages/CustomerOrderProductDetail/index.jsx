@@ -9,7 +9,7 @@ import UploadPics from "@/components/Upload";
 import axios from "axios";
 import { getRoleId } from "@/services";
 import WarrantyExport from "@/components/WarrantyExport";
-import { convertConstraintName } from "@/services/getHelper";
+import { convertConstraintName, formatMoney } from "@/services/getHelper";
 import Stepper from "@/components/Stepper";
 import MyStepper from "@/components/Stepper";
 import toast from "react-hot-toast";
@@ -320,12 +320,12 @@ const CustomerOrderProductDetail = () => {
   }
 
   return (
-    <div className="flex flex-row min-h-screen dark:bg-[#111827] dark:text-white">
+    <div className="flex flex-row dark:bg-[#111827] dark:text-white">
       <Sidebar />
-      <div className="w-full h-full flex justify-center items-center my-16">
+      <div className="w-full h-full flex justify-center items-center my-auto">
         <div className="flex flex-col lg:flex-row gap-5 w-full max-w-6xl">
-          <div className="flex flex-col bg-white dark:bg-gray-700 p-5 w-full lg:w-1/3 rounded-lg shadow-md">
-            <div className="w-full space-y-3 mt-[20%]">
+          <div className="bg-white dark:bg-gray-700 p-5 w-full lg:w-1/3 rounded-lg shadow-md">
+            <div className="w-full mt-[20%]">
               <h1 className="text-2xl font-bold text-center">
                 Thông tin khách hàng
               </h1>
@@ -376,7 +376,7 @@ const CustomerOrderProductDetail = () => {
                     e.target.onerror = null;
                     e.target.src = "../logo.png";
                   }}
-                  className="w-52 h-52"
+                  className="w-32 h-32"
                   alt="Product Image"
                 />
                 <div className="sm:ml-6 mt-6 sm:mt-0 text-center sm:text-left">
@@ -440,7 +440,7 @@ const CustomerOrderProductDetail = () => {
                                 key={index}
                                 src={url}
                                 alt={`Product Image ${index + 1}`}
-                                className="w-30 h-40 object-cover ml-3"
+                                className="w-32 h-32 object-cover ml-3"
                               />
                             ))
                           ) : (
@@ -469,27 +469,29 @@ const CustomerOrderProductDetail = () => {
                     <h3 className="font-medium">
                       Giá vàng:
                       <span className="font-normal ml-1">
-                        {orderDetail.order.product.goldPrice} VNĐ
+                        {formatMoney(orderDetail.order.product.goldPrice)}
                       </span>
                     </h3>
                     <h3 className="font-medium">
                       Giá đá:
                       <span className="font-normal ml-1">
-                        {orderDetail.order.product.gemPrice} VNĐ
+                        {formatMoney(orderDetail.order.product.gemPrice)}
                       </span>
                     </h3>
 
                     <h3 className="font-medium">
                       Tiền công:
                       <span className="font-normal ml-1">
-                        {orderDetail.order.product.manufacturingFee} VNĐ
+                        {formatMoney(
+                          orderDetail.order.product.manufacturingFee
+                        )}
                       </span>
                     </h3>
 
                     <h3 className="font-medium">
                       Tổng giá tiền:
                       <span className="font-normal ml-1 text-green-500">
-                        {orderDetail.order.product.totalPrice} VNĐ
+                        {formatMoney(orderDetail?.order?.product?.totalPrice)}
                       </span>
                     </h3>
                   </div>

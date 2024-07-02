@@ -151,7 +151,7 @@ function ProductTable({ data }) {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
+              <tbody className="divide-y divide-gray-200 dark:bg-[#111827] dark:divide-neutral-700">
                 <TableBody data={data} />
               </tbody>
             </table>
