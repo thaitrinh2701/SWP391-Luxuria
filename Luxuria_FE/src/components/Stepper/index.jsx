@@ -78,7 +78,9 @@ const MyStepper = () => {
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((step, index) => (
             <Step key={step.id} completed={index <= activeStep}>
-              <StepLabel className="mx">{step.name}</StepLabel>
+              <StepLabel>
+                <span className="dark:text-white text-center">{step.name}</span>
+              </StepLabel>
             </Step>
           ))}
         </Stepper>

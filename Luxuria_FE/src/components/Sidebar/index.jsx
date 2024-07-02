@@ -25,7 +25,7 @@ export function Sidebar() {
   };
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full min-h-screen">
       <button
         type="button"
         className="lg:hidden text-gray-500 hover:text-gray-600 p-2 fixed top-16 left-2 z-50"
@@ -40,11 +40,11 @@ export function Sidebar() {
         )}
       </button>
       <div
-        className={`fixed inset-0 z-40 flex flex-col lg:static lg:flex-col lg:w-72 lg:min-h-screen bg-white dark:bg-[#1F2937] border-r border-gray-200 dark:border-[#1F2937] transform transition-transform duration-300 ${
+        className={`fixed inset-0 z-40 flex flex-col lg:static lg:flex-col lg:w-72 lg:h-full lg:min-h-screen bg-white dark:bg-[#1F2937] border-r border-gray-200 dark:border-[#1F2937] transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        <div className="p-6 flex-1">
+        <div className="flex-1 p-6 overflow-y-auto">
           <div className="flex items-center justify-between mb-6 lg:hidden">
             <Link
               className="text-xl font-semibold text-gray-900 dark:text-white"

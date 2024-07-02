@@ -7,6 +7,7 @@ import { GIACONG_FORMAT } from "@utils/constant";
 import { Divider } from "antd";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function GiaCong() {
   const API = import.meta.env.VITE_API_MAKE_REQUEST_ENDPOINT;
@@ -27,50 +28,67 @@ function GiaCong() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const userId = cookies.user?.id;
+    // Show SweetAlert confirmation dialog
+    Swal.fire({
+      title: "Bạn có chắc chắn là muốn đặt hàng không?",
+      text: "Bạn vẫn có thể hủy yêu cầu trước khi nhân viên duyệt yêu cầu!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ĐỒNG Ý",
+      cancelButtonText: "HỦY",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const userId = cookies.user?.id;
 
-    if (!userId) {
-      Toast("request_err", "error", "Vui lòng đăng nhập để gửi đơn!");
-      navigate("/login");
-      return;
-    }
-
-    const requestData = {
-      user_id: userId,
-      ...data,
-    };
-
-    console.log("Request Data:", requestData);
-
-    try {
-      const response = await axios.post(API, requestData, {
-        headers: {
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
-      Toast("processing", "info", "Đang xử lý đơn...");
-      if (response.status === 200) {
-        Toast("request_success", "success", "Gửi đơn thành công!");
-      } else {
-        Toast("request_err", "error", "Gửi đơn thất bại!");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-
-      if (error.response) {
-        if (error.response.status === 400) {
-          Toast("send_error", "error", "Dữ liệu gửi đi không hợp lệ!");
-          console.error("Server Response:", error.response.data);
-        } else if (error.response.status === 403) {
-          Toast("send_error", "error", "Bạn không có quyền truy cập!");
-          console.error("Server Response:", error.response.data);
-        } else {
-          Toast("send_error", "error", "Lỗi kết nối tới máy chủ!");
+        if (!userId) {
+          Toast("request_err", "error", "Vui lòng đăng nhập để gửi đơn!");
+          navigate("/login");
+          return;
         }
-      } else {
-        Toast("send_error", "error", "Lỗi kết nối tới máy chủ!");
+
+        const requestData = {
+          user_id: userId,
+          ...data,
+        };
+
+        console.log("Request Data:", requestData);
+
+        try {
+          const response = await axios.post(API, requestData, {
+            headers: {
+              Authorization: `Bearer ${cookies.token}`,
+            },
+          });
+          if (response.status === 200) {
+            Swal.fire({
+              title: "Đặt hàng thành công!",
+              text: "Yêu cầu của bạn đã được nhân viên tiếp nhận!",
+              icon: "success",
+            });
+          } else {
+            Toast("request_err", "error", "Gửi đơn thất bại!");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+
+          if (error.response) {
+            if (error.response.status === 400) {
+              Toast("send_error", "error", "Dữ liệu gửi đi không hợp lệ!");
+              console.error("Server Response:", error.response.data);
+            } else if (error.response.status === 403) {
+              Toast("send_error", "error", "Bạn không có quyền truy cập!");
+              console.error("Server Response:", error.response.data);
+            } else {
+              Toast("send_error", "error", "Lỗi kết nối tới máy chủ!");
+            }
+          } else {
+            Toast("send_error", "error", "Lỗi kết nối tới máy chủ!");
+          }
+        }
       }
-    }
+    });
   };
   return (
     <div className="mb-4 mx-auto max-w-7xl">
@@ -111,7 +129,7 @@ function GiaCong() {
 
         <div className="bg-gray-100 p-6 rounded-lg shadow-lg hs-dark-mode-active:bg-gray-500">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {GIACONG_FORMAT.map((item, index) => (
+            {/* {GIACONG_FORMAT.map((item, index) => (
               <Input
                 key={index}
                 id={item.id}
@@ -143,7 +161,7 @@ function GiaCong() {
                   },
                 })}
               />
-            ))}
+            ))} */}
             <button
               type="submit"
               className="bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-600 "

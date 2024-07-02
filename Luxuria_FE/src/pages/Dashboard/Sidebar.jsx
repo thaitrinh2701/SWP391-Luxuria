@@ -67,6 +67,7 @@ function Sidebar() {
   hidden
   fixed inset-y-0 start-0 z-[60]
   lg:block lg:translate-x-0 lg:end-auto lg:bottom-0
+  bg-white
   dark:bg-gray-800
  "
       >
