@@ -4,10 +4,13 @@ import com.luxuria.dtos.UserChangeProfileDTO;
 import com.luxuria.dtos.UserDTO;
 import com.luxuria.models.Request;
 import com.luxuria.models.User;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface IUserService {
+
+    User register(UserDTO userDTO) throws Exception;
 
     User createUser(UserDTO userDTO) throws Exception;
 
@@ -32,4 +35,10 @@ public interface IUserService {
     void changePassword(User user, String newPassword) throws Exception;
 
     void invalidateToken(String authHeader) throws Exception;
+
+    void softDeleteUser(Long userId) throws Exception;
+
+    void updateUser(Long userId, UserDTO userDTO) throws Exception;
+
+    List<User> getAllUsers();
 }
