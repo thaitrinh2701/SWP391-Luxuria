@@ -16,7 +16,7 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-const UploadPics = ({ onChange, orderID }) => {
+const UploadPics = ({ onChange = () => {}, orderID }) => {
   const [cookies] = useCookies(["user", "token"]);
   const [roleID, setRoleID] = useState(null);
   const navigate = useNavigate();
@@ -41,7 +41,6 @@ const UploadPics = ({ onChange, orderID }) => {
 
   const handleChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
-    // Communicate changes to parent component
     onChange(newFileList);
   };
 

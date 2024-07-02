@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
+import { Toast } from "../Toast";
 
 const ProductDetailCard = ({
   productName,
@@ -75,6 +76,7 @@ const ProductDetailCard = ({
         }
       );
       setIsCompleteOrder(true);
+      Toast("complete_order", "success", "Hoàn thành đơn hàng thành công!");
       console.log("Complete Order: ", response.data);
     } catch (error) {
       console.error("Error complete order: ", error);
@@ -132,16 +134,18 @@ const ProductDetailCard = ({
       );
       console.log("Accept Price: ", response.data);
       setIsAcceptPrice(approvalStatus);
+      Toast("accept_price", "success", "Chấp nhận báo giá thành công!");
+      window.location.reload(); // Refresh the page
     } catch (error) {
       console.error("Error accepting price quote: ", error);
     }
   };
 
   useEffect(() => {
+    console.log("");
     if (isCustomerApproved) {
       setIsApproved(true);
       setProcessState("approved");
-      console.log("True hay là false ?: ", isCustomerApproved);
     }
     fetchRoleID();
   }, [isCustomerApproved]);
@@ -220,9 +224,10 @@ const ProductDetailCard = ({
                   : "text-yellow-500"
               }`}
             >
-              {stateID !== 2
-                ? `Giá tiền: ${productPrice} VNĐ`
-                : "Giá tiền: Đang chờ duyệt"}
+              {(stateID === 1 || stateID === 2) &&
+                roleID != 6 &&
+                "Giá tiền: Đang chờ duyệt"}
+              {`Giá tiền: ${productPrice} VNĐ`}
               {processState === "rejected" && "Rejected"}
               {processState === "pending" && "Pending"}
             </span>
@@ -303,29 +308,32 @@ const ProductDetailCard = ({
                     </Button>
                   </>
                 )}
-              {!isSubmitPrice && roleID === 3 && stateID === 3 && (
-                <>
-                  <Link to={`/chinh-sua-don-hang/${orderID}`}>
+              {!isSubmitPrice &&
+                roleID === 3 &&
+                processID === 1 &&
+                stateID === 3 && (
+                  <>
+                    <Link to={`/chinh-sua-don-hang/${orderID}`}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        style={{ padding: "4px 8px", fontSize: "0.75rem" }}
+                      >
+                        CHỈNH SỬA ĐƠN HÀNG
+                      </Button>
+                    </Link>
                     <Button
                       variant="outlined"
                       color="primary"
                       size="small"
                       style={{ padding: "4px 8px", fontSize: "0.75rem" }}
+                      onClick={handleSubmitPriceQuote}
                     >
-                      CHỈNH SỬA ĐƠN HÀNG
+                      Báo giá
                     </Button>
-                  </Link>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    size="small"
-                    style={{ padding: "4px 8px", fontSize: "0.75rem" }}
-                    onClick={handleSubmitPriceQuote}
-                  >
-                    Báo giá
-                  </Button>
-                </>
-              )}
+                  </>
+                )}
               {isCompleteOrder === false && roleID === 3 && stateID === 8 && (
                 <Button
                   variant="outlined"

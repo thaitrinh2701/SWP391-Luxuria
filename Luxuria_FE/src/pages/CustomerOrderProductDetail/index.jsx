@@ -100,9 +100,9 @@ const CustomerOrderProductDetail = () => {
 
   useEffect(() => {
     const updateConstraintName = async () => {
-      const categoryName = orderDetail.order.product.category.name;
-      const gemsName = orderDetail.order.product.gem.name;
-      const goldName = orderDetail.order.product.gold.name;
+      const categoryName = orderDetail?.order?.product?.category?.name;
+      const gemsName = orderDetail?.order?.product?.gem?.name;
+      const goldName = orderDetail?.order?.product?.gold?.name;
       if (categoryName) {
         const convertedName = await convertConstraintName(categoryName);
         setCategoryName(convertedName);
@@ -141,6 +141,7 @@ const CustomerOrderProductDetail = () => {
 
   const handleCustomerAcceptDesign = (approvalStatus) => {
     customerAcceptDesign(approvalStatus);
+    Toast("accept_design", "success", "Chấp nhận thiết kế thành công!");
     navigate("/don-hang");
   };
 
@@ -219,7 +220,7 @@ const CustomerOrderProductDetail = () => {
       );
       console.log("Submit Price: ", response.data);
       setIsSubmitPrice(true);
-      toast("submit_price_success", "success", "Đã gửi báo giá thành công!");
+      Toast("submit_price", "success", "Đã gửi báo giá thành công!");
     } catch (error) {
       console.error("Error submitting price quote: ", error);
     }
@@ -301,6 +302,8 @@ const CustomerOrderProductDetail = () => {
       );
       console.log("Accept Price: ", response.data);
       setIsAcceptPrice(approvalStatus);
+      navigate("/don-hang");
+      Toast("accept_price", "success", "Chấp nhận báo giá thành công!");
     } catch (error) {
       console.error("Error accepting price quote: ", error);
     }
@@ -510,6 +513,7 @@ const CustomerOrderProductDetail = () => {
               {(isAcceptPrice === false || isAcceptDesign === false) &&
                 (roleID === 6 || roleID === 2) &&
                 (orderDetail.order.state?.id === 4 ||
+                  orderDetail.order.state?.id === 2 ||
                   orderDetail.order.state?.id === 6) && (
                   <div className="flex justify-end mt-6 gap-3">
                     <Button
