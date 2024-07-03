@@ -16,6 +16,7 @@ import com.luxuria.repositories.UserRepository;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,6 +38,16 @@ public class UserService implements IUserService {
     private final EmailUntil emailUntil;
 
     @Override
+    public User register(UserDTO userDTO) throws Exception {
+        Role role = roleRepository.findById(userDTO.getRoleId())
+                .orElseThrow(() -> new DataNotFoundException("role: Role này không tồn tại"));
+        if (!role.getName().equalsIgnoreCase("CUSTOMER")) {
+            throw new PermissionDeniedException("role: Không thể đăng ký các role khác");
+        }
+        return createUser(userDTO);
+    }
+
+    @Override
     public User createUser(UserDTO userDTO) throws Exception {
         String email = userDTO.getEmail();
 
@@ -46,10 +57,6 @@ public class UserService implements IUserService {
 
         Role role = roleRepository.findById(userDTO.getRoleId())
                 .orElseThrow(() -> new DataNotFoundException("role: Role này không tồn tại"));
-
-        if (!role.getName().equalsIgnoreCase("CUSTOMER")) {
-            throw new PermissionDeniedException("role: Không thể đăng ký các role khác");
-        }
 
         User newUser = User.builder()
                 .fullName(userDTO.getFullName())
@@ -73,6 +80,10 @@ public class UserService implements IUserService {
             throw new DataNotFoundException("Email hoặc mật khẩu không đúng");
         }
         User existingUser = user.get();
+
+        if (!existingUser.isActive()) {
+            throw new BadCredentialsException("Tài khoản đã bị vô hiệu hóa");
+        }
 
         //check password
         if (!passwordEncoder.matches(password, existingUser.getPassword())) {
@@ -173,5 +184,30 @@ public class UserService implements IUserService {
     public void invalidateToken(String authHeader) throws Exception {
         User user = findUserByToken(authHeader);
         revokedAllUserTokens(user);
+    }
+
+    @Override
+    public void softDeleteUser(Long userId) throws Exception {
+        User user = findUserById(userId);
+        user.setActive(false);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updateUser(Long userId, UserDTO userDTO) throws Exception {
+        Role role = roleRepository.findById(userDTO.getRoleId())
+                .orElseThrow(() -> new DataNotFoundException("role: Role này không tồn tại"));
+        User user = findUserById(userId);
+        user.setFullName(userDTO.getFullName());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setRole(role);
+        String newPassword = passwordEncoder.encode(userDTO.getPassword());
+        user.setPassword(newPassword);
+        userRepository.save(user);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

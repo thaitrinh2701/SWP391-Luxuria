@@ -116,7 +116,7 @@ function UpdateProduct() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-8">
             {ORDER_DETAIL_FORMAT.map((item) => (
               <div key={item.id}>
-                <label htmlFor={item.id} className="font-medium">
+                <label htmlFor={item.id} className="font-medium dark:text-white">
                   {item.label}
                   {item.rules.required && (
                     <span className="text-red-500 ml-1">*</span>

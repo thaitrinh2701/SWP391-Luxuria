@@ -55,6 +55,16 @@ public class WebSecurityConfig {
                                         String.format("%s/product_data", apiPrefix),
                                         String.format("%s/product_data/**", apiPrefix)
                                 ).permitAll()
+                                .requestMatchers(GET,
+                                        String.format("%s/users/view_all", apiPrefix)).hasRole(Role.ADMIN)
+                                .requestMatchers(POST,
+                                        String.format("%s/users/create", apiPrefix)).hasRole(Role.ADMIN)
+                                .requestMatchers(PUT,
+                                        String.format("%s/users/update/{user_id}", apiPrefix)).hasRole(Role.ADMIN)
+                                .requestMatchers(PUT,
+                                        String.format("%s/users/delete/{user_id}", apiPrefix)).hasRole(Role.ADMIN)
+                                .requestMatchers(POST,
+                                        String.format("%s/users/create", apiPrefix)).hasRole(Role.ADMIN)
                                 .requestMatchers(PUT,
                                         String.format("%s/users/change_profile", apiPrefix))
                                 .hasAnyRole(Role.CUSTOMER, Role.SALES_STAFF, Role.DESIGN_STAFF, Role.PRODUCTION_STAFF, Role.MANAGER, Role.ADMIN)

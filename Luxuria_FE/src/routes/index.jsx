@@ -9,6 +9,9 @@ import { TrangSucDetailForHome } from "@pages/TrangSucDetail";
 import ProductManagement from "@/pages/Dashboard/ProductManagement";
 import CreateProduct from "@/pages/Dashboard/ProductManagement/CreateProduct";
 import UpdateProduct from "@/pages/Dashboard/ProductManagement/UpdateProduct";
+import UserManagement from "@/pages/Dashboard/UserManagement";
+import CreateUser from "@/pages/Dashboard/UserManagement/CreateUser";
+import UpdateUser from "@/pages/Dashboard/UserManagement/UpdateUser";
 
 const BlogPostDetail = lazy(() => import("@components/BlogPostDetail"));
 
@@ -290,6 +293,36 @@ export default function Routes() {
         <Suspense fallback={<Loader />}>
           <ProtectedRoute allowedRoles={[USER_ROLES.ADMIN]}>
             <CreateProduct />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/quan-ly-tai-khoan",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute allowedRoles={[USER_ROLES.ADMIN]}>
+            <UserManagement />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/cap-nhat-tai-khoan/:id",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute allowedRoles={[USER_ROLES.ADMIN]}>
+            <UpdateUser />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/tao-tai-khoan",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute allowedRoles={[USER_ROLES.ADMIN]}>
+            <CreateUser />
           </ProtectedRoute>
         </Suspense>
       ),

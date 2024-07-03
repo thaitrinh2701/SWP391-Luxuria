@@ -1237,3 +1237,218 @@ export const GALLERY = [
     alt: "Jewelry 6",
   },
 ];
+
+export const UPDATE_USER_FORMAT = [
+  {
+    id: "fullname",
+    name: "fullname",
+    label: "Họ và tên",
+    placeholder: "Vũ Đinh Trọng Thắng",
+    validMsg: "Họ và tên hợp lệ",
+    type: "text",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "",
+    options: [],
+    inputMode: "text",
+    rules: {
+      required: "Họ và tên không được để trống",
+      minLength: {
+        value: 1,
+      },
+    },
+  },
+  {
+    id: "phone",
+    name: "phone",
+    label: "Số điện thoại",
+    placeholder: "0987654321",
+    validMsg: "Số điện thoại hợp lệ",
+    type: "text",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "confirm_password",
+    options: [],
+    inputMode: "tel",
+    rules: {
+      required: "Số điện thoại không được để trống",
+      pattern: {
+        value: /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
+        message: "Số điện thoại không hợp lệ",
+      },
+      minLength: {
+        value: 1,
+      },
+    },
+  },
+  {
+    id: "role_id",
+    name: "role_id",
+    label: "Vai trò",
+    validMsg: "Hợp lệ",
+    type: "select",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "",
+    options: [
+      { value: "1", label: "Admin" },
+      { value: "2", label: "Customer" },
+      { value: "3", label: "Sales Staff" },
+      { value: "4", label: "Design Staff" },
+      { value: "5", label: "Production Staff" },
+      { value: "6", label: "Manager" },
+    ],
+    rules: {
+      required: "Không được để trống",
+    },
+  },
+  {
+    id: "password",
+    name: "password",
+    label: "Mật khẩu",
+    placeholder: "",
+    validMsg: "Mật khẩu hợp lệ",
+    type: "password",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "confirm_password",
+    options: [],
+    inputMode: "text",
+    rules: {
+      required: "Mật khẩu không được để trống",
+      pattern: {
+        value:
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/,
+        message: "Mật khẩu không hợp lệ",
+      },
+      minLength: { value: 6, message: "Mật khẩu phải có tối thiểu 6 ký tự" },
+    },
+  },
+];
+
+export const CREATE_USER_FORMAT = [
+  {
+    id: "fullname",
+    name: "fullname",
+    label: "Họ và tên",
+    validMsg: "Họ và tên hợp lệ",
+    type: "text",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "",
+    options: [],
+    inputMode: "text",
+    rules: {
+      required: "Họ và tên không được để trống",
+      minLength: {
+        value: 1,
+      },
+    },
+  },
+  {
+    id: "email",
+    name: "email",
+    label: "Email",
+    validMsg: "Email hợp lệ",
+    type: "text",
+    isFullWidth: true,
+    isRequired: true,
+    onChangeTriggerValue: "confirm_password",
+    options: [],
+    inputMode: "email",
+    rules: {
+      required: "Email không được để trống",
+      pattern: {
+        value:
+          /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i,
+        message: "Email không hợp lệ",
+      },
+      minLength: {
+        value: 1,
+      },
+    },
+  },
+  {
+    id: "phone",
+    name: "phone",
+    label: "Số điện thoại",
+    validMsg: "Số điện thoại hợp lệ",
+    type: "text",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "confirm_password",
+    options: [],
+    inputMode: "tel",
+    rules: {
+      required: "Số điện thoại không được để trống",
+      pattern: {
+        value: /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
+        message: "Số điện thoại không hợp lệ",
+      },
+      minLength: {
+        value: 1,
+      },
+    },
+  },
+  {
+    id: "password",
+    name: "password",
+    label: "Mật khẩu",
+    placeholder: "",
+    validMsg: "Mật khẩu hợp lệ",
+    type: "password",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "confirm_password",
+    options: [],
+    inputMode: "text",
+    rules: {
+      required: "Mật khẩu không được để trống",
+      pattern: {
+        value:
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/,
+        message: "Mật khẩu không hợp lệ",
+      },
+      minLength: { value: 6, message: "Mật khẩu phải có tối thiểu 6 ký tự" },
+    },
+  },
+  {
+    id: "confirm_password",
+    name: "confirm_password",
+    label: "Nhập lại mật khẩu",
+    placeholder: "",
+    validMsg: "Mật khẩu nhập lại hợp lệ",
+    type: "password",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "",
+    options: [],
+    inputMode: "text",
+    rules: {
+      required: "Mật khẩu nhập lại không được để trống",
+      validate: "Mật khẩu nhập lại không khớp",
+    },
+  },
+  {
+    id: "role_id",
+    name: "role_id",
+    label: "Vai trò",
+    validMsg: "Hợp lệ",
+    type: "select",
+    placeholder: "--- VAI TRÒ ---",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "",
+    options: [
+      { value: "1", label: "Admin" },
+      { value: "2", label: "Customer" },
+      { value: "3", label: "Sales Staff" },
+      { value: "4", label: "Design Staff" },
+      { value: "5", label: "Production Staff" },
+      { value: "6", label: "Manager" },
+    ],
+    rules: {
+      required: "Không được để trống",
+    },
+  },
+];

@@ -25,7 +25,7 @@ public class UserController {
 
     private final IUserService userService;
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(
+    public ResponseEntity<?> register(
             @Valid @RequestBody UserDTO userDTO,
             BindingResult result) {
         try {
@@ -39,7 +39,7 @@ public class UserController {
             if(!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
                 return ResponseEntity.badRequest().body("Mật khẩu không trùng khớp");
             }
-            User user = userService.createUser(userDTO);
+            User user = userService.register(userDTO);
             UserResponse userResponse = UserResponse.fromUser(user);
             return ResponseEntity.ok().body(userResponse);
         } catch (Exception e) {
@@ -116,6 +116,56 @@ public class UserController {
             User user = userService.findUserByToken(authHeader);
             userService.changePassword(user, newPassword);
             return ResponseEntity.ok().body("Đổi mật khẩu thành công");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("view_all")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok().body(userService.getAllUsers());
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createUser(
+            @Valid @RequestBody UserDTO userDTO,
+            BindingResult result) {
+        try {
+            if (result.hasErrors()) {
+                List<String> errorMessages = result.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .toList();
+                return ResponseEntity.badRequest().body(errorMessages);
+            }
+            if(!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
+                return ResponseEntity.badRequest().body("Mật khẩu không trùng khớp");
+            }
+            User user = userService.createUser(userDTO);
+            UserResponse userResponse = UserResponse.fromUser(user);
+            return ResponseEntity.ok().body(userResponse);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/update/{user_id}")
+    public ResponseEntity<String> updateUser(
+            @PathVariable("user_id") Long userId,
+            @RequestBody UserDTO userDTO) {
+        try {
+            userService.updateUser(userId, userDTO);
+            return ResponseEntity.ok().body("Cập nhật thông tin thành công");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/delete/{user_id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("user_id") Long userId) {
+        try {
+            userService.softDeleteUser(userId);
+            return ResponseEntity.ok().body("Xóa người dùng thành công");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

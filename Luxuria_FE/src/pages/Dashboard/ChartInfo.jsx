@@ -3,7 +3,7 @@ import { StatusIcon, EmptyState } from "@components";
 
 function ChartInfo({ id, data, previousData }) {
   return (
-    <div className="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 gap-y-4">
+    <div className="p-4 md:p-5 min-h-[410px] flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 gap-y-4 dark:text-white">
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-sm text-gray-500 dark:text-gray-500">
@@ -20,7 +20,7 @@ function ChartInfo({ id, data, previousData }) {
       {data !== undefined ? (
         <div id={id}>
           <Chart
-            className="ms-0.5 mb-2 bg-white border border-gray-200 text-gray-800 rounded-lg shadow-md dark:bg-gray-800/30 dark:border-gray-700"
+            className="ms-0.5 mb-2 bg-white border border-gray-200 text-gray-800 rounded-lg shadow-md dark:bg-gray-800/30 dark:border-gray-700 dark:text-white"
             options={{
               chart: {
                 toolbar: { show: false },
