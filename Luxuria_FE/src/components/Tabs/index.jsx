@@ -4,6 +4,7 @@ import ProductDetailCard from "../ProductDetailCard";
 import { useCookies } from "react-cookie";
 import { USER_ROLES } from "@utils/constant";
 import { getRoleId } from "@/services";
+import { Toast } from "../Toast";
 
 export function Tabs() {
   const [activeTab, setActiveTab] = useState(1);
@@ -42,6 +43,11 @@ export function Tabs() {
 
       // Filter out null orders
       const filteredOrders = response.data.filter((order) => order !== null);
+      Toast(
+        "fetch_orders_success",
+        "success",
+        "Lấy dữ liệu đơn hàng thành công"
+      );
       setOrderList(filteredOrders);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -54,6 +60,7 @@ export function Tabs() {
 
   useEffect(() => {
     if (roleID !== null) {
+      Toast("fetching_pending", "info", "Đang tải đơn hàng...");
       getAllOrders();
     }
   }, [roleID]);

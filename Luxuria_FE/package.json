@@ -1,6 +1,6 @@
 {
   "name": "luxuria-fe",
-  "proxy": "https://tpb.vn",
+  "proxy": "http://luxuria.ap-southeast-1.elasticbeanstalk.com",
   "private": true,
   "version": "0.0.0",
   "type": "module",

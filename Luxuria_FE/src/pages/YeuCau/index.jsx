@@ -38,6 +38,11 @@ function YeuCau() {
       });
       const activeRequests = response.data.filter((request) => request.active);
       setRequests(activeRequests);
+      Toast(
+        "fetch_orders_success",
+        "success",
+        "Lấy dữ liệu yêu cầu thành công"
+      );
       console.log("Requests fetched:", activeRequests);
     } catch (error) {
       if (error.response && error.response.status === 403) {
@@ -61,6 +66,12 @@ function YeuCau() {
         (request) => request.active === true
       );
       setRequests(activeRequests);
+      Toast(
+        "fetch_orders_success",
+        "success",
+        "Lấy dữ liệu yêu cầu thành công"
+      );
+
       console.log("Requests:", activeRequests);
     } catch (error) {
       console.error("Error fetching requests:", error);
@@ -101,6 +112,11 @@ function YeuCau() {
         setOrderList(filteredOrders);
         console.log("Other roles orders:", filteredOrders);
       }
+      Toast(
+        "fetch_orders_success",
+        "success",
+        "Lấy dữ liệu đơn hàng thành công"
+      );
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -108,6 +124,7 @@ function YeuCau() {
 
   useEffect(() => {
     fetchRoleID();
+    Toast("fetching_pending", "info", "Đang tải tất cả yêu cầu...");
   }, []);
 
   useEffect(() => {
