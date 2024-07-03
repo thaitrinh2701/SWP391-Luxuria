@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export function BlogCard({ title, author, coverPhoto, datePublished, slug }) {
+export function BlogCard({ title, author, coverPhoto, postDate, slug }) {
   return (
     <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
       <div className="grid gap-6">
@@ -27,7 +27,7 @@ export function BlogCard({ title, author, coverPhoto, datePublished, slug }) {
                     {author.name}
                   </h4>
                   <p className="text-sm text-white/80">
-                    {new Date(datePublished).toLocaleDateString()}
+                    {new Date(postDate).toLocaleDateString()}
                   </p>
                 </div>
               </div>
@@ -39,7 +39,7 @@ export function BlogCard({ title, author, coverPhoto, datePublished, slug }) {
                 {title}
               </h3>
               <p className="mt-2 text-white/80">
-                By {author.name}, {new Date(datePublished).toDateString()}
+                By {author.name}, {new Date(postDate).toDateString()}
               </p>
             </div>
           </div>

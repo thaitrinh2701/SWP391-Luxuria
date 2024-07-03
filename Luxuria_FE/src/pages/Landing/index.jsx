@@ -25,7 +25,7 @@ const QUERY = gql`
     posts {
       id
       title
-      datePublished
+      postDate
       slug
       content {
         html
@@ -70,6 +70,7 @@ function Landing() {
       try {
         const { posts } = await graphcms.request(QUERY);
         setPosts(posts);
+        console.log(posts);
       } catch (error) {
         setError(error);
       } finally {

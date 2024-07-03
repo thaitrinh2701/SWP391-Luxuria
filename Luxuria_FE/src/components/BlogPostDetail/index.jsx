@@ -14,7 +14,7 @@ const GET_POST_BY_SLUG = gql`
       id
       title
       slug
-      datePublished
+      postDate
       author {
         id
         name
@@ -80,7 +80,7 @@ function BlogPostDetail() {
               Tác giả: {post.author.name}
             </p>
             <p className="text-xl text-gray-600 hs-dark-mode-active:text-gray-400">
-              Ngày xuất bản: {new Date(post.datePublished).toLocaleDateString()}
+              Ngày xuất bản: {new Date(post.postDate).toLocaleDateString()}
             </p>
           </div>
         </div>

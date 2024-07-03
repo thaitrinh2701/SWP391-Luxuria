@@ -12,7 +12,7 @@ const QUERY = gql`
     posts {
       id
       title
-      datePublished
+      postDate
       slug
       content {
         html
@@ -73,7 +73,7 @@ function Blog() {
               title={post.title}
               author={post.author}
               coverPhoto={post.coverPhoto}
-              datePublished={post.datePublished}
+              postDate={post.postDate}
               slug={post.slug}
             />
           </div>
@@ -113,7 +113,7 @@ export function HomeBlog({ posts }) {
               title={post.title}
               author={post.author}
               coverPhoto={post.coverPhoto}
-              datePublished={post.datePublished}
+              postDate={post.postDate}
               slug={post.slug}
             />
           </div>
