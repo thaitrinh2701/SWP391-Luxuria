@@ -81,6 +81,10 @@ public class UserService implements IUserService {
         }
         User existingUser = user.get();
 
+        if (!existingUser.isActive()) {
+            throw new BadCredentialsException("Tài khoản đã bị vô hiệu hóa");
+        }
+
         //check password
         if (!passwordEncoder.matches(password, existingUser.getPassword())) {
             throw new BadCredentialsException("Email hoặc mật khẩu không đúng");
