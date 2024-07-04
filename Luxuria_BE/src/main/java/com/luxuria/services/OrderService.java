@@ -179,8 +179,11 @@ public class OrderService implements IOrderService {
             orderRepository.save(order);
             return true;
         }
+        Process process = processRepository.findById(1L)
+                .orElseThrow(() -> new DataNotFoundException("process: Quá trình không tồn tại"));
         State state = stateRepository.findById(3L)
                 .orElseThrow(() -> new DataNotFoundException("state: Trạng thái không tồn tại"));
+        order.setProcess(process);
         order.setState(state);
         orderRepository.save(order);
         return false;
@@ -205,6 +208,8 @@ public class OrderService implements IOrderService {
         State state = stateRepository.findById(3L)
                 .orElseThrow(() -> new DataNotFoundException("state: Trạng thái không tồn tại"));
         order.setState(state);
+        order.setCustomerApproved(false);
+        order.setActive(false);
         orderRepository.save(order);
         return false;
     }
