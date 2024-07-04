@@ -92,9 +92,9 @@ function TableBody({ data }) {
             </span>
             <div className="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700">
               <div
-                className={`flex flex-col justify-center overflow-hidden max-w-16 ${
+                className={`flex flex-col justify-center overflow-hidden ${
                   item.process?.id === 7
-                    ? "bg-green-600"
+                    ? "bg-green-600 w-full"
                     : item.process?.id === 6
                     ? "bg-blue-600"
                     : item.process?.id >= 3
@@ -102,7 +102,12 @@ function TableBody({ data }) {
                     : "bg-gray-600 dark:bg-gray-400"
                 }`}
                 role="progressbar"
-                style={{ width: (item.process?.id / 7) * 4 + "rem" }} //w-16 = 4rem
+                style={{
+                  width:
+                    item.process?.id === 7
+                      ? "100%"
+                      : (item.process?.id / 7) * 100 + "%",
+                }}
                 aria-valuenow={(item.process?.id / 7) * 100}
                 aria-valuemin="0"
                 aria-valuemax="100"
@@ -115,7 +120,7 @@ function TableBody({ data }) {
         <div className="px-6 py-3">
           <span
             className={`py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium ${
-              item.state?.id === (3 || 10)
+              item.state?.id === 3 || item.state?.id === 10
                 ? errorClass
                 : item.state?.id === 8
                 ? pendingClass
@@ -124,7 +129,7 @@ function TableBody({ data }) {
                 : warningClass
             }`}
           >
-            {item.state?.id === (3 || 10) && (
+            {(item.state?.id === 3 || item.state?.id === 10) && (
               <XCircleIcon
                 className="size-5"
                 fill="none"
@@ -135,7 +140,7 @@ function TableBody({ data }) {
               />
             )}
 
-            {item.state?.id === (8 || 9) && (
+            {(item.state?.id === 8 || item.state?.id === 9) && (
               <CheckCircleIcon
                 className="size-5"
                 fill="none"
@@ -146,16 +151,18 @@ function TableBody({ data }) {
               />
             )}
 
-            {item.state?.id !== (3 && 9 && 8) && (
-              <ExclamationCircleIcon
-                className="size-5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            )}
+            {item.state?.id !== 3 &&
+              item.state?.id !== 9 &&
+              item.state?.id !== 8 && (
+                <ExclamationCircleIcon
+                  className="size-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              )}
             <span className="truncate w-full max-w-[4.5rem] pr-1">
               {item.state?.name}
             </span>
@@ -163,7 +170,7 @@ function TableBody({ data }) {
           <Tooltip>
             <span
               className={`py-1 px-1.5 inline-flex items-center gap-x-1 ${
-                item.state?.id === (3 || 10)
+                item.state?.id === 3 || item.state?.id === 10
                   ? errorClass
                   : item.state?.id === 8
                   ? pendingClass
@@ -172,7 +179,7 @@ function TableBody({ data }) {
                   : warningClass
               }`}
             >
-              {item.state?.id === (3 || 10) && (
+              {(item.state?.id === 3 || item.state?.id === 10) && (
                 <XCircleIcon
                   className="size-5"
                   fill="none"
@@ -183,7 +190,7 @@ function TableBody({ data }) {
                 />
               )}
 
-              {item.state?.id === (8 || 9) && (
+              {(item.state?.id === 8 || item.state?.id === 9) && (
                 <CheckCircleIcon
                   className="size-5"
                   fill="none"
@@ -194,16 +201,18 @@ function TableBody({ data }) {
                 />
               )}
 
-              {item.state?.id !== (3 && 9 && 8) && (
-                <ExclamationCircleIcon
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              )}
+              {item.state?.id !== 3 &&
+                item.state?.id !== 9 &&
+                item.state?.id !== 8 && (
+                  <ExclamationCircleIcon
+                    className="size-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                )}
               <span className="truncate w-full pr-1">{item.state?.name}</span>
             </span>
           </Tooltip>
