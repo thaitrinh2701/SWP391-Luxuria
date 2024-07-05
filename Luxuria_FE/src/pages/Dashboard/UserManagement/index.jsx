@@ -14,23 +14,27 @@ function UserManagement() {
 
   const [cookies] = useCookies(["token"]);
 
-  const API_GET_ALL_USER = import.meta.env
-    .VITE_API_GET_ALL_USER_ENDPOINT;
+  const API_GET_ALL_USER = import.meta.env.VITE_API_GET_ALL_USER_ENDPOINT;
 
-    const getUserFromAPI = async () => {
-      try {
-        const response = await axios.get(API_GET_ALL_USER, {
-          headers: {
-            Authorization: `Bearer ${cookies.token}`,
-          },
-        });
-        setData(response.data);
-        console.log("User List:", response.data);
-      } catch (error) {
-        console.error("Error fetching user list:", error);
-      }
-    };
-  
+  const getUserFromAPI = async () => {
+    try {
+      const response = await axios.get(API_GET_ALL_USER, {
+        headers: {
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      });
+      setData(response.data);
+      Toast(
+        "dashboard_info",
+        "success",
+        "Lấy thông tin người dùng thành công!"
+      );
+      console.log("User List:", response.data);
+    } catch (error) {
+      console.error("Error fetching user list:", error);
+    }
+  };
+
   useEffect(() => {
     Toast("dashboard_info", "info", "Đang lấy thông tin...");
     getUserFromAPI();

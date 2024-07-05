@@ -1,16 +1,24 @@
-import {
-  PencilSquareIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { Popconfirm } from "antd";
 import { Toast } from "@/components";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
+import { convertRoleName } from "@/services/getHelper";
 
 function UserData({ item, deleteUser }) {
   const navigate = useNavigate();
+  const [roleName, setRoleName] = useState("");
+
+  useEffect(() => {
+    const fetchRoleName = async () => {
+      const role = await convertRoleName(item.role.name);
+      setRoleName(role);
+    };
+
+    fetchRoleName();
+  }, [item.role.name]);
 
   const confirm = (e) => {
     console.log(e);
@@ -39,7 +47,7 @@ function UserData({ item, deleteUser }) {
         {item.phoneNumber}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-        {item.role.name}
+        {roleName}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
         {item.active ? "Active" : "Inactive"}
@@ -119,6 +127,7 @@ function UserTable({ data: initialData }) {
       });
       console.log("Delete user: ", response.data);
       Toast("delete_success", "success", "Xóa người dùng thành công");
+      setData(data.filter((user) => user.id !== id));
     } catch (error) {
       console.error("Error deleting user: ", error);
       Toast("delete_err", "error", "Có lỗi khi xóa người dùng");
@@ -129,6 +138,13 @@ function UserTable({ data: initialData }) {
     <div className="flex flex-col">
       <div className="-m-1.5 overflow-x-auto">
         <div className="p-1.5 min-w-full inline-block align-middle">
+          <div className="flex justify-start my-auto mb-3">
+            <Link to="/tao-tai-khoan">
+              <button className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800">
+                Tạo người dùng
+              </button>
+            </Link>
+          </div>
           <div className="border rounded-lg overflow-hidden dark:border-neutral-700">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
               <thead className="bg-gray-50 w-full dark:bg-neutral-700">
@@ -177,19 +193,12 @@ function UserTable({ data: initialData }) {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
+              <tbody className="divide-y divide-gray-200 dark:divide-neutral-700 dark:bg-[#111827]">
                 <TableBody data={data} deleteUser={deleteUser} />
               </tbody>
             </table>
           </div>
         </div>
-      </div>
-      <div className="flex justify-end mt-4">
-        <Link to="/tao-tai-khoan">
-          <button className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800">
-            Tạo người dùng
-          </button>
-        </Link>
       </div>
     </div>
   );
