@@ -41,15 +41,11 @@ function UpdateUser() {
     };
 
     try {
-      const response = await axios.put(
-        `${API_UPDATE_USER}/${id}`,
-        userData,
-        {
-          headers: {
-            Authorization: `Bearer ${cookies.token}`,
-          },
-        }
-      );
+      const response = await axios.put(`${API_UPDATE_USER}/${id}`, userData, {
+        headers: {
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      });
       console.log("Update User: ", response.data);
 
       Toast("submit_success", "success", "Cập nhật người dùng thành công");
@@ -63,16 +59,23 @@ function UpdateUser() {
   return (
     <>
       <Sidebar />
-      <div className="md:p-5 mt-10 min-h-[410px] flex flex-col bg-white border shadow-sm dark:bg-gray-800 dark:border-gray-700 gap-y-4">
+      <div className="md:p-5 mt-28 min-h-[410px] flex flex-col bg-white border shadow-sm dark:bg-[#111827] dark:border-gray-700 gap-y-4">
         <div className="w-full lg:ps-64">
-          <h1 className="text-2xl font-semibold">Cập nhật người dùng</h1>
-          <h2 className="text-lg text-gray-500">Mã người dùng: {id}</h2>
+          <h1 className="text-2xl font-semibold dark:text-white">
+            Cập nhật người dùng
+          </h1>
+          <h2 className="text-lg text-gray-500 dark:text-gray-300">
+            Mã người dùng: {id}
+          </h2>
           <hr className="my-4" />
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-8">
             {UPDATE_USER_FORMAT.map((item) => (
               <div key={item.id}>
-                <label htmlFor={item.id} className="font-medium dark:text-white">
+                <label
+                  htmlFor={item.id}
+                  className="font-medium dark:text-white"
+                >
                   {item.label}
                   {item.rules.required && (
                     <span className="text-red-500 ml-1">*</span>
@@ -86,7 +89,7 @@ function UpdateUser() {
                     {...register(item.id, {
                       required: item.rules.required || false,
                     })}
-                  >               
+                  >
                     {item.options.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}

@@ -12,6 +12,47 @@ const TrangSuc = () => {
   const [isLoading, setIsLoading] = useState(true);
   const API_GET_ALL_PRODUCT = import.meta.env
     .VITE_API_GET_ALL_PRODUCTS_BY_CATEGORY_ENDPOINT;
+  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+
+  const filters = [
+    { value: "24k gold", name: "Vàng 24K" },
+    { value: "18k gold", name: "Vàng 18K" },
+    { value: "16k gold", name: "Vàng 16K" },
+    { value: "14k gold", name: "Vàng 14K" },
+    { value: "diamond", name: "Kim cương" },
+    { value: "colored gemstones", name: "Đá màu" },
+    { value: "jade", name: "Ngọc thạch" },
+    { value: "pearl", name: "Ngọc trai" },
+    { value: "artificial pearl", name: "Ngọc trai nhân tạo" },
+  ];
+
+  const handleFilterButtonClick = (selectedCategory) => {
+    if (selectedFilters.includes(selectedCategory)) {
+      let filters = selectedFilters.filter((el) => el !== selectedCategory);
+      setSelectedFilters(filters);
+    } else {
+      setSelectedFilters([...selectedFilters, selectedCategory]);
+    }
+  };
+
+  const filterItems = () => {
+    if (selectedFilters.length > 0) {
+      let tempItems = selectedFilters.map((selectedCategory) => {
+        let temp = listProducts.filter(
+          (item) => item.product.gold.name === selectedCategory
+        );
+        return temp;
+      });
+      setFilteredItems(tempItems.flat());
+    } else {
+      setFilteredItems([...listProducts]);
+    }
+  };
+
+  useEffect(() => {
+    filterItems();
+  }, [selectedFilters, listProducts]);
 
   const getProductsFromAPI = async (categoryId) => {
     try {
@@ -26,14 +67,9 @@ const TrangSuc = () => {
         }
         return { ...item, image };
       });
-      // let filteredProducts = productsWithImages;
-      // if (categoryId) {
-      //   filteredProducts = productsWithImages.filter(
-      //     (product) => product.product.category.id === parseInt(categoryId)
-      //   );
-      // }
+
       setListProducts(productsWithImages);
-      console.log("Data from api ", productsWithImages);
+      console.log("Data from API ", productsWithImages);
     } catch (error) {
       console.log("Error fetching products:", error);
     } finally {
@@ -58,7 +94,7 @@ const TrangSuc = () => {
   }, [listProducts]);
 
   return (
-    <section className="container mx-auto p-4 mb-8">
+    <section className="container mx-auto p-4 mb-8 dark:bg-gray-900">
       <div className="flex min-h-screen">
         <div className="text-center font-bold text-3xl mt-20 mx-auto dark:text-white">
           {isLoading ? (
@@ -68,11 +104,29 @@ const TrangSuc = () => {
           ) : (
             <>
               {listProducts.length > 0 && (
-                <h1 className="mb-4">{categoryName}</h1>
+                <div>
+                  <h1 className="mb-4">{categoryName}</h1>
+
+                  <div className="buttons-container flex flex-wrap justify-center mt-5 gap-2">
+                    {filters.map((category, idx) => (
+                      <button
+                        onClick={() => handleFilterButtonClick(category.value)}
+                        className={`button border ${
+                          selectedFilters?.includes(category.value)
+                            ? "active bg-[#1e293b] text-white dark:bg-white dark:text-black"
+                            : "bg-transparent dark:bg-gray-800 dark:text-white"
+                        } border-black dark:border-white m-1 rounded text-lg p-2 cursor-pointer transition-all duration-200 ease-in-out hover:shadow-[3px_3px_0px_0px_rgba(0,0,0)] dark:hover:shadow-[3px_3px_0px_0px_rgba(255,255,255)]`}
+                        key={`filters-${idx}`}
+                      >
+                        {category.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               )}
-              {listProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {listProducts.map((item) => (
+              {filteredItems.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8 dark:bg-gray-900">
+                  {filteredItems.map((item) => (
                     <ProductCard
                       key={item.product.id}
                       name={item.product.name}
@@ -83,7 +137,16 @@ const TrangSuc = () => {
                   ))}
                 </div>
               ) : (
-                <p>Không có sản phẩm nào phù hợp.</p>
+                <div className="flex flex-col justify-center items-center">
+                  <img
+                    src="https://cdni.iconscout.com/illustration/premium/thumb/sorry-item-not-found-3328225-2809510.png?f=webp"
+                    alt="not-found-product"
+                    className="w-1/2"
+                  />
+                  <p className="dark:text-white mt-8">
+                    Không có sản phẩm nào phù hợp.
+                  </p>
+                </div>
               )}
             </>
           )}
