@@ -119,12 +119,26 @@ function GiaCong() {
             sản phẩm.
           </li>
           <li className="font-bold">Kích thước</li>
-          <li className="font-bold">Loại vàng & màu sắc</li>
+          <li className="font-bold">
+            Loại vàng & màu sắc
+            <ul className="list-disc list-inside text-gray-700 mb-6 hs-dark-mode-active:text-gray-100">
+              <li>24k gold (999) - vàng</li>
+              <li>18k gold (750) - vàng, trắng, hồng</li>
+              <li>Vàng 16K (670) - vàng, trắng</li>
+              <li>14k gold (610) - vàng, xi trắng</li>
+            </ul>
+          </li>
           <li>
             <span className="font-bold">Tiền đặt cọc</span>: bằng với tiền công
             gia công. Vì mỗi sản phẩm khác nhau, quý khách vui lòng liên hệ
             trước để được báo giá chính xác.
           </li>
+          <h2>
+            Khi đã có đủ những chi tiết trên, quý khách hãy đến các cửa hàng của
+            Luxuria để được nhân viên cùng xưởng thợ báo giá và tiến hành gia
+            công. Đừng ngần ngại liên hệ qua Messenger và hotline 0727 727 727
+            nếu quý khách cần hỗ trợ thêm.
+          </h2>
         </ul>
 
         <div className="bg-gray-100 p-6 rounded-lg shadow-lg hs-dark-mode-active:bg-gray-500">
