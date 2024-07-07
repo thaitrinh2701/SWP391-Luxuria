@@ -14,6 +14,7 @@ const SaleStaffRequestCard = ({
   isSaleStaffApproved,
 }) => {
   const [isApproved, setIsApproved] = useState(false);
+  const [isCancelled, setIsCancelled] = useState(false);
   const API_APPROVE_REQUEST = import.meta.env.VITE_API_APPROVE_REQUEST_ENDPOINT;
   const [cookies] = useCookies(["user", "token"]);
 
@@ -29,7 +30,7 @@ const SaleStaffRequestCard = ({
         }
       );
       const filterRequest = response.data.filter(
-        (request) => response.data.active !== false
+        (request) => request.active !== false
       );
       console.log("Request approved:", filterRequest);
       setIsApproved(approvalStatus);
@@ -53,6 +54,7 @@ const SaleStaffRequestCard = ({
   const handleCancel = () => {
     approveRequest(requestID, false);
     setIsApproved(false);
+    console.log(isSaleStaffApproved);
     Toast("declined", "success", "Đã từ chối yêu cầu thành công");
   };
 
@@ -92,7 +94,7 @@ const SaleStaffRequestCard = ({
             {formatDate(createdAt)}
           </p>
           <div className="flex gap-3 flex-row-reverse">
-            {!isApproved && (
+            {!isApproved && !isCancelled && (
               <>
                 <Button
                   variant="outlined"

@@ -254,7 +254,7 @@ const OrderDetailSale = () => {
                             watch(item.id);
                           },
                         })}
-                        disabled={orderStateID === 3} // Conditionally disable based on orderStateID
+                        disabled={orderStateID === 3}
                       >
                         <option value="">{item.placeholder}</option>
                         {item.options.map((option) => (

@@ -1,5 +1,5 @@
 import { getRoleId } from "@/services";
-import { convertConstraintName } from "@/services/getHelper";
+import { convertConstraintName, formatMoney } from "@/services/getHelper";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -135,7 +135,6 @@ const ProductDetailCard = ({
       console.log("Accept Price: ", response.data);
       setIsAcceptPrice(approvalStatus);
       Toast("accept_price", "success", "Chấp nhận báo giá thành công!");
-      window.location.reload(); // Refresh the page
     } catch (error) {
       console.error("Error accepting price quote: ", error);
     }
@@ -224,13 +223,22 @@ const ProductDetailCard = ({
                   : "text-yellow-500"
               }`}
             >
-              {(stateID === 1 || stateID === 2) &&
-                roleID != 6 &&
-                "Giá tiền: Đang chờ duyệt"}
-              {`Giá tiền: ${productPrice} VNĐ`}
-              {processState === "rejected" && "Rejected"}
-              {processState === "pending" && "Pending"}
+              {(roleID === 3 || roleID === 6 || roleID === 2) &&
+              (stateID === 1 || stateID === 2 || stateID === 4)
+                ? `Giá tiền: ${formatMoney(productPrice)}`
+                : stateID === 3
+                ? "Bị từ chối"
+                : stateID === 5 ||
+                  stateID === 6 ||
+                  stateID === 7 ||
+                  stateID === 8 ||
+                  stateID === 9
+                ? `Giá tiền: ${formatMoney(productPrice)}`
+                : "Giá tiền: Đang chờ duyệt"}
+              {processState === "rejected" && " - Rejected"}
+              {processState === "pending" && " - Pending"}
             </span>
+
             <div className="flex space-x-3">
               {!isCustomerApproved &&
                 !isApproved &&
@@ -272,7 +280,7 @@ const ProductDetailCard = ({
                   </Button>
                 </Link>
               )}
-              {!isSubmitPrice && roleID === 3 && stateID === 1 && (
+              {/* {!isSubmitPrice && roleID === 3 && stateID === 1 && (
                 <Button
                   variant="outlined"
                   color="primary"
@@ -282,7 +290,7 @@ const ProductDetailCard = ({
                 >
                   Báo giá
                 </Button>
-              )}
+              )} */}
               {!isSubmitPrice &&
                 isAcceptPrice === false &&
                 roleID === 6 &&
@@ -311,7 +319,7 @@ const ProductDetailCard = ({
               {!isSubmitPrice &&
                 roleID === 3 &&
                 processID === 1 &&
-                stateID === 3 && (
+                (stateID === 3 || stateID === 1) && (
                   <>
                     <Link to={`/chinh-sua-don-hang/${orderID}`}>
                       <Button
