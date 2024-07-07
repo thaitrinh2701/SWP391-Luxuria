@@ -150,10 +150,10 @@ export function TrangSucDetailForHome() {
   return (
     <div className="container mx-auto py-20 grid grid-cols-1 md:grid-cols-2 gap-10">
       <div className="p-5 text-xl">
-        <h1 className="text-3xl font-bold mb-2 font-playfair">
+        <h1 className="text-3xl font-bold mb-2 font-playfair dark:text-white">
           {product.name}
         </h1>
-        <p className="text-2xl font-playfair">
+        <p className="text-2xl font-playfair dark:text-white">
           Mã sản phẩm: {product.productID}
         </p>
         <Divider className="my-10" />
@@ -165,7 +165,7 @@ export function TrangSucDetailForHome() {
           <li className="my-8 text-2xl">Loại đá: {product.gems}</li>
           <li className="my-8 text-2xl">Cửa hàng: Luxuria</li>
         </ul>
-        <div className="p-10 max-w-xl border border-gray-300 mt-5">
+        <div className="p-10 max-w-xl border border-gray-300 mt-5 dark:text-white">
           <h1 className="font-medium mb-3 text-center text-2xl underline">
             Ưu đãi
           </h1>
