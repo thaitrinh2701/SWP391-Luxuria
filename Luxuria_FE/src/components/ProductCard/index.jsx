@@ -1,15 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
-// import required modules
 import { Pagination, Autoplay } from "swiper/modules";
+import axios from "axios";
 
 function Products() {
+  const API_GET_ALL_PRODUCT = import.meta.env
+    .VITE_API_GET_ALL_PRODUCTS_BY_CATEGORY_ENDPOINT;
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const categoryIds = [1, 2, 3, 4, 5, 6];
+  const navigate = useNavigate();
+
+  const getProductsFromAPI = async () => {
+    try {
+      const responses = await Promise.all(
+        categoryIds.map((categoryId) =>
+          axios.get(`${API_GET_ALL_PRODUCT}/${categoryId}`)
+        )
+      );
+
+      const allProducts = responses.flatMap((response) => response.data);
+
+      const productsWithImages = allProducts
+        .map((item) => {
+          const productDataList = item.productDataList;
+          let image = "";
+          if (productDataList && productDataList.length > 0) {
+            const base64Data = productDataList[0]?.value;
+            image = base64Data ? `data:image/jpeg;base64,${base64Data}` : "";
+          }
+          return { ...item, image };
+        })
+        .filter((item) => item.product.id % 10 === 0);
+
+      setData(productsWithImages);
+      console.log("Data from API ", productsWithImages);
+    } catch (error) {
+      console.log("Error fetching products:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getProductsFromAPI();
+  }, []);
+
   return (
     <section className="py-20 px-4 bg-gray-100 dark:bg-[#1F2937]">
       <div className="text-center mb-12">
@@ -18,87 +57,50 @@ function Products() {
         </h2>
       </div>
       <div>
-        <Swiper
-          slidesPerView={1}
-          spaceBetween={10}
-          loop={true}
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-              spaceBetween: 20,
-            },
-            768: {
-              slidesPerView: 4,
-              spaceBetween: 40,
-            },
-            1024: {
-              slidesPerView: 5,
-              spaceBetween: 50,
-            },
-          }}
-          modules={[Autoplay, Pagination]}
-          className="mySwiper w-ful"
-        >
-          {/* Adding SwiperSlide elements */}
-          <SwiperSlide>
-            <ProductCard
-              name="Nhẫn cưới vàng bản móc máy Vàng kiểu Ý 750"
-              image="https://www.baotinkk.com/cdn/shop/products/NJ190720089_16-20-44_e2570c3d-8c53-418a-898a-67685e2cbcc4_900x.jpg?v=1606914741"
-              link={`/trang-suc/ring/NJ190720090`}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductCard
-              name="Nhẫn cưới vàng bản xi cát Vàng 18K"
-              image="https://www.baotinkk.com/cdn/shop/products/NA190308005_16-09-08_543acc70-3ba8-4f6b-916f-759072f62f80_900x.jpg?v=1606913104"
-              link={`/trang-suc/ring/NA190308002`}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductCard
-              name="Nhẫn cưới vàng bản xi cát Vàng 18K"
-              image="https://www.baotinkk.com/cdn/shop/products/NA190308005_16-09-08_2fdd6f4e-131c-45c4-bc2c-97a30727042f_900x.jpg?v=1606913101"
-              link={`/trang-suc/ring/NA190308002`}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductCard
-              name="Nhẫn cưới vàng bản lông voi Vàng 18K"
-              image="https://www.baotinkk.com/cdn/shop/products/NA190830004_NA190830003_bd6c0777-d4f8-41dc-a92f-dc58cfa87d93_900x.jpg?v=1606914746"
-              link={`/trang-suc/ring/NA150821111`}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductCard
-              name="Bông tai trắng kiểu Vàng kiểu Ý 750"
-              image="https://www.baotinkk.com/cdn/shop/products/MJ190716043_-_16-44-08_0c5fa678-4e22-4f6b-982b-5b7a716bd815_900x.jpg?v=1602314026"
-              link={`/trang-suc/ring/NA150821111`}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductCard
-              name="Nhẫn cưới vàng bản lông voi Vàng 18K"
-              image="https://www.baotinkk.com/cdn/shop/products/NA190830004_NA190830003_bd6c0777-d4f8-41dc-a92f-dc58cfa87d93_900x.jpg?v=1606914746"
-              link={`/trang-suc/ring/NA150821111`}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <ProductCard
-              name="Nhẫn cưới vàng bản lông voi Vàng 18K"
-              image="https://www.baotinkk.com/cdn/shop/products/NA190830004_NA190830003_bd6c0777-d4f8-41dc-a92f-dc58cfa87d93_900x.jpg?v=1606914746"
-              link={`/trang-suc/ring/NA150821111`}
-            />
-          </SwiperSlide>
-        </Swiper>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <Swiper
+            slidesPerView={1}
+            spaceBetween={10}
+            loop={false}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              768: {
+                slidesPerView: 4,
+                spaceBetween: 40,
+              },
+              1024: {
+                slidesPerView: 5,
+                spaceBetween: 50,
+              },
+            }}
+            modules={[Autoplay, Pagination]}
+            className="mySwiper w-full"
+          >
+            {data.map((item) => (
+              <SwiperSlide key={item.id}>
+                <ProductCard
+                  name={item.product.name}
+                  image={item.image}
+                  link={`/trang-suc/${item.product.category.id}/${item.product.id}`}
+                  data={item}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </section>
   );
 }
-
 export default Products;
 
 export function ProductCard({ name, image, link, data }) {
