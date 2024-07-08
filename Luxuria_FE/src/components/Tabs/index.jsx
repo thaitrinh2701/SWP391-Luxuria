@@ -7,6 +7,7 @@ import { getRoleId } from "@/services";
 import { Toast } from "../Toast";
 
 const STATES = [
+  { id: 0, name: "Tất cả đơn hàng" },
   { id: 1, name: "Chờ báo giá" },
   { id: 2, name: "Chờ Manager phê duyệt báo giá" },
   { id: 3, name: "Bị từ chối" },
@@ -19,7 +20,7 @@ const STATES = [
 ];
 
 export function Tabs() {
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(0);
   const [cookies] = useCookies(["user", "token"]);
   const token = cookies.token;
   const [roleID, setRoleID] = useState(null);
@@ -116,7 +117,9 @@ export function Tabs() {
               USER_ROLES.SALE_STAFF === roleID ||
               USER_ROLES.DESIGN_STAFF === roleID) &&
               orderList
-                .filter((order) => order.state.id === state.id)
+                .filter(
+                  (order) => state.id === 0 || order.state.id === state.id
+                )
                 .map((order) => (
                   <ProductDetailCard
                     key={order.id}
