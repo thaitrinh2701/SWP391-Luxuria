@@ -52,15 +52,23 @@ function CreateProduct() {
   return (
     <>
       <Sidebar />
-      <div className="md:p-5 mt-24 min-h-[410px] flex flex-col bg-white border shadow-sm dark:bg-gray-800 dark:border-gray-700 gap-y-4">
+      <div className="md:p-5 mt-20 min-h-[410px] flex flex-col  container max-w-7xl mx-auto shadow-sm dark:bg-[#111827] dark:border-gray-700 gap-y-4">
         <div className="w-full lg:ps-64">
-          <h1 className="text-2xl font-semibold">Tạo sản phẩm</h1>
+          <h1 className="text-2xl font-semibold dark:text-white text-center md:text-left">
+            Tạo sản phẩm
+          </h1>
           <hr className="my-4" />
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-8">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-4 mt-8 max-w-xs mx-auto md:max-w-full"
+          >
             {ORDER_DETAIL_FORMAT.map((item) => (
               <div key={item.id}>
-                <label htmlFor={item.id} className="font-medium dark:text-white">
+                <label
+                  htmlFor={item.id}
+                  className="font-medium dark:text-white"
+                >
                   {item.label}
                   {item.rules.required && (
                     <span className="text-red-500 ml-1">*</span>
@@ -113,12 +121,14 @@ function CreateProduct() {
               </div>
             ))}
 
-            <button
-              type="submit"
-              className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800"
-            >
-              Tạo sản phẩm
-            </button>
+            <div className="flex justify-center items-center">
+              <button
+                type="submit"
+                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800"
+              >
+                Tạo sản phẩm
+              </button>
+            </div>
           </form>
         </div>
       </div>
