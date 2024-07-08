@@ -98,7 +98,7 @@ function YeuCau() {
         console.log("Manager orders:", managerFilteredOrders);
       } else if (roleID === USER_ROLES.DESIGN_STAFF) {
         const designStaffFilteredOrders = filteredOrders.filter(
-          (order) => order.process.id === 3 || order.process.id === 4
+          (order) => order.process.id === 3
         );
         setOrderList(designStaffFilteredOrders);
         console.log("Design staff orders:", designStaffFilteredOrders);
