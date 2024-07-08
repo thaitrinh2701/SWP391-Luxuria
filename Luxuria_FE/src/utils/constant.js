@@ -979,8 +979,8 @@ export const SALESTAFF_CALCULATION = [
         message: "Không hợp lệ",
       },
       min: {
-        value: 1,
-        message: `Giá trị không được nhỏ hơn 1 VNĐ`,
+        value: 0,
+        message: `Giá trị không được nhỏ hơn 0 VNĐ`,
       },
       max: {
         value: 100000000,

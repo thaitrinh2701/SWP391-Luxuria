@@ -23,6 +23,7 @@ function ProductManagement() {
 
       Toast("dashboard_info", "success", "Lấy thông tin thành công");
       setData(response.data);
+      console.log("Product: ", response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }

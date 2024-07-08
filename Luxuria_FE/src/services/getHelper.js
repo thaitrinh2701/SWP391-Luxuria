@@ -67,6 +67,25 @@ export async function convertConstraintName(constraintName) {
   }
 }
 
+export async function convertRoleName(constraintName) {
+  switch (constraintName) {
+    case "admin":
+      return "Admin";
+    case "customer":
+      return "Customer";
+    case "sales_staff":
+      return "Sales Staff";
+    case "design_staff":
+      return "Design Staff";
+    case "production_staff":
+      return "Production Staff";
+    case "manager":
+      return "Manager";
+    case "other":
+      return "Khác";
+  }
+}
+
 export async function getGoldPrice() {
   const from_date = "06/01/2024";
   const to_date = "06/30/2024";

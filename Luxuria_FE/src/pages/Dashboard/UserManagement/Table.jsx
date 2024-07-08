@@ -1,4 +1,9 @@
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { Popconfirm } from "antd";
 import { Toast } from "@/components";
@@ -6,6 +11,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
 import { convertRoleName } from "@/services/getHelper";
+import ReactPaginate from "react-paginate";
 
 function UserData({ item, deleteUser }) {
   const navigate = useNavigate();
@@ -114,7 +120,15 @@ function TableBody({ data, deleteUser }) {
 function UserTable({ data: initialData }) {
   const [data, setData] = useState(initialData);
   const API_DELETE_USER = import.meta.env.VITE_API_DELETE_USER_ENDPOINT;
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 6;
 
+  const handlePageClick = (event) => {
+    setCurrentPage(event.selected);
+  };
+
+  const offset = currentPage * itemsPerPage;
+  const currentPageData = data.slice(offset, offset + itemsPerPage);
   const [cookies] = useCookies(["token"]);
 
   const deleteUser = async (id) => {
@@ -194,9 +208,27 @@ function UserTable({ data: initialData }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-neutral-700 dark:bg-[#111827]">
-                <TableBody data={data} deleteUser={deleteUser} />
+                <TableBody data={currentPageData} deleteUser={deleteUser} />
               </tbody>
             </table>
+            <ReactPaginate
+              previousLabel={<ArrowLeftIcon className="w-5 h-5" />}
+              nextLabel={<ArrowRightIcon className="w-5 h-5" />}
+              breakLabel={"..."}
+              breakClassName={"break-me"}
+              pageCount={Math.ceil(data.length / itemsPerPage)}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={handlePageClick}
+              containerClassName={"pagination"}
+              activeClassName={"active"}
+              pageClassName={"page-item"}
+              pageLinkClassName={"page-link"}
+              previousClassName={"page-item"}
+              previousLinkClassName={"page-link"}
+              nextClassName={"page-item"}
+              nextLinkClassName={"page-link"}
+            />
           </div>
         </div>
       </div>
