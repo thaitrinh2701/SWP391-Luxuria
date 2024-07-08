@@ -6,11 +6,12 @@ import TableInfo from "./TableInfo";
 import Modals from "./Modals";
 import Sidebar from "./Sidebar";
 import { getDashboardDatas } from "@services";
+import HSOverlay from "@preline/overlay";
 
 function Dashboard() {
   const MinimizeData = [];
   const [data, setData] = useState();
-
+  const [modalData, setModalData] = useState(null);
   const [cookies] = useCookies(["token"]);
 
   const getDatas = useCallback(async () => {
@@ -33,6 +34,23 @@ function Dashboard() {
         break;
     }
   }, [cookies.token]);
+
+  const handleButtonClick = (data) => {
+    setModalData(data);
+    // Open the modal
+    HSOverlay.open("#info-modal");
+  };
+  const base64Data =
+    modalData && modalData.productImages && modalData.productImages[0]?.value // Optional chaining here
+      ? modalData.productImages[0].value
+      : null;
+  const logo = base64Data ? `data:image/jpeg;base64,${base64Data}` : "";
+  const imageUrls =
+    modalData && modalData.productImages
+      ? modalData.productImages.map(
+          (image) => `data:image/jpeg;base64,${image.value}`
+        )
+      : [];
 
   useEffect(() => {
     Toast("dashboard_info", "info", "Đang lấy thông tin...");
@@ -76,7 +94,11 @@ function Dashboard() {
                   <div className="flex flex-col">
                     <div className="-m-1.5 overflow-x-auto">
                       <div className="p-1.5 min-w-full inline-block align-middle">
-                        <TableInfo title={"Đơn hàng"} data={data.table} />
+                        <TableInfo
+                          title={"Đơn hàng"}
+                          data={data.table}
+                          onButtonClick={handleButtonClick}
+                        />
                       </div>
                     </div>
                   </div>
@@ -92,7 +114,7 @@ function Dashboard() {
       ) : (
         <Loader />
       )}
-      <Modals />
+      <Modals modalData={modalData} />
     </>
   );
 }

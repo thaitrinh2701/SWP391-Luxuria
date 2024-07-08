@@ -1,99 +1,217 @@
-import HSOverlay from "@preline/overlay";
+import { convertConstraintName, formatMoney } from "@/services/getHelper";
 import { Modal } from "@components";
-import {
-  ExclamationTriangleIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Divider } from "antd";
+import { useState, useEffect } from "react";
 
-function Modals() {
+function Modals({ modalData }) {
+  const [categoryName, setCategoryName] = useState("");
+  const [gemsName, setGemsName] = useState("");
+  const [goldName, setGoldName] = useState("");
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleString("vi-VN", {
+      timeZone: "Asia/Ho_Chi_Minh",
+    });
+  };
+
+  const base64Data = modalData?.productImages?.[0]?.value || null;
+  const logo = base64Data ? `data:image/jpeg;base64,${base64Data}` : "";
+  const imageUrls =
+    modalData?.productImages?.map(
+      (image) => `data:image/jpeg;base64,${image.value}`
+    ) || [];
+
+  useEffect(() => {
+    const updateConstraintName = async () => {
+      const categoryName = modalData?.product?.category?.name;
+      const gemsName = modalData?.product?.gem?.name;
+      const goldName = modalData?.product?.gold?.name;
+
+      if (categoryName) {
+        const convertedName = await convertConstraintName(categoryName);
+        setCategoryName(convertedName);
+      }
+      if (gemsName) {
+        const convertedGemsName = await convertConstraintName(gemsName);
+        setGemsName(convertedGemsName);
+      }
+      if (goldName) {
+        const convertedGoldName = await convertConstraintName(goldName);
+        setGoldName(convertedGoldName);
+      }
+    };
+
+    if (modalData) {
+      updateConstraintName();
+    }
+  }, [modalData]);
+
+  if (!modalData) return null;
+
   return (
     <>
-      <Modal id={"info-modal"} isHeader={true} title={"Thông tin chi tiết"}>
-        <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
-          <button
-            type="button"
-            className="py-2 px-3 inline-flex items-center text-sm font-semibold rounded border border-red-400 bg-red-50 hover:bg-red-500 text-red-500 hover:text-white shadow-sm dark:bg-transparent dark:border-red-500 dark:hover:bg-red-500 dark:hover:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-red-600"
-            data-hs-overlay="#delete-modal"
-          >
-            <span className="block">Xóa đơn hàng</span>
-          </button>
-          <button
-            type="button"
-            className="py-2 px-3 inline-flex items-center text-sm font-semibold rounded border border-blue-400 bg-blue-500 text-white shadow-sm dark:border-blue-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-blue-600 dark:bg-transparent dark:hover:bg-blue-500 dark:hover:text-white"
-            data-hs-overlay="#edit-modal"
-          >
-            <span className="block">Thay đổi thông tin</span>
-          </button>
-        </div>
-      </Modal>
-      <Modal id={"edit-modal"} isHeader={true} title={"Thay đổi thông tin"}>
-        <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
-          <button
-            type="button"
-            className="py-2 px-3 inline-flex items-center text-sm font-semibold rounded border border-red-400 bg-red-50 hover:bg-red-500 text-red-500 hover:text-white shadow-sm dark:bg-transparent dark:border-red-500 dark:hover:bg-red-500 dark:hover:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-red-600"
-            data-hs-overlay="#edit-modal"
-            onClick={() => {
-              HSOverlay.open("#info-modal");
-            }}
-          >
-            <span className="block">Hủy thay đổi</span>
-          </button>
-          <button
-            type="button"
-            className="py-2 px-3 inline-flex items-center text-sm font-semibold rounded border border-green-400 bg-green-500 text-white shadow-sm dark:border-green-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-green-600 dark:bg-transparent dark:hover:bg-green-500 dark:hover:text-white"
-            data-hs-overlay="#edit-modal"
-          >
-            <span className="block">Cập nhật thông tin</span>
-          </button>
-        </div>
-      </Modal>
-      <Modal id={"delete-modal"} isHeader={false} title={""}>
-        <div className="relative flex flex-col bg-white shadow-lg rounded-md max-w-xl dark:bg-gray-800">
-          <div className="absolute top-2 end-2">
-            <button
-              type="button"
-              className="flex justify-center items-center size-7 text-sm font-semibold rounded-lg border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-transparent dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-              data-hs-overlay="#delete-modal"
-            >
-              <span className="sr-only">Close</span>
-              <XMarkIcon className="flex-shrink-0 size-5" strokeWidth={2} />
-            </button>
+      <Modal
+        id={"info-modal"}
+        isHeader={true}
+        title={"Thông tin chi tiết"}
+        className="w-full max-w-screen-lg mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg"
+      >
+        <div className="flex flex-row py-6 px-4 gap-6">
+          {/* Thông tin khách hàng */}
+          <div className="w-1/2">
+            <h1 className="text-2xl font-bold text-center mb-4 text-gray-800 dark:text-gray-100">
+              Thông tin khách hàng
+            </h1>
+            <Divider className="hs-dark-mode-active:bg-gray-400" />
+            {modalData.request && (
+              <div className="space-y-3">
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Họ và tên:
+                  <span className="font-normal ml-1 text-gray-900 dark:text-gray-200">
+                    {modalData.request.user.fullName}
+                  </span>
+                </h3>
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Số điện thoại:
+                  <span className="font-normal ml-1 text-gray-900 dark:text-gray-200">
+                    {modalData.request.user.phoneNumber}
+                  </span>
+                </h3>
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Email:
+                  <span className="font-normal ml-1 text-gray-900 dark:text-gray-200">
+                    {modalData.request.user.email}
+                  </span>
+                </h3>
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Mã yêu cầu:
+                  <span className="font-normal ml-1 text-gray-900 dark:text-gray-200">
+                    #{modalData.id}
+                  </span>
+                </h3>
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Đơn được tạo vào ngày:
+                  <span className="font-normal ml-1 text-gray-900 dark:text-gray-200">
+                    {formatDate(modalData.orderCreatedAt)}
+                  </span>
+                </h3>
+              </div>
+            )}
           </div>
 
-          <div className="p-6 text-center overflow-y-auto">
-            <span className="mb-4 inline-flex justify-center items-center size-16 rounded-full bg-orange-100">
-              <ExclamationTriangleIcon className="flex-shrink-0 size-10 text-orange-500" />
-            </span>
-
-            <h3 className="mb-2 text-2xl font-bold text-gray-800 dark:text-gray-200">
-              Xóa thông tin đơn hàng
-            </h3>
-            <p className="dark:text-gray-300 text-gray-700 whitespace-pre-line">
-              {`Bạn có chắc chắn muốn xóa thông tin đơn hàng này?\nHành động này không thể hoàn tác!`}
-            </p>
-
-            <div className="mt-8 flex justify-center items-center space-x-6">
-              <button
-                className="py-2 px-3 inline-flex items-center text-sm font-semibold rounded border border-red-400 bg-red-500 text-white shadow-sm dark:bg-transparent dark:border-red-500 dark:hover:bg-red-500 dark:hover:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-red-600"
-                data-hs-overlay="#delete-modal"
-                onClick={() => {
-                  console.log("Phai xoa thong tin don hang!!!!");
+          {/* Thông tin sản phẩm */}
+          <div className="w-1/2">
+            <div className="flex flex-col items-center mb-6">
+              <img
+                src={logo || "../logo.png"}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "../logo.png";
                 }}
-                type="button"
-              >
-                <span className="block">Xóa thông tin</span>
-              </button>
-              <button
-                type="button"
-                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded border border-gray-300 bg-gray-200 text-gray-800 shadow-sm hover:bg-gray-50 dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                data-hs-overlay="#delete-modal"
-                onClick={() => {
-                  HSOverlay.open("#info-modal");
-                }}
-              >
-                <span className="block">Quay lại</span>
-              </button>
+                className="w-32 h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                alt="Product Image"
+              />
+              <div className="mt-6 text-center">
+                <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                  #{modalData?.id}__{modalData?.product?.name}
+                </h1>
+                <p
+                  className={`mt-2 text-sm ${
+                    modalData?.state &&
+                    (modalData?.state?.id === 8 ||
+                      modalData?.state?.id === 9 ||
+                      modalData?.state?.id === 5)
+                      ? "text-green-500"
+                      : modalData?.state && modalData?.state?.id === 3
+                      ? "text-red-500"
+                      : "text-yellow-500"
+                  }`}
+                >
+                  {modalData?.state &&
+                    (modalData?.state?.id === 8 ||
+                    modalData?.state?.id === 9 ||
+                    modalData?.state?.id === 5
+                      ? "Approved"
+                      : modalData?.state?.id === 3
+                      ? "Rejected"
+                      : "Pending")}
+                </p>
+              </div>
             </div>
+            <Divider className="bg-gray-300 hs-dark-mode-active:bg-gray-400" />
+            {modalData?.product && (
+              <div className="space-y-3">
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Loại trang sức:
+                  <span className="font-normal ml-1 text-gray-900 dark:text-gray-200">
+                    {categoryName}
+                  </span>
+                </h3>
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Loại đá:
+                  <span className="font-normal ml-1 text-gray-900 dark:text-gray-200">
+                    {gemsName}
+                  </span>
+                </h3>
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Chất liệu:
+                  <span className="font-normal ml-1 text-gray-900 dark:text-gray-200">
+                    {goldName}
+                  </span>
+                </h3>
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Kích thước:
+                  <span className="font-normal ml-1 text-gray-900 dark:text-gray-200">
+                    {modalData.product.size}
+                  </span>
+                </h3>
+                <div className="flex flex-col md:flex-row items-center gap-4">
+                  <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                    Bản thiết kế:
+                  </h3>
+                  <div className="flex flex-row gap-2 flex-wrap">
+                    {imageUrls.length > 0 ? (
+                      imageUrls.map((url, index) => (
+                        <img
+                          key={index}
+                          src={url}
+                          alt={`Product Image ${index + 1}`}
+                          className="w-32 h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                        />
+                      ))
+                    ) : (
+                      <p className="ml-3 text-gray-600 dark:text-gray-400">
+                        Chưa có bản thiết kế
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Giá vàng:
+                  <span className="font-normal ml-1 text-gray-900 dark:text-gray-200">
+                    {formatMoney(modalData.product.goldPrice)}
+                  </span>
+                </h3>
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Giá đá:
+                  <span className="font-normal ml-1 text-gray-900 dark:text-gray-200">
+                    {formatMoney(modalData.product.gemPrice)}
+                  </span>
+                </h3>
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Tiền công:
+                  <span className="font-normal ml-1 text-gray-900 dark:text-gray-200">
+                    {formatMoney(modalData.product.manufacturingFee)}
+                  </span>
+                </h3>
+                <h3 className="font-medium text-gray-700 dark:text-gray-300">
+                  Tổng giá tiền:
+                  <span className="font-normal ml-1 text-green-500 dark:text-green-400">
+                    {formatMoney(modalData.product?.totalPrice)}
+                  </span>
+                </h3>
+              </div>
+            )}
           </div>
         </div>
       </Modal>
