@@ -141,7 +141,6 @@ const CustomerOrderProductDetail = () => {
 
   const handleCustomerAcceptDesign = (approvalStatus) => {
     customerAcceptDesign(approvalStatus);
-    Toast("accept_design", "success", "Chấp nhận thiết kế thành công!");
     navigate("/don-hang");
   };
 
@@ -201,6 +200,13 @@ const CustomerOrderProductDetail = () => {
         }
       );
       setIsAcceptDesign(approvalStatus);
+      if (approvalStatus) {
+        Toast("accept_design", "success", "Chấp nhận thiết kế thành công!");
+      } else {
+        Toast("decline_design", "success", "Từ chối thiết kế thành công!");
+      }
+      window.location.reload();
+
       console.log("Accept design: ", response.data);
     } catch (error) {
       console.error("Error accepting design: ", error);

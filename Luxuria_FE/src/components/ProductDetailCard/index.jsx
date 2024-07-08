@@ -78,6 +78,7 @@ const ProductDetailCard = ({
       setIsCompleteOrder(true);
       Toast("complete_order", "success", "Hoàn thành đơn hàng thành công!");
       console.log("Complete Order: ", response.data);
+      window.location.reload();
     } catch (error) {
       console.error("Error complete order: ", error);
     }

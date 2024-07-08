@@ -30,7 +30,7 @@ function GiaCong() {
   const onSubmit = async (data) => {
     // Show SweetAlert confirmation dialog
     Swal.fire({
-      title: "Bạn có chắc chắn là muốn đặt hàng không?",
+      title: "Bạn có chắc chắn là muốn gửi yêu cầu không?",
       text: "Bạn vẫn có thể hủy yêu cầu trước khi nhân viên duyệt yêu cầu!",
       icon: "warning",
       showCancelButton: true,
@@ -63,12 +63,16 @@ function GiaCong() {
           });
           if (response.status === 200) {
             Swal.fire({
-              title: "Đặt hàng thành công!",
+              title: "Gửi yêu cầu thành công!",
               text: "Yêu cầu của bạn đã được nhân viên tiếp nhận!",
               icon: "success",
             });
           } else {
-            Toast("request_err", "error", "Gửi đơn thất bại!");
+            Swal.fire({
+              title: "Gửi yêu cầu thất bại!",
+              text: "Có lỗi đã xảy ra!",
+              icon: "error",
+            });
           }
         } catch (error) {
           console.error("Error:", error);
