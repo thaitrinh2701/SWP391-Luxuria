@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
+import "preline";
 
 const RequestDetailCard = ({ requestID, createdAt, salesStaffApproved }) => {
   const API_CUSTOMER_CANCEL_REQUEST = import.meta.env
@@ -11,8 +12,7 @@ const RequestDetailCard = ({ requestID, createdAt, salesStaffApproved }) => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const formattedDate = date.toLocaleString("vi-VN");
-    return formattedDate;
+    return date.toLocaleString("vi-VN");
   };
 
   const cancelRequest = async () => {
@@ -33,49 +33,63 @@ const RequestDetailCard = ({ requestID, createdAt, salesStaffApproved }) => {
     }
   };
 
-  const checkStatus = () => {
-    if (salesStaffApproved) {
-      return <>Vui lòng chờ tạo đơn hàng</>;
-    }
-    return (
-      <div>
-        <p>Đang chờ duyệt</p>
-      </div>
-    );
+  const getStatusMessage = () => {
+    return salesStaffApproved ? "Vui lòng chờ tạo đơn hàng" : "Đang chờ duyệt";
   };
 
   return (
-    <div>
+    <div className="container mx-auto p-4">
       {!isCancelRequest && (
-        <div className="flex flex-row max-w-screen rounded-lg overflow-hidden shadow-lg transform transition-transform hover:scale-102 my-8 py-9 bg-gray-100 dark:bg-neutral-800 dark:text-white">
-          <div className="flex flex-col w-full h-auto p-4">
-            <div className="flex justify-between items-center">
-              <div className="flex-1 text-center">
-                <div className="font-bold text-xl mb-2">
-                  MÃ YÊU CẦU: #{requestID}
-                </div>
-              </div>
+        <div className="mt-6 border border-gray-200 p-4 rounded-lg max-w-5xl dark:border-neutral-700">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-6">
+            <div className="text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+              MÃ YÊU CẦU
+            </div>
+            <div className="text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+              THỜI GIAN
+            </div>
+            <div className="text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+              TRẠNG THÁI
+            </div>
+          </div>
 
-              <div className="flex-1 text-center">
-                <p className="font-bold text-xl mb-5">Thời gian tạo yêu cầu</p>
-                <p>{formatDate(createdAt)}</p>
-              </div>
+          <div className="border-b border-gray-200 dark:border-neutral-700 my-2"></div>
 
-              <div className="flex-1 text-center">
-                <p className="font-bold text-xl mb-5">Trạng thái</p>
-                <p>{checkStatus()}</p>
-              </div>
-
-              <div className="flex-1 text-center">
-                <Button
-                  variant="outlined"
-                  color="error"
-                  size="small"
-                  onClick={cancelRequest}
-                >
-                  HỦY YÊU CẦU
-                </Button>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-6">
+            <div>
+              <h5 className="text-xs font-medium text-gray-500 uppercase dark:text-neutral-500 sm:hidden">
+                MÃ YÊU CẦU
+              </h5>
+              <p className="font-medium text-gray-800 dark:text-neutral-200">
+                #{requestID}
+              </p>
+            </div>
+            <div>
+              <h5 className="text-xs font-medium text-gray-500 uppercase dark:text-neutral-500 sm:hidden">
+                THỜI GIAN
+              </h5>
+              <p className="text-gray-800 dark:text-neutral-200">
+                {formatDate(createdAt)}
+              </p>
+            </div>
+            <div>
+              <h5 className="text-xs font-medium text-gray-500 uppercase dark:text-neutral-500 sm:hidden">
+                TRẠNG THÁI
+              </h5>
+              <p className="text-gray-800 font-medium dark:text-neutral-200">
+                {getStatusMessage()}
+              </p>
+            </div>
+            <div className="text-center sm:text-end">
+              <Button
+                variant="outlined"
+                color="error"
+                size="small"
+                className="bg-red-600 text-white hover:bg-red-700"
+                onClick={cancelRequest}
+              >
+                HỦY YÊU CẦU
+              </Button>
             </div>
           </div>
         </div>
