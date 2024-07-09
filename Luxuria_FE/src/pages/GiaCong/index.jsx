@@ -126,16 +126,11 @@ function GiaCong() {
           <li className="font-bold">
             Loại vàng & màu sắc
             <ul className="list-disc list-inside text-gray-700 mb-6 hs-dark-mode-active:text-gray-100">
-              <li>24k gold (999) - vàng</li>
-              <li>18k gold (750) - vàng, trắng, hồng</li>
-              <li>Vàng 16K (670) - vàng, trắng</li>
-              <li>14k gold (610) - vàng, xi trắng</li>
+              <li>Vàng 24k (999) - vàng</li>
+              <li>Vàng 18k (750) - vàng, trắng, hồng</li>
+              <li>Vàng 16k (670) - vàng, trắng</li>
+              <li>Vàng 14k (610) - vàng, xi trắng</li>
             </ul>
-          </li>
-          <li>
-            <span className="font-bold">Tiền đặt cọc</span>: bằng với tiền công
-            gia công. Vì mỗi sản phẩm khác nhau, quý khách vui lòng liên hệ
-            trước để được báo giá chính xác.
           </li>
           <h2>
             Khi đã có đủ những chi tiết trên, quý khách hãy đến các cửa hàng của
