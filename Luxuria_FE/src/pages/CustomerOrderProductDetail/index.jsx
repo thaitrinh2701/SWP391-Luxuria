@@ -13,10 +13,12 @@ import { convertConstraintName, formatMoney } from "@/services/getHelper";
 import Stepper from "@/components/Stepper";
 import MyStepper from "@/components/Stepper";
 import toast from "react-hot-toast";
+import PayPalModal from "@/components/PaypalModal";
 
 const CustomerOrderProductDetail = () => {
   const { orderID } = useParams(); // Sử dụng destructuring để lấy orderID
   const [cookies] = useCookies(["user", "token"]);
+  const [newPrice, setNewPrice] = useState(0);
 
   const token = cookies.token;
   const API_SUBMIT_PRICE_QUOTE = import.meta.env
@@ -45,6 +47,9 @@ const CustomerOrderProductDetail = () => {
   const [isSubmitDesign, setIsSubmitDesign] = useState(false);
   const [isCompleteProduct, setIsCompleteProduct] = useState(false);
   const [isCompleteOrder, setIsCompleteOrder] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const productPrice = orderDetail?.order?.product?.totalPrice;
+
   const navigate = useNavigate();
   async function fetchRoleID() {
     const roleIDFromAPI = await getRoleId(cookies.token);
@@ -93,6 +98,18 @@ const CustomerOrderProductDetail = () => {
   useEffect(() => {
     fetchRoleID();
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log("Product Price: ", productPrice);
+      function convertVNDtoUSD(price) {
+        let newPrice = price / 25600;
+        return newPrice.toFixed(2);
+      }
+      setNewPrice(convertVNDtoUSD(productPrice));
+      console.log("New Price: ", newPrice);
+    }, 2000);
+  }, [productPrice]);
 
   useEffect(() => {
     getOrderDetail();
@@ -150,6 +167,16 @@ const CustomerOrderProductDetail = () => {
 
   const handleDeclinePriceQuote = () => {
     acceptPriceQuote(false);
+  };
+
+  const handleCheckoutProduct = () => {
+    setIsModalOpen(true);
+  };
+
+  const handlePaymentSuccess = () => {
+    customerAcceptPriceQuote(true);
+    navigate("/don-hang");
+    Toast("accept_price", "success", "Chấp nhận báo giá thành công!");
   };
 
   const handleCompleteProduct = async () => {
@@ -253,7 +280,7 @@ const CustomerOrderProductDetail = () => {
       orderDetail.order.state?.id === 4 &&
       approvalStatus
     ) {
-      customerAcceptPriceQuote(true);
+      handleCheckoutProduct();
     } else if (
       roleID === 2 &&
       orderDetail.order.state?.id === 4 &&
@@ -307,9 +334,7 @@ const CustomerOrderProductDetail = () => {
         }
       );
       console.log("Accept Price: ", response.data);
-      setIsAcceptPrice(approvalStatus);
-      navigate("/don-hang");
-      Toast("accept_price", "success", "Chấp nhận báo giá thành công!");
+      setIsAcceptPrice(true);
     } catch (error) {
       console.error("Error accepting price quote: ", error);
     }
@@ -326,7 +351,7 @@ const CustomerOrderProductDetail = () => {
   }
 
   return (
-    <div className="flex flex-row dark:bg-[#111827] dark:text-white">
+    <div className="flex flex-row mb-5 dark:bg-[#111827] dark:text-white">
       <Sidebar />
       <div className="w-full h-full flex justify-center items-center my-auto">
         <div className="flex flex-col lg:flex-row gap-5 w-full max-w-6xl">
@@ -583,6 +608,13 @@ const CustomerOrderProductDetail = () => {
           </div>
         </div>
       </div>
+
+      <PayPalModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        price={newPrice}
+        onSuccess={handlePaymentSuccess}
+      />
     </div>
   );
 };

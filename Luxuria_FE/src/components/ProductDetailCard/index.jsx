@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import { Toast } from "../Toast";
+import PayPalModal from "../PaypalModal";
 
 const ProductDetailCard = ({
   productName,
@@ -23,11 +24,12 @@ const ProductDetailCard = ({
   const [isApproved, setIsApproved] = useState(false);
   const [processState, setProcessState] = useState("");
   const [isAcceptPrice, setIsAcceptPrice] = useState(false);
-  const [isAcceptDesign, setIsAcceptDesign] = useState(false);
   const [isCompleteOrder, setIsCompleteOrder] = useState(false);
   const [categoryName, setCategoryName] = useState("");
   const [roleID, setRoleID] = useState(null);
+  const [newPrice, setNewPrice] = useState(0);
   const [cookies] = useCookies(["user", "token"]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Function to fetch roleID and set the state
   async function fetchRoleID() {
@@ -45,9 +47,7 @@ const ProductDetailCard = ({
   const API_COMPLETE_ORDER = import.meta.env.VITE_API_COMPLETE_ORDER_ENDPOINT;
 
   const handleApproval = () => {
-    customerAcceptPriceQuote(true);
-    setIsApproved(true);
-    setProcessState("approved");
+    setIsModalOpen(true);
   };
 
   const handleRejection = () => {
@@ -63,6 +63,14 @@ const ProductDetailCard = ({
   const handleDeclinePriceQuote = () => {
     managerAcceptPriceQuote(false);
   };
+
+  useEffect(() => {
+    function convertVNDtoUSD(price) {
+      let newPrice = price / 25600;
+      return newPrice.toFixed(2);
+    }
+    setNewPrice(convertVNDtoUSD(productPrice));
+  }, [newPrice]);
 
   const completeOrder = async () => {
     try {
@@ -160,6 +168,12 @@ const ProductDetailCard = ({
     };
     updateConstraintName();
   }, [category]);
+
+  const handlePaymentSuccess = () => {
+    customerAcceptPriceQuote(true);
+    setIsApproved(true);
+    setProcessState("approved");
+  };
 
   return (
     <div className="transition-transform transform hover:scale-105 w-full h-auto">
@@ -281,17 +295,6 @@ const ProductDetailCard = ({
                   </Button>
                 </Link>
               )}
-              {/* {!isSubmitPrice && roleID === 3 && stateID === 1 && (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  size="small"
-                  style={{ padding: "4px 8px", fontSize: "0.75rem" }}
-                  onClick={handleSubmitPriceQuote}
-                >
-                  Báo giá
-                </Button>
-              )} */}
               {!isSubmitPrice &&
                 isAcceptPrice === false &&
                 roleID === 6 &&
@@ -358,6 +361,13 @@ const ProductDetailCard = ({
           </div>
         </div>
       </div>
+
+      <PayPalModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        price={newPrice}
+        onSuccess={handlePaymentSuccess}
+      />
     </div>
   );
 };
