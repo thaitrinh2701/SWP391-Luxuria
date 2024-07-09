@@ -96,15 +96,15 @@ function GiaCong() {
   };
   return (
     <div className="mb-4 mx-auto max-w-7xl">
-      <h1 className="text-white text-3xl text-center mt-6 mb-8 font-bold font-playfair bg-cover bg-no-repeat py-20 bg-[url('/gcts.webp')]">
+      <h1 className="text-white text-5xl text-center mt-6 mb-8 font-bold font-playfair bg-cover bg-no-repeat py-60 bg-[url('/gcts.webp')]">
         GIA CÔNG TRANG SỨC THEO YÊU CẦU
       </h1>
       <div className="px-6 lg:px-12 text-xl">
-        <h2 className="text-gray-800 text-2xl font-semibold mb-4 hs-dark-mode-active:text-gray-100">
+        <h2 className="text-gray-800 text-3xl font-semibold mb-4 hs-dark-mode-active:text-gray-100">
           Với hơn 10 năm thiết kế và gia công, đội ngũ thợ lành nghề của Luxuria
           sẽ tạo ra món trang sức quý khách luôn mong ước.
         </h2>
-        <ul className="list-disc list-inside text-gray-700 mb-6 hs-dark-mode-active:text-gray-100">
+        <ul className="list-disc list-inside text-2xl text-gray-700 mb-6 hs-dark-mode-active:text-gray-100">
           <li>
             Gia công được mọi mặt hàng: nhẫn, vòng tay, lắc, bông tai, dây
             chuyền, mặt dây chuyền...
@@ -114,25 +114,50 @@ function GiaCong() {
             ngũ thợ.
           </li>
         </ul>
-        <h2 className="text-gray-800 text-2xl font-semibold mb-4 hs-dark-mode-active:text-gray-100">
+        <h2 className="text-gray-800 text-3xl font-semibold mb-4 hs-dark-mode-active:text-gray-100">
           Quý khách hãy chuẩn bị trước:
         </h2>
-        <ul className="list-disc list-inside text-gray-700 mb-6 hs-dark-mode-active:text-gray-100">
-          <li>
+        <ul className="list-disc list-inside text-gray-700 mb-6 hs-dark-mode-active:text-gray-100 text-2xl">
+          <li className="my-2">
             <span className="font-bold">Mẫu</span>: hình ảnh, video, bản vẽ của
             sản phẩm.
           </li>
-          <li className="font-bold">Kích thước</li>
+          <li className="font-bold my-2">Kích thước</li>
           <li className="font-bold">
             Loại vàng & màu sắc
-            <ul className="list-disc list-inside text-gray-700 mb-6 hs-dark-mode-active:text-gray-100">
-              <li>Vàng 24k (999) - vàng</li>
-              <li>Vàng 18k (750) - vàng, trắng, hồng</li>
-              <li>Vàng 16k (670) - vàng, trắng</li>
-              <li>Vàng 14k (610) - vàng, xi trắng</li>
+            <ul className="list-disc list-inside text-gray-700 mb-3 hs-dark-mode-active:text-gray-100 text-2xl">
+              <li className="font-normal ml-5 list-circle mt-2 my-2">
+                Vàng 24k (999) - vàng
+              </li>
+              <li className="font-normal ml-5 list-circle my-2">
+                Vàng 18k (750) - vàng, trắng, hồng
+              </li>
+              <li className="font-normal ml-5 list-circle my-2">
+                Vàng 16k (670) - vàng, trắng
+              </li>
+              <li className="font-normal ml-5 list-circle my-2">
+                Vàng 14k (610) - vàng, xi trắng
+              </li>
             </ul>
           </li>
-          <h2>
+          <li>
+            <span className="font-bold">Tiền đặt cọc</span> : bằng với tiền công
+            gia công. Vì mỗi sản phẩm khác nhau, quý khách vui lòng liên hệ
+            trước để được báo giá chính xác.
+          </li>
+          <h2 className="text-gray-800 text-3xl font-semibold mt-6 hs-dark-mode-active:text-gray-100">
+            Thời gian đợi ước tính
+          </h2>
+          <ul className="list-disc list-inside my-2 text-gray-700 mb-6 hs-dark-mode-active:text-gray-100">
+            <li className="mt-4 mb-1">
+              <span className="font-bold">Sản phẩm đơn giản</span>: 7 - 10 ngày
+            </li>
+            <li className="my-2">
+              <span className="font-bold ">Sản phẩm phức tạp</span>: : 10 - 15
+              ngày
+            </li>
+          </ul>
+          <h2 className="text-2xl">
             Khi đã có đủ những chi tiết trên, quý khách hãy đến các cửa hàng của
             Luxuria để được nhân viên cùng xưởng thợ báo giá và tiến hành gia
             công. Đừng ngần ngại liên hệ qua Messenger và hotline 0727 727 727
@@ -142,39 +167,6 @@ function GiaCong() {
 
         <div className="bg-gray-100 p-6 rounded-lg shadow-lg hs-dark-mode-active:bg-gray-500">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* {GIACONG_FORMAT.map((item, index) => (
-              <Input
-                key={index}
-                id={item.id}
-                label={item.label}
-                isRequired={item.isRequired}
-                placeholder={item.placeholder}
-                isError={errors[item.id]}
-                msg={item.validMsg}
-                type={item.type}
-                isSubmitted={isSubmitted}
-                aria-invalid={errors[item.id] ? "true" : "false"}
-                inputMode={item.inputMode}
-                data-hs-input-number-input={""}
-                defaultValue={item.defaultValue}
-                {...register(item.id, {
-                  valueAsNumber: item.rules?.valueAsNumber || false,
-                  required: item.rules?.required || false,
-                  pattern: {
-                    value: item.rules?.pattern?.value || /\S/,
-                    message: item.rules?.pattern?.message || "Không hợp lệ",
-                  },
-                  minLength: {
-                    value: item.rules?.minLength?.value || 1,
-                    message: item.rules?.minLength?.message || "Tối thiểu 1",
-                  },
-                  maxLength: {
-                    value: item.rules?.maxLength?.value || 50,
-                    message: item.rules?.maxLength?.message || "Tối đa 50",
-                  },
-                })}
-              />
-            ))} */}
             <button
               type="submit"
               className="bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-600 "
