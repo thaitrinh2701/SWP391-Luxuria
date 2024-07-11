@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -12,9 +12,11 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import ReactPaginate from "react-paginate";
 import "/css/Table.css";
+import { convertConstraintName } from "@/services/getHelper";
 
 function ProductData({ item }) {
   const API_DELETE_PRODUCT = import.meta.env.VITE_API_DELETE_PRODUCT_ENDPOINT;
+  const [categoryName, setCategoryName] = useState("");
 
   const [cookies] = useCookies(["token"]);
   const navigate = useNavigate();
@@ -29,6 +31,7 @@ function ProductData({ item }) {
       });
       console.log("Delete Product: ", response.data);
       Toast("delete_success", "success", "Xóa sản phẩm thành công");
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting product: ", error);
       Toast("delete_err", "error", "Có lỗi khi xóa sản phẩm");
@@ -45,6 +48,17 @@ function ProductData({ item }) {
   const handleClick = () => {
     navigate(`/cap-nhat-san-pham/${item.product.id}`, { state: { item } });
   };
+
+  useEffect(() => {
+    const updateConstraintName = async () => {
+      const categoryName = item.product.category.name;
+      if (categoryName) {
+        const convertedName = await convertConstraintName(categoryName);
+        setCategoryName(convertedName);
+      }
+    };
+    updateConstraintName();
+  }, [categoryName]);
   return (
     <>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
@@ -54,7 +68,7 @@ function ProductData({ item }) {
         {item.product.name}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-        {item.product.totalPrice}
+        {categoryName}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
         <div className="flex gap-3">
@@ -157,7 +171,7 @@ function ProductTable({ data }) {
                     scope="col"
                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400"
                   >
-                    GIÁ SẢN PHẨM
+                    DANH MỤC
                   </th>{" "}
                   <th
                     scope="col"

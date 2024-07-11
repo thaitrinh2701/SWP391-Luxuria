@@ -144,6 +144,7 @@ const ProductDetailCard = ({
       console.log("Accept Price: ", response.data);
       setIsAcceptPrice(approvalStatus);
       Toast("accept_price", "success", "Chấp nhận báo giá thành công!");
+      window.location.reload();
     } catch (error) {
       console.error("Error accepting price quote: ", error);
     }

@@ -142,6 +142,7 @@ function UserTable({ data: initialData }) {
       console.log("Delete user: ", response.data);
       Toast("delete_success", "success", "Xóa người dùng thành công");
       setData(data.filter((user) => user.id !== id));
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting user: ", error);
       Toast("delete_err", "error", "Có lỗi khi xóa người dùng");

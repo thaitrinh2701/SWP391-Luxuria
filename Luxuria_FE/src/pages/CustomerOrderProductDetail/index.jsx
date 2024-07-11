@@ -317,6 +317,7 @@ const CustomerOrderProductDetail = () => {
       );
       console.log("Accept Price: ", response.data);
       setIsAcceptPrice(approvalStatus);
+      navigate("/yeu-cau");
     } catch (error) {
       console.error("Error accepting price quote: ", error);
     }
