@@ -53,7 +53,8 @@ public class WebSecurityConfig {
                                         String.format("%s/products/{product_id}", apiPrefix),
                                         String.format("%s/products/category/{category_id}", apiPrefix),
                                         String.format("%s/product_data", apiPrefix),
-                                        String.format("%s/product_data/**", apiPrefix)
+                                        String.format("%s/product_data/**", apiPrefix),
+                                        String.format("%s/gold_price", apiPrefix)
                                 ).permitAll()
                                 .requestMatchers(GET,
                                         String.format("%s/users/view_all", apiPrefix)).hasRole(Role.ADMIN)

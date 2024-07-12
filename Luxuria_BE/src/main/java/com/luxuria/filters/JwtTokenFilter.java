@@ -85,7 +85,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Pair.of(String.format("%s/products/{product_id}", apiPrefix), "GET"),
                 Pair.of(String.format("%s/products/category/{category_id}", apiPrefix), "GET"),
                 Pair.of(String.format("%s/product_data", apiPrefix), "POST"),
-                Pair.of(String.format("%s/product_data/**", apiPrefix), "POST")
+                Pair.of(String.format("%s/product_data/**", apiPrefix), "POST"),
+                Pair.of(String.format("%s/gold_price", apiPrefix), "GET")
         );
         for (Pair<String, String> bypassToken : bypassTokens) {
             if (request.getServletPath().contains(bypassToken.getFirst()) &&
