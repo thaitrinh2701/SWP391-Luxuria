@@ -50,7 +50,13 @@ const OrderDetailSale = () => {
       setValue("gold_id", response.data.order.product.gold.id);
       setValue("gem_id", response.data.order.product.gem.id);
       setValue("description", response.data.order.product.description);
-
+      setValue("gold_price", response.data.order.product.goldPrice);
+      setValue("gold_weight", response.data.order.product.goldWeight);
+      setValue(
+        "manufacturing_fee",
+        response.data.order.product.manufacturingFee
+      );
+      setValue("gem_price", response.data.order.product.gemPrice);
       // Set order state ID
       setOrderStateID(response.data.order.state.id);
     } catch (error) {
