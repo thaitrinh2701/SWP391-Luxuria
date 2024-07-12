@@ -600,7 +600,7 @@ const CustomerOrderProductDetail = () => {
                     HOÀN THÀNH ĐƠN HÀNG
                   </Button>
                 )}
-              {roleID === 3 &&
+              {(roleID === 2 || roleID === 3) &&
                 (orderDetail.order.state.id === 8 ||
                   orderDetail.order.state.id === 9) && (
                   <WarrantyExport orderDetail={orderDetail} />

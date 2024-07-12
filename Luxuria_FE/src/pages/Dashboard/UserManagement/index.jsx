@@ -12,7 +12,8 @@ import UserTable from "./Table";
 function UserManagement() {
   const [data, setData] = useState();
 
-  const [cookies] = useCookies(["token"]);
+  // const [cookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["user", "token"]);
 
   const API_GET_ALL_USER = import.meta.env.VITE_API_GET_ALL_USER_ENDPOINT;
 
@@ -23,7 +24,12 @@ function UserManagement() {
           Authorization: `Bearer ${cookies.token}`,
         },
       });
-      setData(response.data);
+
+      const filteredData = response.data.filter(
+        (user) => user.id !== cookies.user.id
+      );
+
+      setData(filteredData);
       Toast(
         "dashboard_info",
         "success",
