@@ -42,7 +42,11 @@ function NavbarItem({ title, path, icon, children }) {
     >
       <NavLink
         to={path}
-        className="md:text-xs xl:text-base transition-colors duration-200 transform font-medium sm:mx-1.5 relative w-fit sm:block after:block after:content-[''] after:absolute after:h-[3px] after:w-full after:transition after:duration-300 after:origin-left cursor-pointer text-lg flex items-center" // Thêm lớp flex items-center để căn chỉnh biểu tượng với văn bản
+        className={({ isActive }) =>
+          `md:text-xs xl:text-base transition-colors duration-200 transform font-medium sm:mx-1.5 relative w-fit sm:block after:block after:content-[''] after:absolute after:h-[3px] after:w-full after:transition after:duration-300 after:origin-left cursor-pointer text-lg flex items-center ${
+            isActive && title !== "Trang sức" ? "text-blue-500 after:bg-blue-500" : "text-gray-700 dark:text-white after:bg-transparent"
+          }`
+        }
       >
         {title}
         {icon && <FontAwesomeIcon icon={icon} className="ml-2" />}{" "}

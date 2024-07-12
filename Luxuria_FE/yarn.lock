@@ -3883,6 +3883,11 @@ react-paginate@^8.2.0:
   dependencies:
     prop-types "^15"
 
+react-paypal-js@^0.0.1-security:
+  version "0.0.1-security"
+  resolved "https://registry.npmjs.org/react-paypal-js/-/react-paypal-js-0.0.1-security.tgz"
+  integrity sha512-mryql7EN5LyHtM0WmOE7bwlybGJBVpzXIg+fDPc8TwXs/jPkxm+MFoK35oNYPiBLZ8CHsdO0pNqyKet8McHXxg==
+
 react-refresh@^0.14.2:
   version "0.14.2"
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.14.2.tgz"
