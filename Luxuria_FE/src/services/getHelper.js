@@ -86,19 +86,6 @@ export async function convertRoleName(constraintName) {
   }
 }
 
-export async function getGoldPrice() {
-  const from_date = "06/01/2024";
-  const to_date = "06/30/2024";
-  const API = `https://tpb.vn/CMCWPCoreAPI/api/public-service/get-gold-info-chart?from_date=${from_date}&to_date=${to_date}`;
-  try {
-    let result = await axios.get(API);
-    return result.data?.item || [];
-  } catch (e) {
-    console.error(e);
-    return DUMMY_GOLD_PRICE_DATA;
-  }
-}
-
 export async function getDashboardDatas(token) {
   const API = import.meta.env.VITE_API_ORDER_ENDPOINT;
   try {

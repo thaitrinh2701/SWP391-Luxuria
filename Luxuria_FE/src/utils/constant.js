@@ -871,8 +871,10 @@ export const DASHBOARD_TABLE_HEADERS = [
 
 export const GIAVANG_TABLE_HEADERS = [
   { title: "Thời gian" },
-  { title: "Tỉ giá mua" },
-  { title: "Tỉ giá bán" },
+  { title: "Hàm lượng Kara" },
+  { title: "Tên giá vàng" },
+  { title: "Giá mua vào" },
+  { title: "Giá bán ra" },
 ];
 
 export const DASHBOARD_CONFIG = {
