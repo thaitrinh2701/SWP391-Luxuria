@@ -29,4 +29,6 @@ public interface IProductService {
     void updateOriginalProductData(Long productId, List<MultipartFile> files) throws Exception;
 
     void deleteProduct(Long productId) throws Exception;
+
+    List<Product> getAllOriginalProductsWithoutImages();
 }

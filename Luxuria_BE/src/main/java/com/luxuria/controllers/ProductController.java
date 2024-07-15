@@ -36,6 +36,17 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/no_images")
+    public ResponseEntity<?> viewAllProductsWithoutImages() {
+        try {
+            List<Product> products = productService.getAllOriginalProductsWithoutImages();
+            products.sort(Collections.reverseOrder());
+            return ResponseEntity.ok().body(products);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/category/{category_id}")
     public ResponseEntity<?> viewOriginalProductsByCategory(@PathVariable("category_id") Long categoryId) {
         try {

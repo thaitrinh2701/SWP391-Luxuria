@@ -33,6 +33,11 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public List<Product> getAllOriginalProductsWithoutImages() {
+        return productRepository.findAllOriginalProducts();
+    }
+
+    @Override
     public Product getProductById(Long productId) throws Exception {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new DataNotFoundException("product: Sản phẩm không tồn tại"));

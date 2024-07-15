@@ -2,7 +2,6 @@ package com.luxuria.services;
 
 import com.luxuria.dtos.ProductDTO;
 import com.luxuria.models.Order;
-import com.luxuria.models.Product;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
