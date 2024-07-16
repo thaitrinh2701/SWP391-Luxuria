@@ -69,7 +69,12 @@ export const SIGNUP_FORMAT = [
         message: "Họ và tên không hợp lệ",
       },
       minLength: {
-        value: 1,
+        value: 2,
+        message: "Họ và tên phải có ít nhất 2 ký tự",
+      },
+      maxLength: {
+        value: 50,
+        message: "Họ và tên không được vượt quá 50 ký tự",
       },
     },
   },

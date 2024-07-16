@@ -106,23 +106,21 @@ function Signup() {
                     isRequired={item.isRequired}
                     placeholder={item.placeholder}
                     isError={errors[item.id]}
-                    msg={item.validMsg}
+                    msg={errors[item.id] ? item.validMsg : ""}
                     type={item.type}
                     isSubmitted={isSubmitted}
                     aria-invalid={errors[item.id] ? "true" : "false"}
                     inputMode={item.inputMode}
                     {...register(item.id, {
-                      required: item.rules.required || false,
-                      pattern: {
-                        value: item.rules.pattern?.value || /\S/,
-                        message: item.rules.pattern?.message || "Không hợp lệ",
-                      },
-                      minLength: { value: item.rules.minLength?.value || 1 },
+                      required: item.rules.required,
+                      pattern: item.rules.pattern,
+                      minLength: item.rules.minLength,
+                      maxLength: item.rules.maxLength,
                       validate: (value) => {
                         if (item.id === "confirm_password") {
                           return (
-                            (value === getValues("password") && value != "") ||
-                            item.rules.validate
+                            value === getValues("password") ||
+                            "Mật khẩu xác nhận không khớp"
                           );
                         }
                       },
@@ -162,7 +160,7 @@ function Signup() {
                     </Link>
                     {" và "}
                     <Link
-                      href="/privacy-policy"
+                      to="/privacy-policy"
                       className="text-gray-700 underline underline-offset-1 dark:text-gray-200 hover:text-blue-600"
                     >
                       Chính sách bảo mật thông tin
