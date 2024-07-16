@@ -1,6 +1,7 @@
 package com.luxuria.controllers;
 
 import com.luxuria.dtos.ProductDTO;
+import com.luxuria.dtos.ResponseOrderDTO;
 import com.luxuria.models.Order;
 import com.luxuria.models.ProductData;
 import com.luxuria.responses.OrderDetailResponse;
@@ -63,6 +64,7 @@ public class OrderController {
     public ResponseEntity<?> createOrder(
             @PathVariable(name = "request_id") Long requestId,
             @Valid @RequestBody ProductDTO productDTO,
+            @RequestHeader("Authorization") String authHeader,
             BindingResult result) {
         try {
             if (result.hasErrors()) {
@@ -73,10 +75,11 @@ public class OrderController {
                 return ResponseEntity.badRequest().body(errorMessages);
             }
 
-            Order order = orderService.createOrder(requestId, productDTO);
+            //Order order = orderService.createOrder(requestId, productDTO);
+            orderService.createOrder(requestId, productDTO, authHeader);
 
             //return ResponseEntity.ok().body(OrderResponse.fromOrderProduct(order));
-            return ResponseEntity.ok().body(order);
+            return ResponseEntity.ok().body("Tạo đơn hàng thành công");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -105,21 +108,22 @@ public class OrderController {
     }
 
     @PutMapping("/submit_price_quote/{order_id}")
-    public ResponseEntity<String> submitPriceQuote(@PathVariable(name = "order_id") Long orderId) {
+    public ResponseEntity<String> submitPriceQuote(@PathVariable(name = "order_id") Long orderId,
+                                                   @RequestHeader("Authorization") String authHeader) {
         try {
-            orderService.submitPriceQuote(orderId);
+            orderService.submitPriceQuote(orderId, authHeader);
             return ResponseEntity.ok().body("Submit price quote successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PutMapping("/manager_price_quote/{order_id}/{response}")
+    @PutMapping("/manager_price_quote")
     public ResponseEntity<String> responsePriceQuoteFromManager(
-            @PathVariable(name = "order_id") Long orderId,
-            @PathVariable boolean response) {
+            @RequestBody ResponseOrderDTO responseOrderDTO,
+            @RequestHeader("Authorization") String authHeader) {
         try {
-            String message = orderService.responsePriceQuoteFromManager(orderId, response) ?
+            String message = orderService.responsePriceQuoteFromManager(responseOrderDTO, authHeader) ?
                     "Báo giá được duyệt" : "Báo giá bị từ chối";
             return ResponseEntity.ok().body(message);
         } catch (Exception e) {
@@ -127,12 +131,12 @@ public class OrderController {
         }
     }
 
-    @PutMapping("/customer_price_quote/{order_id}/{response}")
+    @PutMapping("/customer_price_quote")
     public ResponseEntity<String> responsePriceQuoteFromCustomer(
-            @PathVariable(name = "order_id") Long orderId,
-            @PathVariable boolean response) {
+            @RequestBody ResponseOrderDTO responseOrderDTO,
+            @RequestHeader("Authorization") String authHeader) {
         try {
-            String message = orderService.responsePriceQuoteFromCustomer(orderId, response) ?
+            String message = orderService.responsePriceQuoteFromCustomer(responseOrderDTO, authHeader) ?
                     "Báo giá được chấp nhận" : "Báo giá bị từ chối";
             return ResponseEntity.ok().body(message);
         } catch (Exception e) {
@@ -142,22 +146,23 @@ public class OrderController {
 
     @PostMapping(value = "/submit_design/{order_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> submitDesign(@PathVariable("order_id") Long orderId,
-                                          @ModelAttribute("files") List<MultipartFile> files) {
+                                          @ModelAttribute("files") List<MultipartFile> files,
+                                          @RequestHeader("Authorization") String authHeader) {
         try {
             Order order = orderService.getOrderById(orderId);
-            orderService.submitDesign(order, files);
+            orderService.submitDesign(order, files, authHeader);
             return ResponseEntity.ok().body("Gửi bản thiết kế 3D thành công");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PutMapping("/approve_design/{order_id}/{response}")
+    @PutMapping("/approve_design")
     public ResponseEntity<String> approveDesign(
-            @PathVariable(name = "order_id") Long orderId,
-            @PathVariable boolean response) {
+            @RequestBody ResponseOrderDTO responseOrderDTO,
+            @RequestHeader("Authorization") String authHeader) {
         try {
-            String message = orderService.approveDesign(orderId, response) ?
+            String message = orderService.approveDesign(responseOrderDTO, authHeader) ?
                     "Bản thiết kế 3D được chấp nhận" : "Bản thiết kế 3D bị từ chối";
             return ResponseEntity.ok().body(message);
         } catch (Exception e) {
@@ -167,10 +172,11 @@ public class OrderController {
 
     @PutMapping("/complete_product/{order_id}")
     public ResponseEntity<String> completeProduct(
-            @PathVariable(name = "order_id") Long orderId) {
+            @PathVariable(name = "order_id") Long orderId,
+            @RequestHeader("Authorization") String authHeader) {
         try {
             Order order = orderService.getOrderById(orderId);
-            orderService.completeProduct(order);
+            orderService.completeProduct(order, authHeader);
             return ResponseEntity.ok().body("Gia công trang sức hoàn thành");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -179,10 +185,11 @@ public class OrderController {
 
     @PutMapping("/complete_order/{order_id}")
     public ResponseEntity<String> completeOrder(
-            @PathVariable(name = "order_id") Long orderId) {
+            @PathVariable(name = "order_id") Long orderId,
+            @RequestHeader("Authorization") String authHeader) {
         try {
             Order order = orderService.getOrderById(orderId);
-            orderService.completeOrder(order);
+            orderService.completeOrder(order, authHeader);
             return ResponseEntity.ok().body("Hoàn thành đơn hàng");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

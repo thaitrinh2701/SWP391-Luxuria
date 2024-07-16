@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
-public class OrderStateHistory {
+public class OrderStateHistory implements Comparable<OrderStateHistory> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +34,14 @@ public class OrderStateHistory {
     private LocalDateTime dateTime;
 
     private String description;
+
+    @PrePersist
+    protected void onCreate() {
+        dateTime = LocalDateTime.now();
+    }
+
+    @Override
+    public int compareTo(OrderStateHistory o) {
+        return this.dateTime.compareTo(o.dateTime);
+    }
 }
