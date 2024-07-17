@@ -122,6 +122,9 @@ public class WebSecurityConfig {
                                         String.format("%s/products/update_images/{product_id}", apiPrefix)).hasRole(Role.ADMIN)
                                 .requestMatchers(DELETE,
                                         String.format("%s/products/delete/{product_id}", apiPrefix)).hasRole(Role.ADMIN)
+                                .requestMatchers(GET,
+                                        String.format("%s/order_state_histories/{order_id}", apiPrefix))
+                                .hasAnyRole(Role.CUSTOMER, Role.SALES_STAFF, Role.DESIGN_STAFF, Role.PRODUCTION_STAFF, Role.MANAGER, Role.ADMIN)
                                 .anyRequest().authenticated())
                 .logout((logout) -> {
                     logout.logoutUrl("api/v1/users/logout")

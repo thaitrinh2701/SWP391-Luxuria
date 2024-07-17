@@ -27,6 +27,7 @@ public class OrderStateHistoryService implements IOrderStateHistoryService {
                 .order(order)
                 .state(state)
                 .user(requestedUser)
+                .description(description)
                 .build();
         orderStateHistoryRepository.save(orderStateHistory);
     }

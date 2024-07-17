@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("${api.prefix}/order_state_history")
+@RequestMapping("${api.prefix}/order_state_histories")
 @RequiredArgsConstructor
 public class OrderStateHistoryController {
 
     private final IOrderStateHistoryService orderStateHistoryService;
 
     @GetMapping("/{order_id}")
-    public ResponseEntity<?> getHistoryOfOrder(@PathVariable("order_id")  Long orderId) {
+    public ResponseEntity<?> getHistoryOfOrder(@PathVariable("order_id") Long orderId) {
         try {
             List<OrderStateHistory> orderStateHistories = orderStateHistoryService.getHistoryOfOrder(orderId);
             return ResponseEntity.ok().body(orderStateHistories);
