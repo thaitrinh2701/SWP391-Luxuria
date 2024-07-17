@@ -13,7 +13,7 @@ spring:
           starttls:
             enable: true
   datasource:
-    url: jdbc:mysql://localhost:3306/luxuria_2.0?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/luxuria_2.0?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password:
