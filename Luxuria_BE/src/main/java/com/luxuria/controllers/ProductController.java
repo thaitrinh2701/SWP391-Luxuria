@@ -73,6 +73,15 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/no_images/{product_id}")
+    public ResponseEntity<?> viewProductWithoutImage(@PathVariable("product_id") Long productId) {
+        try {
+            Product product = productService.getProductById(productId);
+            return ResponseEntity.ok().body(product);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 //    @PostMapping(value ="/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 //    public ResponseEntity<?> createOriginalProduct(
 //            @Valid @ModelAttribute("productDTO") ProductDTO productDTO,
