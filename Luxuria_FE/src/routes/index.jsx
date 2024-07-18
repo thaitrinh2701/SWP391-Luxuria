@@ -12,6 +12,7 @@ import UpdateProduct from "@/pages/Dashboard/ProductManagement/UpdateProduct";
 import UserManagement from "@/pages/Dashboard/UserManagement";
 import CreateUser from "@/pages/Dashboard/UserManagement/CreateUser";
 import UpdateUser from "@/pages/Dashboard/UserManagement/UpdateUser";
+import Process from "@/pages/Process";
 
 const BlogPostDetail = lazy(() => import("@components/BlogPostDetail"));
 
@@ -253,6 +254,20 @@ export default function Routes() {
             ]}
           >
             <DonHang />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/tien-do",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProtectedRoute
+            allowedRoles={[
+              USER_ROLES.MANAGER,
+            ]}
+          >
+            <Process />
           </ProtectedRoute>
         </Suspense>
       ),

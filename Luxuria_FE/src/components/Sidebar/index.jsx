@@ -6,7 +6,7 @@ import {
   UserCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { faCartShopping, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faPlus, faList } from "@fortawesome/free-solid-svg-icons";
 import { useRole } from "@/hooks/roleProvider";
 
 export function Sidebar() {
@@ -125,6 +125,24 @@ export function Sidebar() {
                   >
                     <FontAwesomeIcon icon={faPlus} className="w-5 h-5" />
                     Yêu cầu
+                  </NavLink>
+                </li>
+              )}
+              {(
+                roleID === 6) && (
+                <li>
+                  <NavLink
+                    className={({ isActive }) =>
+                      `flex items-center gap-3.5 py-2 px-2.5 text-sm rounded-lg hover:bg-gray-100 dark:hover:bg-[#374151] ${
+                        isActive
+                          ? "bg-gray-200 dark:bg-[#374151] text-gray-900 dark:text-white"
+                          : "text-gray-700 dark:text-neutral-400"
+                      }`
+                    }
+                    to="/tien-do"
+                  >
+                    <FontAwesomeIcon icon={faList} className="w-5 h-5" />
+                    Tiến độ
                   </NavLink>
                 </li>
               )}
