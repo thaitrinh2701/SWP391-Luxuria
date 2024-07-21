@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useForm } from "react-hook-form";
-import { Divider, Image } from "antd";
+import { Divider, Flex, Image, Modal, Steps, Typography } from "antd";
 import UploadPics from "@/components/Upload";
 import axios from "axios";
 import { getRoleId } from "@/services";
@@ -14,11 +14,14 @@ import Stepper from "@/components/Stepper";
 import MyStepper from "@/components/Stepper";
 import toast from "react-hot-toast";
 import PayPalModal from "@/components/PaypalModal";
+import StepperDetail from "@/components/StepperDetail";
+import TextArea from "antd/es/input/TextArea";
 
 const CustomerOrderProductDetail = () => {
   const { orderID } = useParams(); // Sử dụng destructuring để lấy orderID
   const [cookies] = useCookies(["user", "token"]);
   const [newPrice, setNewPrice] = useState(0);
+  const [stateID, setStateID] = useState(null);
 
   const token = cookies.token;
   const API_SUBMIT_PRICE_QUOTE = import.meta.env
@@ -33,11 +36,17 @@ const CustomerOrderProductDetail = () => {
     .VITE_API_CUSTOMER_ACCEPT_DESIGN_ENDPOINT;
   const API_COMPLETE_PRODUCT = import.meta.env
     .VITE_API_COMPLETE_PRODUCT_ENDPOINT;
+  const API_GET_ORDER_HISTORIES = import.meta.env
+    .VITE_API_GET_ORDER_HISTORIES_ENDPOINT;
   const API_COMPLETE_ORDER = import.meta.env.VITE_API_COMPLETE_ORDER_ENDPOINT;
+
+  const [isModalDetailVisible, setIsModalDetailVisible] = useState(false);
 
   const [categoryName, setCategoryName] = useState("");
   const [gemsName, setGemsName] = useState("");
   const [goldName, setGoldName] = useState("");
+  const [nameWhoAccepted, setWhoNameAccepted] = useState("");
+  const [orderHistory, setOrderHistory] = useState([]);
   const [roleID, setRoleID] = useState(null);
   const [fileList, setFileList] = useState([]);
   const [orderDetail, setOrderDetail] = useState(null);
@@ -48,6 +57,10 @@ const CustomerOrderProductDetail = () => {
   const [isCompleteProduct, setIsCompleteProduct] = useState(false);
   const [isCompleteOrder, setIsCompleteOrder] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOpenModalManager, setIsModalOpenManager] = useState(false);
+  const [description, setDescription] = useState("");
+  const [descriptionList, setDescriptionList] = useState([]);
+
   const productPrice = orderDetail?.order?.product?.totalPrice;
 
   const navigate = useNavigate();
@@ -55,7 +68,22 @@ const CustomerOrderProductDetail = () => {
     const roleIDFromAPI = await getRoleId(cookies.token);
     setRoleID(roleIDFromAPI);
     console.log("Role ID:", roleIDFromAPI);
+    console.log("Description list: ", descriptionList);
   }
+  const showModalDetail = () => {
+    setIsModalDetailVisible(true);
+  };
+
+  const handleOkDetail = () => {
+    setIsModalDetailVisible(false);
+  };
+  const handleCancelDetail = () => {
+    setIsModalDetailVisible(false);
+  };
+
+  const handleOnChangeOfModal = (e) => {
+    setDescription(e.target.value);
+  };
 
   const completeOrder = async () => {
     try {
@@ -73,6 +101,56 @@ const CustomerOrderProductDetail = () => {
       console.log("Complete Order: ", response.data);
     } catch (error) {
       console.error("Error complete order: ", error);
+    }
+  };
+
+  const getOrderHistories = async () => {
+    try {
+      const response = await axios.get(
+        `${API_GET_ORDER_HISTORIES}/${orderID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setStateID(response.data);
+      const sortedOrderHistory = response.data.sort((a, b) => b.id - a.id);
+
+      const mostRecentDescription =
+        sortedOrderHistory.length > 0 ? sortedOrderHistory[0].description : "";
+
+      // Update the state with the most recent description
+      setOrderHistory(mostRecentDescription);
+      console.log("Order histories fetched: ", response.data);
+    } catch (error) {
+      console.error("Error fetching order histories: ", error);
+    }
+  };
+
+  const getOrderFullName = async () => {
+    try {
+      const response = await axios.get(
+        `${API_GET_ORDER_HISTORIES}/${orderID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Order full names fetched: ", response.data);
+      // Duyệt qua mảng và trích xuất fullName từ mỗi user
+      setDescriptionList(response.data);
+
+      const fullNames = response.data.map((item) => item.full_name);
+      // Giả sử setWhoNameAccepted có thể nhận một mảng các fullName
+      setWhoNameAccepted(fullNames);
+
+      console.log("Order full names fetched: ", fullNames);
+    } catch (error) {
+      console.error("Error fetching order full names: ", error);
     }
   };
 
@@ -97,6 +175,15 @@ const CustomerOrderProductDetail = () => {
 
   useEffect(() => {
     fetchRoleID();
+  }, []);
+
+  useEffect(() => {
+    getOrderHistories();
+  }, []);
+
+  useEffect(() => {
+    getOrderFullName();
+    console.log(nameWhoAccepted);
   }, []);
 
   useEffect(() => {
@@ -156,9 +243,12 @@ const CustomerOrderProductDetail = () => {
         )
       : [];
 
-  const handleCustomerAcceptDesign = (approvalStatus) => {
-    customerAcceptDesign(approvalStatus);
-    navigate("/don-hang");
+  const handleCustomerAcceptDesign = () => {
+    customerAcceptDesign(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpenManager(false);
   };
 
   const handleAcceptPriceQuote = () => {
@@ -166,7 +256,7 @@ const CustomerOrderProductDetail = () => {
   };
 
   const handleDeclinePriceQuote = () => {
-    acceptPriceQuote(false);
+    setIsModalOpenManager(true);
   };
 
   const handleCheckoutProduct = () => {
@@ -177,6 +267,28 @@ const CustomerOrderProductDetail = () => {
     customerAcceptPriceQuote(true);
     navigate("/don-hang");
     Toast("accept_price", "success", "Chấp nhận báo giá thành công!");
+  };
+
+  const handleOk = (approvalStatus, description) => {
+    if (
+      roleID === 6 &&
+      orderDetail.order.state?.id === 2 &&
+      approvalStatus === false
+    ) {
+      acceptPriceQuote(false, description);
+    } else if (
+      roleID === 2 &&
+      orderDetail.order.state?.id === 4 &&
+      approvalStatus === false
+    ) {
+      customerAcceptPriceQuote(false, description);
+    } else if (
+      roleID === 2 &&
+      orderDetail.order.state?.id === 6 &&
+      approvalStatus === false
+    ) {
+      customerAcceptDesign(false, description);
+    }
   };
 
   const handleCompleteProduct = async () => {
@@ -215,11 +327,18 @@ const CustomerOrderProductDetail = () => {
     });
   };
 
-  const customerAcceptDesign = async (approvalStatus) => {
+  const customerAcceptDesign = async (approvalStatus, description) => {
+    const requestData = {
+      order_id: orderID,
+      response: approvalStatus,
+    };
+    if (approvalStatus === false) {
+      requestData.description = description;
+    }
     try {
       const response = await axios.put(
-        `${API_CUSTOMER_ACCEPT_DESIGN}/${orderID}/${approvalStatus}`,
-        {},
+        `${API_CUSTOMER_ACCEPT_DESIGN}`,
+        requestData,
         {
           headers: {
             Authorization: `Bearer ${cookies.token}`,
@@ -286,7 +405,7 @@ const CustomerOrderProductDetail = () => {
       orderDetail.order.state?.id === 4 &&
       approvalStatus === false
     ) {
-      customerAcceptPriceQuote(false);
+      setIsModalOpenManager(true);
     } else if (
       roleID === 2 &&
       orderDetail.order.state?.id === 6 &&
@@ -304,11 +423,20 @@ const CustomerOrderProductDetail = () => {
     }
   };
 
-  const acceptPriceQuote = async (approvalStatus) => {
+  const acceptPriceQuote = async (approvalStatus, description) => {
+    const requestData = {
+      order_id: orderID,
+      response: approvalStatus,
+    };
+
+    if (approvalStatus === false) {
+      requestData.description = description;
+    }
+
     try {
       const response = await axios.put(
-        `${API_SUBMIT_MANAGER_PRICE_QUOTE}/${orderID}/${approvalStatus}`,
-        {},
+        `${API_SUBMIT_MANAGER_PRICE_QUOTE}`,
+        requestData,
         {
           headers: {
             Authorization: `Bearer ${cookies.token}`,
@@ -324,10 +452,19 @@ const CustomerOrderProductDetail = () => {
   };
 
   const customerAcceptPriceQuote = async (approvalStatus) => {
+    const requestData = {
+      order_id: orderID,
+      response: approvalStatus,
+    };
+
+    if (approvalStatus === false) {
+      requestData.description = description;
+    }
+
     try {
       const response = await axios.put(
-        `${API_CUSTOMER_ACCEPT_PRICE_QUOTE}/${orderID}/${approvalStatus}`,
-        {},
+        `${API_CUSTOMER_ACCEPT_PRICE_QUOTE}`,
+        requestData,
         {
           headers: {
             Authorization: `Bearer ${cookies.token}`,
@@ -336,6 +473,7 @@ const CustomerOrderProductDetail = () => {
       );
       console.log("Accept Price: ", response.data);
       setIsAcceptPrice(true);
+      window.location.reload();
     } catch (error) {
       console.error("Error accepting price quote: ", error);
     }
@@ -352,48 +490,48 @@ const CustomerOrderProductDetail = () => {
   }
 
   return (
-    <div className="flex flex-row mb-5 dark:bg-[#111827] dark:text-white">
+    <div className="flex flex-row dark:bg-[#111827] dark:text-white">
       <Sidebar />
       <div className="w-full h-full flex justify-center items-center my-auto">
         <div className="flex flex-col lg:flex-row gap-5 w-full max-w-6xl">
           <div className="bg-white dark:bg-gray-700 p-5 w-full lg:w-1/3 rounded-lg shadow-md">
-            <div className="w-full mt-[20%]">
-              <h1 className="text-2xl font-bold text-center">
+            <div className="w-full mt-10">
+              <Typography variant="h4" className="text-center font-bold mb-5">
                 Thông tin khách hàng
-              </h1>
-              <Divider className="hs-dark-mode-active: bg-gray-400" />
-              {orderDetail.order.request && (
-                <div className="space-y-3">
-                  <h3 className="font-medium mt-20">
+              </Typography>
+              <Divider className="bg-gray-400 dark:bg-gray-600" />
+              {orderDetail?.order?.request && (
+                <div className="space-y-4 mt-5">
+                  <Typography variant="h6" className="font-medium">
                     Họ và tên:
-                    <span className="font-normal ml-1 mt-24">
+                    <span className="font-normal ml-1">
                       {orderDetail.order.request.user.fullName}
                     </span>
-                  </h3>
-                  <h3 className="font-medium mt-24">
-                    Số điện thoại:{" "}
-                    <span className="font-normal ml-1 mt-24">
+                  </Typography>
+                  <Typography variant="h6" className="font-medium">
+                    Số điện thoại:
+                    <span className="font-normal ml-1">
                       {orderDetail.order.request.user.phoneNumber}
                     </span>
-                  </h3>
-                  <h3 className="font-medium mt-24">
-                    Email:{" "}
-                    <span className="font-normal ml-1 mt-24">
+                  </Typography>
+                  <Typography variant="h6" className="font-medium">
+                    Email:
+                    <span className="font-normal ml-1">
                       {orderDetail.order.request.user.email}
                     </span>
-                  </h3>
-                  <h3 className="font-medium">
-                    Mã yêu cầu:{" "}
-                    <span className="font-normal ml-1 mt-24">
+                  </Typography>
+                  <Typography variant="h6" className="font-medium">
+                    Mã yêu cầu:
+                    <span className="font-normal ml-1">
                       #{orderDetail.order.id}
                     </span>
-                  </h3>
-                  <h3 className="font-medium mt-24">
-                    Đơn được tạo vào ngày:{" "}
-                    <span className="font-normal ml-1 mt-24">
+                  </Typography>
+                  <Typography variant="h6" className="font-medium">
+                    Đơn được tạo vào ngày:
+                    <span className="font-normal ml-1">
                       {formatDate(orderDetail.order.orderCreatedAt)}
                     </span>
-                  </h3>
+                  </Typography>
                 </div>
               )}
             </div>
@@ -408,7 +546,7 @@ const CustomerOrderProductDetail = () => {
                     e.target.onerror = null;
                     e.target.src = "../logo.png";
                   }}
-                  className="w-32 h-32"
+                  className="w-28 h-28"
                   alt="Product Image"
                 />
                 <div className="sm:ml-6 mt-6 sm:mt-0 text-center sm:text-left">
@@ -472,7 +610,7 @@ const CustomerOrderProductDetail = () => {
                                 key={index}
                                 src={url}
                                 alt={`Product Image ${index + 1}`}
-                                className="w-32 h-32 object-cover ml-3"
+                                className="w-28 h-28 object-cover ml-3"
                               />
                             ))
                           ) : (
@@ -606,6 +744,20 @@ const CustomerOrderProductDetail = () => {
                   <WarrantyExport orderDetail={orderDetail} />
                 )}
             </div>
+            <Button onClick={showModalDetail}>Xem chi tiết</Button>
+            <Modal
+              title="Chi tiết"
+              visible={isModalDetailVisible}
+              onOk={handleOkDetail}
+              onCancel={handleCancelDetail}
+              footer={null}
+            >
+              <StepperDetail
+                name={nameWhoAccepted}
+                description={descriptionList}
+                stateID={stateID}
+              />
+            </Modal>
           </div>
         </div>
       </div>
@@ -615,7 +767,28 @@ const CustomerOrderProductDetail = () => {
         onClose={() => setIsModalOpen(false)}
         price={newPrice}
         onSuccess={handlePaymentSuccess}
+        id={orderDetail.order.id}
+        cusName={orderDetail.order.request.user.fullName}
+        orderCreated={orderDetail.order.orderCreatedAt}
       />
+      <Modal
+        title="Lý do từ chối"
+        open={isOpenModalManager}
+        onOk={() => handleOk(false, description)}
+        onCancel={handleCancel}
+      >
+        <div className="mb-10">
+          <Flex vertical gap={32}>
+            <TextArea
+              showCount
+              maxLength={100}
+              placeholder="..."
+              value={description}
+              onChange={handleOnChangeOfModal}
+            />
+          </Flex>
+        </div>
+      </Modal>
     </div>
   );
 };

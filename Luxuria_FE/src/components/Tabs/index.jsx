@@ -139,6 +139,8 @@ export function Tabs() {
                     gemName={order.product.gem.name}
                     gold={order.product.gold.name}
                     size={order.product.size}
+                    dateCreated={order.orderCreatedAt}
+                    cusName={order.request.user.fullName}
                   />
                 ))}
           </div>

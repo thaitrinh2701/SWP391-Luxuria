@@ -7,6 +7,8 @@ import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import { Toast } from "../Toast";
 import PayPalModal from "../PaypalModal";
+import { Flex, Modal } from "antd";
+import TextArea from "antd/es/input/TextArea";
 
 const ProductDetailCard = ({
   productName,
@@ -19,6 +21,8 @@ const ProductDetailCard = ({
   stateID,
   isCustomerApproved,
   productPrice,
+  cusName,
+  dateCreated,
 }) => {
   const [isSubmitPrice, setIsSubmitPrice] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
@@ -30,6 +34,8 @@ const ProductDetailCard = ({
   const [newPrice, setNewPrice] = useState(0);
   const [cookies] = useCookies(["user", "token"]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [description, setDescription] = useState("");
+  const [isOpenModalManager, setIsModalOpenManager] = useState(false);
 
   // Function to fetch roleID and set the state
   async function fetchRoleID() {
@@ -50,10 +56,25 @@ const ProductDetailCard = ({
     setIsModalOpen(true);
   };
 
+  const handleOk = (approvalStatus, description) => {
+    if (roleID === 6 && stateID === 2 && approvalStatus === false) {
+      managerAcceptPriceQuote(false, description);
+    }
+    if (roleID === 2 && stateID === 4 && approvalStatus === false) {
+      customerAcceptPriceQuote(false, description);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalOpenManager(false);
+  };
+
+  const handleOnChangeOfModal = (e) => {
+    setDescription(e.target.value);
+  };
+
   const handleRejection = () => {
-    customerAcceptPriceQuote(false);
-    setIsApproved(false);
-    setProcessState("rejected");
+    setIsModalOpenManager(true);
   };
 
   const handleManagerAcceptPriceQuote = () => {
@@ -61,7 +82,8 @@ const ProductDetailCard = ({
   };
 
   const handleDeclinePriceQuote = () => {
-    managerAcceptPriceQuote(false);
+    // managerAcceptPriceQuote(false);
+    setIsModalOpenManager(true);
   };
 
   useEffect(() => {
@@ -111,11 +133,18 @@ const ProductDetailCard = ({
     }
   };
 
-  const managerAcceptPriceQuote = async (approvalStatus) => {
+  const managerAcceptPriceQuote = async (approvalStatus, description) => {
+    const requestData = {
+      order_id: orderID,
+      response: approvalStatus,
+    };
+    if (approvalStatus === false) {
+      requestData.description = description;
+    }
     try {
       const response = await axios.put(
-        `${API_SUBMIT_MANAGER_PRICE_QUOTE}/${orderID}/${approvalStatus}`,
-        {},
+        `${API_SUBMIT_MANAGER_PRICE_QUOTE}`,
+        requestData,
         {
           headers: {
             Authorization: `Bearer ${cookies.token}`,
@@ -130,11 +159,18 @@ const ProductDetailCard = ({
     }
   };
 
-  const customerAcceptPriceQuote = async (approvalStatus) => {
+  const customerAcceptPriceQuote = async (approvalStatus, description) => {
+    const requestData = {
+      order_id: orderID,
+      response: approvalStatus,
+    };
+    if (approvalStatus === false) {
+      requestData.description = description;
+    }
     try {
       const response = await axios.put(
-        `${API_CUSTOMER_ACCEPT_PRICE_QUOTE}/${orderID}/${approvalStatus}`,
-        {},
+        `${API_CUSTOMER_ACCEPT_PRICE_QUOTE}`,
+        requestData,
         {
           headers: {
             Authorization: `Bearer ${cookies.token}`,
@@ -368,7 +404,29 @@ const ProductDetailCard = ({
         onClose={() => setIsModalOpen(false)}
         price={newPrice}
         onSuccess={handlePaymentSuccess}
+        productName={productName}
+        id={orderID}
+        cusName={cusName}
+        orderCreated={dateCreated}
       />
+      <Modal
+        title="Lý do từ chối"
+        open={isOpenModalManager}
+        onOk={() => handleOk(false, description)}
+        onCancel={handleCancel}
+      >
+        <div className="mb-10">
+          <Flex vertical gap={32}>
+            <TextArea
+              showCount
+              maxLength={100}
+              placeholder="..."
+              value={description}
+              onChange={handleOnChangeOfModal}
+            />
+          </Flex>
+        </div>
+      </Modal>
     </div>
   );
 };
