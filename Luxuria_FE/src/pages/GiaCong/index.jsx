@@ -153,7 +153,7 @@ function GiaCong() {
               <span className="font-bold">Sản phẩm đơn giản</span>: 7 - 10 ngày
             </li>
             <li className="my-2">
-              <span className="font-bold ">Sản phẩm phức tạp</span>: : 10 - 15
+              <span className="font-bold ">Sản phẩm phức tạp</span>: 10 - 15
               ngày
             </li>
           </ul>
