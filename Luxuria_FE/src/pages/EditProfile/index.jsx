@@ -1,20 +1,23 @@
-import { Input, Sidebar, Toast } from "@/components";
-import { EDIT_PROFILE_FORMAT } from "@/utils/constant";
-import { Button, Divider } from "antd";
+import React, { useEffect } from "react";
 import axios from "axios";
-import React from "react";
 import { useCookies } from "react-cookie";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { Input, Sidebar, Toast } from "@/components";
+import { EDIT_PROFILE_FORMAT } from "@/utils/constant";
+import { Button, Divider } from "antd";
 
 const EditProfile = () => {
   const API_EDIT_PROFILE = import.meta.env.VITE_API_EDIT_PROFILE_ENDPOINT;
-  const [cookies] = useCookies(["user, token"]);
+  const API_GET_PROFILE = import.meta.env.VITE_API_GET_PROFILE_ENDPOINT;
+  const [cookies] = useCookies(["user", "token"]);
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     setError,
+    setValue,
     formState: { errors, isValid, isSubmitted },
   } = useForm({
     defaultValues: {
@@ -23,6 +26,28 @@ const EditProfile = () => {
       keepLogin: false,
     },
   });
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      const userId = cookies.user.id;
+
+      if (!userId) {
+        Toast("login_err", "error", "Vui lòng đăng nhập để chỉnh sửa đơn!");
+        navigate("/login");
+        return;
+      }
+
+      try {
+        setValue("fullname", cookies.user.full_name);
+        setValue("phone", cookies.user.phone_number);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+        Toast("connect_err", "error", "Lỗi kết nối tới máy chủ!");
+      }
+    };
+
+    fetchProfileData();
+  }, [cookies, navigate, setValue]);
 
   const onSubmit = async (data) => {
     const userId = cookies.user?.id;
@@ -39,13 +64,18 @@ const EditProfile = () => {
     };
 
     try {
-      console.log(requestData);
-      const response = await axios.put(API_EDIT_PROFILE, requestData, {
-        headers: {
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
+      const response = await axios.put(
+        `${API_EDIT_PROFILE}/${userId}`,
+        requestData,
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
+
       Toast("processing", "info", "Đang xử lý đơn...");
+
       if (response.status === 200) {
         Toast("edit_profile_success", "success", "Chỉnh sửa hồ sơ thành công!");
         navigate("/my-profile");
@@ -58,10 +88,8 @@ const EditProfile = () => {
       if (error.response) {
         if (error.response.status === 400) {
           Toast("send_err", "error", "Dữ liệu gửi đi không hợp lệ!");
-          console.error("Server Response:", error.response.data);
         } else if (error.response.status === 403) {
           Toast("send_err", "error", "Bạn không có quyền truy cập!");
-          console.error("Server Response:", error.response.data);
         } else {
           Toast("send_err", "error", "Lỗi gửi tới máy chủ!");
         }
@@ -70,6 +98,7 @@ const EditProfile = () => {
       }
     }
   };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-[auto,1fr] gap-10">
       <Sidebar />

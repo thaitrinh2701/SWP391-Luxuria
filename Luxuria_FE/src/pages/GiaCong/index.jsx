@@ -96,7 +96,7 @@ function GiaCong() {
   };
   return (
     <div className="mb-4 mx-auto max-w-7xl">
-      <h1 className="text-white text-5xl text-center mt-6 mb-8 font-bold font-playfair bg-cover bg-no-repeat py-60 bg-[url('/gcts.webp')]">
+      <h1 className="text-white text-5xl text-center mt-6 mb-8 font-bold font-playfair bg-cover bg-no-repeat py-24 bg-[url('/gcts.webp')]">
         GIA CÔNG TRANG SỨC THEO YÊU CẦU
       </h1>
       <div className="px-6 lg:px-12 text-xl">

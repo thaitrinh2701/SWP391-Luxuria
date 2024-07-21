@@ -24,11 +24,15 @@ const OrderDetailSale = () => {
   const [productCost, setProductCost] = useState(0);
   const [orderDetail, setOrderDetail] = useState(null);
   const [orderStateID, setOrderStateID] = useState(null); // State to track the order state ID
+  const [selectValue, setSelectValue] = useState(""); // State to track the selected value
+  const [products, setProducts] = useState([]); // State to store fetched products
   const navigate = useNavigate();
   const API_VIEW_ORDER_DETAIL = import.meta.env
     .VITE_API_VIEW_ORDER_DETAIL_CUSTOMER_ENDPOINT;
   const API_SUBMIT_NEW_ORDER = import.meta.env
     .VITE_API_SUBMIT_NEW_ORDER_ENDPOINT;
+  const API_GET_PRODUCT_DETAIL = import.meta.env
+    .VITE_API_GET_PRODUCT_DETAIL_ENDPOINT;
 
   const getOrderDetail = async () => {
     try {
@@ -61,6 +65,50 @@ const OrderDetailSale = () => {
       setOrderStateID(response.data.order.state.id);
     } catch (error) {
       console.error("Error fetching order details:", error);
+    }
+  };
+  const fetchAllProducts = async () => {
+    try {
+      const response = await axios.get(`${API_GET_PRODUCT_DETAIL}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setProducts(response.data);
+      console.log("Fetched products: ", response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  const handleSelectChange = async (event) => {
+    const id = event.target.value;
+    setSelectValue(id);
+    try {
+      const response = await axios.get(`${API_GET_PRODUCT_DETAIL}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const product = response.data;
+      console.log("Select change data: ", product);
+      setSelectValue(product.id);
+
+      // Fill the form fields with the selected product data
+      setValue("name", product.name);
+      setValue("category_id", product.category.id);
+      setValue("size", product.size);
+      setValue("gold_id", product.gold.id);
+      setValue("gem_id", product.gem.id);
+      setValue("description", product.description);
+      setValue("gold_price", product.goldPrice);
+      setValue("gold_weight", product.goldWeight);
+      setValue("manufacturing_fee", product.manufacturingFee);
+      setValue("gem_price", product.gemPrice);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -128,6 +176,10 @@ const OrderDetailSale = () => {
       getOrderDetail();
     }
   }, [orderID]);
+
+  useEffect(() => {
+    fetchAllProducts();
+  }, []);
 
   const onSubmit = async (data) => {
     const userId = cookies.user?.id;
@@ -240,6 +292,28 @@ const OrderDetailSale = () => {
                 })}
                 className="space-y-4 z-50 w-full lg:w-1/2"
               >
+                <div className="col-span-1 sm:col-span-2">
+                  <label className="block font-medium">Chọn sản phẩm</label>
+                  <select
+                    id="selectBox"
+                    className="mt-3 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    {...register("product")}
+                    value={selectValue}
+                    onChange={handleSelectChange}
+                  >
+                    <option value="">Chọn sản phẩm</option>
+                    {products.map((product) => (
+                      <option key={product.id} value={product.id}>
+                        {product.id} - {product.name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.product && (
+                    <span className="text-red-500">
+                      {errors.product.message}
+                    </span>
+                  )}
+                </div>
                 {ORDER_DETAIL_FORMAT.map((item) => (
                   <div key={item.id}>
                     <div className="font-medium">
