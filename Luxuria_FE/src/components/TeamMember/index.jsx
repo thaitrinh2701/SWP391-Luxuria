@@ -20,7 +20,7 @@ function TeamSection() {
           <div className="text-center">
             <img
               className="rounded-xl sm:h-48 sm:w-48 lg:h-60 lg:w-60 mx-auto"
-              src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=900&h=900&q=80"
+              src="tct.jpg"
               alt="Image Description"
             />
             <div className="mt-2 sm:mt-4">
@@ -36,7 +36,7 @@ function TeamSection() {
           <div className="text-center">
             <img
               className="rounded-xl sm:h-48 sm:w-48 lg:h-60 lg:w-60 mx-auto"
-              src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=900&h=900&q=80"
+              src="cpnl.jpg"
               alt="Image Description"
             />
             <div className="mt-2 sm:mt-4">
@@ -51,7 +51,7 @@ function TeamSection() {
           <div className="text-center">
             <img
               className="rounded-xl sm:h-48 sm:w-48 lg:h-60 lg:w-60 mx-auto"
-              src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=900&h=900&q=80"
+              src="pnv.jpg"
               alt="Image Description"
             />
             <div className="mt-2 sm:mt-4">
@@ -67,7 +67,7 @@ function TeamSection() {
           <div className="text-center">
             <img
               className="rounded-xl sm:h-48 sm:w-48 lg:h-60 lg:w-60 mx-auto"
-              src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=900&h=900&q=80"
+              src="lvdl.jpg"
               alt="Image Description"
             />
             <div className="mt-2 sm:mt-4">
