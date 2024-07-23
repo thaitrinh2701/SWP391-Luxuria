@@ -244,7 +244,7 @@ const CustomerOrderProductDetail = () => {
       : [];
 
   const handleCustomerAcceptDesign = () => {
-    customerAcceptDesign(true);
+    setIsModalOpenManager(true);
   };
 
   const handleCancel = () => {
@@ -417,7 +417,7 @@ const CustomerOrderProductDetail = () => {
       orderDetail.order.state?.id === 6 &&
       approvalStatus === false
     ) {
-      handleCustomerAcceptDesign(false);
+      handleCustomerAcceptDesign();
     } else if (roleID === 5 && orderDetail.order.state?.id === 7) {
       handleCompleteProduct();
     }
@@ -599,6 +599,13 @@ const CustomerOrderProductDetail = () => {
                       <span className="font-normal ml-1">
                         {orderDetail.order.product.size}
                       </span>
+                      (cm)
+                    </h3>
+                    <h3 className="font-medium">
+                      Yêu cầu:
+                      <span className="font-normal ml-1">
+                        {orderDetail.order.product.description}
+                      </span>
                     </h3>
                     <div className="flex items-center">
                       <h3 className="font-medium">Bản thiết kế:</h3>
@@ -744,7 +751,9 @@ const CustomerOrderProductDetail = () => {
                   <WarrantyExport orderDetail={orderDetail} />
                 )}
             </div>
-            <Button onClick={showModalDetail}>Xem chi tiết</Button>
+            <Button onClick={showModalDetail}>
+              Chi tiết tình trạng đơn hàng
+            </Button>
             <Modal
               title="Chi tiết"
               visible={isModalDetailVisible}

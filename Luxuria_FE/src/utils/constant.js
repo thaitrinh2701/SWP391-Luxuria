@@ -344,7 +344,7 @@ export const ORDER_DETAIL_FORMAT = [
   {
     id: "size",
     name: "size",
-    label: "Kích thước",
+    label: "Kích thước (cm)",
     placeholder: "VD: 11.2, 12.3, 13.4",
     validMsg: "Hợp lệ",
     type: "decimal",
