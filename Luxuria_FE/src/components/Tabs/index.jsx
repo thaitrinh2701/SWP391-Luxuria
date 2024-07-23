@@ -55,7 +55,9 @@ export function Tabs() {
       console.log("Orders fetched:", response.data);
 
       // Filter out null orders
-      const filteredOrders = response.data.filter((order) => order !== null);
+      const filteredOrders = response.data.filter(
+        (order) => order !== null && order.active === true
+      );
       Toast(
         "fetch_orders_success",
         "success",
