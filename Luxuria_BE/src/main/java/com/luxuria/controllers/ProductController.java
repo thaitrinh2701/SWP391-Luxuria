@@ -3,6 +3,7 @@ package com.luxuria.controllers;
 import com.luxuria.dtos.ProductDTO;
 import com.luxuria.models.Product;
 import com.luxuria.models.ProductData;
+import com.luxuria.responses.CreateProductResponse;
 import com.luxuria.responses.ProductResponse;
 import com.luxuria.services.IProductDataService;
 import com.luxuria.services.IProductService;
@@ -103,14 +104,15 @@ public class ProductController {
 //        }
 //    }
 
-    @PostMapping(value ="/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("/create")
     public ResponseEntity<?> createOriginalProduct(
-            @RequestBody ProductDTO productDTO,
-            @ModelAttribute("files") List<MultipartFile> files) {
+            @RequestBody ProductDTO productDTO) {
         try {
             Product product = productService.createProduct(productDTO);
-            productService.uploadFiles(product, files);
-            return ResponseEntity.ok().body("Thêm sản phẩm thành công");
+            CreateProductResponse response = CreateProductResponse.builder()
+                    .productId(product.getId())
+                    .build();
+            return ResponseEntity.ok().body(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
