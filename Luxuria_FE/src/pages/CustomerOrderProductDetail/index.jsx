@@ -244,7 +244,7 @@ const CustomerOrderProductDetail = () => {
       : [];
 
   const handleCustomerAcceptDesign = () => {
-    setIsModalOpenManager(true);
+    customerAcceptDesign(true);
   };
 
   const handleCancel = () => {
