@@ -153,7 +153,9 @@ public class ProductController {
             @PathVariable("product_id") Long productId,
             @ModelAttribute("files") List<MultipartFile> files) {
         try {
-            productService.updateOriginalProductData(productId, files);
+            if (!files.isEmpty()) {
+                productService.updateOriginalProductData(productId, files);
+            }
             return ResponseEntity.ok().body("Cập nhật ảnh sản phẩm thành công");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
