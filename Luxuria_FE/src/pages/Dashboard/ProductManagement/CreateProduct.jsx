@@ -18,10 +18,10 @@ function CreateProduct() {
   const [cookies] = useCookies(["user", "token"]);
   const navigate = useNavigate();
   const API_CREATE_PRODUCT = import.meta.env.VITE_API_CREATE_PRODUCT_ENDPOINT;
-  const API_UPLOAD_IMAGES = import.meta.env.VITE_API_UPLOAD_IMAGES_ENDPOINT; // Your image upload endpoint
+  const API_UPLOAD_IMAGES = import.meta.env
+    .VITE_API_UPDATE_IMAGE_PRODUCT_ENDPOINT; // Your image upload endpoint
 
   const [images, setImages] = useState([]);
-  const [productId, setProductId] = useState(null);
 
   const onSubmit = async (data) => {
     try {
@@ -50,17 +50,17 @@ function CreateProduct() {
         }
       );
 
-      // Save the product ID for later use
-      setProductId(productResponse.product_id);
+      // Extract product ID from the response
+      const { product_id } = productResponse.data;
 
       // Step 2: Upload images if there are any
-      if (images.length > 0) {
+      if (images.length > 0 && product_id) {
         const formData = new FormData();
         images.forEach((image) => {
           formData.append("files", image);
         });
 
-        await axios.post(`${API_UPLOAD_IMAGES}/${productId}`, formData, {
+        await axios.put(`${API_UPLOAD_IMAGES}/${product_id}`, formData, {
           headers: {
             Authorization: `Bearer ${cookies.token}`,
             "Content-Type": "multipart/form-data",
@@ -84,7 +84,7 @@ function CreateProduct() {
   return (
     <>
       <Sidebar />
-      <div className="md:p-5 mt-20 min-h-[410px] flex flex-col container max-w-7xl mx-auto shadow-sm dark:bg-[#111827] dark:border-gray-700 gap-y-4">
+      <div className="md:p-5 mt-20 min-h-[410px] flex flex-col container max-w-7xl mx-auto dark:bg-[#111827] dark:border-gray-700 gap-y-4">
         <div className="w-full lg:ps-64">
           <h1 className="text-2xl font-semibold dark:text-white text-center md:text-left">
             Tạo sản phẩm
