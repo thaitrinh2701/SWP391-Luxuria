@@ -247,6 +247,10 @@ const CustomerOrderProductDetail = () => {
     customerAcceptDesign(true);
   };
 
+  const handleCustomerDeclineDesign = () => {
+    setIsModalOpenManager(true);
+  };
+
   const handleCancel = () => {
     setIsModalOpenManager(false);
   };
@@ -417,7 +421,7 @@ const CustomerOrderProductDetail = () => {
       orderDetail.order.state?.id === 6 &&
       approvalStatus === false
     ) {
-      handleCustomerAcceptDesign();
+      handleCustomerDeclineDesign();
     } else if (roleID === 5 && orderDetail.order.state?.id === 7) {
       handleCompleteProduct();
     }
