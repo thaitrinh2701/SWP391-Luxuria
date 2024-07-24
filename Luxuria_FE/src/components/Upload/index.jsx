@@ -88,13 +88,15 @@ const UploadPics = ({ onChange = () => {}, orderID }) => {
       }}
       type="button"
     >
-      <PlusOutlined />
+      <span className="dark:text-white">
+        <PlusOutlined />
+      </span>
       <div
         style={{
           marginTop: 8,
         }}
       >
-        Upload
+        <span className="dark:text-white">Upload</span>
       </div>
     </button>
   );

@@ -1459,3 +1459,106 @@ export const CREATE_USER_FORMAT = [
     },
   },
 ];
+export const ADMIN_DETAIL_FORMAT = [
+  {
+    id: "name",
+    name: "name",
+    label: "Tên trang sức",
+    placeholder: "VD: Dây chuyền đính đá màu",
+    validMsg: "Hợp lệ",
+    type: "text",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "",
+    options: [],
+    inputMode: "text",
+    rules: {
+      required: "Không được để trống",
+      // pattern: {
+      //   value: /^[a-zA-ZÀ-ỹ\s]+$/gi,
+      //   message: "Không hợp lệ",
+      // },
+      minLength: {
+        value: 1,
+      },
+    },
+  },
+  {
+    id: "category_id",
+    name: "category_id",
+    label: "Loại trang sức",
+    placeholder: "--- Mẫu đặt ---",
+    validMsg: "Hợp lệ",
+    type: "select",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "",
+    options: [
+      { value: "1", label: "Nhẫn" },
+      { value: "2", label: "Bông tai" },
+      { value: "3", label: "Vòng tay" },
+      { value: "4", label: "Lắc tay" },
+      { value: "5", label: "Vòng cổ" },
+      { value: "6", label: "Dây chuyền" },
+    ],
+    rules: {
+      required: "Không được để trống",
+    },
+  },
+  {
+    id: "gold_id",
+    name: "gold_id",
+    label: "Loại vàng",
+    placeholder: "--- Mẫu đặt ---",
+    validMsg: "Hợp lệ",
+    type: "select",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "",
+    options: [
+      { value: "4", label: "Vàng 14K" },
+      { value: "3", label: "Vàng 16K" },
+      { value: "2", label: "Vàng 18K" },
+      { value: "1", label: "Vàng 24K" },
+    ],
+    rules: {
+      required: "Không được để trống",
+      pattern: {
+        value: /^[a-zA-ZÀ-ỹ0-9\s]+$/gi,
+        message: "Không hợp lệ",
+      },
+      minLength: {
+        value: 1,
+      },
+    },
+  },
+  {
+    id: "gem_id",
+    name: "gem_id",
+    label: "Loại đá",
+    placeholder: "--- Mẫu đặt ---",
+    validMsg: "Hợp lệ",
+    type: "select",
+    isFullWidth: false,
+    isRequired: true,
+    onChangeTriggerValue: "",
+    options: [
+      { value: "0", label: "Không đính" },
+      { value: "1", label: "Kim cương" },
+      { value: "2", label: "Đá màu" },
+      { value: "3", label: "Ngọc Bích" },
+      { value: "4", label: "Ngọc" },
+      { value: "5", label: "Ngọc nhân tạo" },
+    ],
+    rules: {
+      required: "Không được để trống",
+      pattern: {
+        value: /^[a-zA-ZÀ-ỹ0-9\s]+$/gi,
+        message: "Không hợp lệ",
+      },
+      minLength: {
+        value: 1,
+      },
+    },
+  },
+];

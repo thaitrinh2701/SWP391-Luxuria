@@ -1,13 +1,12 @@
-import { ORDER_DETAIL_FORMAT, SALESTAFF_CALCULATION } from "@/utils/constant";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Sidebar from "../Sidebar";
 import UploadPics from "@/components/Upload";
-import { Button } from "@mui/material";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { Input, Toast } from "@/components";
+import { Toast } from "@/components";
+import { ADMIN_DETAIL_FORMAT } from "@/utils/constant";
 
 function CreateProduct() {
   const {
@@ -19,29 +18,56 @@ function CreateProduct() {
   const [cookies] = useCookies(["user", "token"]);
   const navigate = useNavigate();
   const API_CREATE_PRODUCT = import.meta.env.VITE_API_CREATE_PRODUCT_ENDPOINT;
-  const onSubmit = async (data) => {
-    const requestData = {
-      name: data.name,
-      category_id: data.category_id,
-      size: data.size,
-      gold_id: data.gold_id,
-      gold_price: 0,
-      gold_weight: 0,
-      gem_id: data.gem_id,
-      gem_price: 0,
-      manufacturing_fee: 0,
-      total_price: 0,
-      description: data.description,
-      is_original: true,
-    };
+  const API_UPLOAD_IMAGES = import.meta.env.VITE_API_UPLOAD_IMAGES_ENDPOINT; // Your image upload endpoint
 
+  const [images, setImages] = useState([]);
+  const [productId, setProductId] = useState(null);
+
+  const onSubmit = async (data) => {
     try {
-      const response = await axios.post(API_CREATE_PRODUCT, requestData, {
-        headers: {
-          Authorization: `Bearer ${cookies.token}`,
+      // Step 1: Send product data as JSON
+      const productResponse = await axios.post(
+        API_CREATE_PRODUCT,
+        {
+          name: data.name,
+          category_id: data.category_id,
+          size: data.size,
+          gold_id: data.gold_id,
+          gold_price: 0,
+          gold_weight: 0,
+          gem_id: data.gem_id,
+          gem_price: 0,
+          manufacturing_fee: 0,
+          total_price: 0,
+          description: data.description,
+          is_original: true,
         },
-      });
-      console.log("Submit Product: ", response.data);
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // Save the product ID for later use
+      setProductId(productResponse.product_id);
+
+      // Step 2: Upload images if there are any
+      if (images.length > 0) {
+        const formData = new FormData();
+        images.forEach((image) => {
+          formData.append("files", image);
+        });
+
+        await axios.post(`${API_UPLOAD_IMAGES}/${productId}`, formData, {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      }
+
       Toast("submit_success", "success", "Tạo sản phẩm thành công");
       navigate("/quan-ly-san-pham");
     } catch (error) {
@@ -49,10 +75,16 @@ function CreateProduct() {
       console.error("Error submitting product: ", error);
     }
   };
+
+  const handleImageChange = (images) => {
+    const imageFiles = images.map((image) => image.originFileObj);
+    setImages(imageFiles);
+  };
+
   return (
     <>
       <Sidebar />
-      <div className="md:p-5 mt-20 min-h-[410px] flex flex-col  container max-w-7xl mx-auto shadow-sm dark:bg-[#111827] dark:border-gray-700 gap-y-4">
+      <div className="md:p-5 mt-20 min-h-[410px] flex flex-col container max-w-7xl mx-auto shadow-sm dark:bg-[#111827] dark:border-gray-700 gap-y-4">
         <div className="w-full lg:ps-64">
           <h1 className="text-2xl font-semibold dark:text-white text-center md:text-left">
             Tạo sản phẩm
@@ -63,7 +95,7 @@ function CreateProduct() {
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-4 mt-8 max-w-xs mx-auto md:max-w-full"
           >
-            {ORDER_DETAIL_FORMAT.map((item) => (
+            {ADMIN_DETAIL_FORMAT.map((item) => (
               <div key={item.id}>
                 <label
                   htmlFor={item.id}
@@ -120,6 +152,11 @@ function CreateProduct() {
                 )}
               </div>
             ))}
+
+            <div>
+              <span className="font-semibold">Ảnh</span>
+              <UploadPics onChange={handleImageChange} />
+            </div>
 
             <div className="flex justify-center items-center">
               <button

@@ -6,7 +6,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Toast } from "@/components";
-import { ORDER_DETAIL_FORMAT } from "@/utils/constant";
+import { ADMIN_DETAIL_FORMAT, ORDER_DETAIL_FORMAT } from "@/utils/constant";
 
 function UpdateProduct() {
   const {
@@ -107,16 +107,23 @@ function UpdateProduct() {
   return (
     <>
       <Sidebar />
-      <div className="md:p-5 mt-10 min-h-[410px] flex flex-col bg-white border shadow-sm dark:bg-gray-800 dark:border-gray-700 gap-y-4">
+      <div className="md:p-5 min-h-[410px] container mx-auto my-auto flex flex-col gap-y-4">
         <div className="w-full lg:ps-64">
-          <h1 className="text-2xl font-semibold">Cập nhật sản phẩm</h1>
-          <h2 className="text-lg text-gray-500">Mã sản phẩm: {id}</h2>
+          <h1 className="text-2xl font-semibold dark:text-white">
+            Cập nhật sản phẩm
+          </h1>
+          <h2 className="text-lg text-gray-500 dark:text-gray-300">
+            Mã sản phẩm: {id}
+          </h2>
           <hr className="my-4" />
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-8">
-            {ORDER_DETAIL_FORMAT.map((item) => (
+            {ADMIN_DETAIL_FORMAT.map((item) => (
               <div key={item.id}>
-                <label htmlFor={item.id} className="font-medium dark:text-white">
+                <label
+                  htmlFor={item.id}
+                  className="font-medium dark:text-white"
+                >
                   {item.label}
                   {item.rules.required && (
                     <span className="text-red-500 ml-1">*</span>
@@ -169,7 +176,7 @@ function UpdateProduct() {
               </div>
             ))}
             <div>
-              <span className="font-semibold">Ảnh</span>{" "}
+              <span className="font-semibold dark:text-white">Ảnh</span>{" "}
               <UploadPics onChange={handleImageChange} />
             </div>
             <button
