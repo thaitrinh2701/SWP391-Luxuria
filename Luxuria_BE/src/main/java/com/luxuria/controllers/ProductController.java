@@ -103,11 +103,13 @@ public class ProductController {
 //        }
 //    }
 
-    @PostMapping("/create")
+    @PostMapping(value ="/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createOriginalProduct(
-            @RequestBody ProductDTO productDTO) {
+            @RequestBody ProductDTO productDTO,
+            @ModelAttribute("files") List<MultipartFile> files) {
         try {
             Product product = productService.createProduct(productDTO);
+            productService.uploadFiles(product, files);
             return ResponseEntity.ok().body("Thêm sản phẩm thành công");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
